@@ -49,7 +49,7 @@ public class Main extends JFrame {
     public static void main(String[] args) {
 
         BackgroundMusic bgMusic = new BackgroundMusic();
-        bgMusic.startMusic("/Music.wav");
+        //bgMusic.startMusic("/Music.wav");
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -58,14 +58,7 @@ public class Main extends JFrame {
         });
     }
 
-    /**
-     * 이미지 아이콘의 크기를 조절합니다.
-     *
-     * @param icon   원본 ImageIcon 객체
-     * @param width  리사이징 될 너비
-     * @param height 리사이징 될 높이
-     * @return 크기가 조절된 ImageIcon 객체
-     */
+
     private ImageIcon resizeImageIcon(ImageIcon icon, int width, int height) {
         Image img = icon.getImage();
         Image resizedImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -109,7 +102,7 @@ public class Main extends JFrame {
                     ((Timer) e.getSource()).stop();
 
                     // 배경 흐려짐이 완료된 후 캐릭터 선택 창을 띄우도록 합니다.
-                    showCharacterSelection();
+                    newOrSaved();
                 }
                 panel.repaint();
             }
@@ -117,9 +110,30 @@ public class Main extends JFrame {
         timer.start();
     }
 
-    private void showCharacterSelection() {
+    public void newOrSaved() {
+        Object[] options = {"새 게임", "저장된 게임"};
+        int choice = JOptionPane.showOptionDialog(
+                null,
+                "새 게임을 시작하시겠습니까, 아니면 저장된 게임을 계속하시겠습니까?",
+                "게임 선택",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
 
+        if (choice == JOptionPane.YES_OPTION) {
+            startNewGame();
+        } else if (choice == JOptionPane.NO_OPTION) {
+            loadSavedGame();
+        }
+    }
+
+    private void startNewGame(){
         CharacterSelectionUI selectionUI = new CharacterSelectionUI(panel);
         selectionUI.updateUI();
+    }
+
+    private void loadSavedGame(){
     }
 }
