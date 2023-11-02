@@ -40,6 +40,8 @@ public class Main extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 fadeOutBackground();
+
+                panel.removeMouseListener(this);
             }
         });
     }
@@ -87,14 +89,16 @@ public class Main extends JFrame {
         Timer timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                alpha -= 0.05f;
+                alpha -= 0.1f;
                 panel.repaint();
-                if (alpha <= 0) {
+                if (alpha <= 0.2f) {
+                    alpha = 0.2f;
                     ((Timer)e.getSource()).stop();
-                    alpha = 0;
+
                     // 배경 흐려짐이 완료된 후 캐릭터 선택 창을 띄우도록 합니다.
                     showCharacterSelection();
                 }
+                panel.repaint();
             }
         });
         timer.start();
@@ -102,23 +106,9 @@ public class Main extends JFrame {
 
 
     private void showCharacterSelection() {
-        SwingUtilities.invokeLater(() -> {
-            JDialog selectionDialog = new JDialog(this, "Character Selection", true);
-            selectionDialog.setSize(300, 200);
-            selectionDialog.setLocationRelativeTo(this);
-            selectionDialog.setLayout(new FlowLayout());
 
-            // 예시로 몇 개의 버튼을 추가합니다.
-            selectionDialog.add(new JButton("Character 1"));
-            selectionDialog.add(new JButton("Character 2"));
-            selectionDialog.add(new JButton("Character 3"));
-
-            // 선택 창을 보이게 합니다.
-            selectionDialog.setVisible(true);
-
-            // 메인 윈도우를 닫습니다.
-            Main.this.dispose();
-        });
+        CharacterSelectionUI selectionUI = new CharacterSelectionUI(panel);
+        selectionUI.updateUI();
     }
 
     public static void main(String[] args) {
