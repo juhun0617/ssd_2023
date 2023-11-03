@@ -2,6 +2,7 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
+
 public class CharacterSelectionUI {
 
     private JPanel panel;
@@ -12,6 +13,9 @@ public class CharacterSelectionUI {
 
 
     public void updateUI() {
+
+        panel.removeAll();
+
         JButton character1Button = new JButton("Character 1");
         JButton character2Button = new JButton("Character 2");
         JButton character3Button = new JButton("Character 3");
@@ -22,6 +26,7 @@ public class CharacterSelectionUI {
 
         // 패널의 레이아웃을 설정합니다.
         panel.setLayout(new FlowLayout());
+
 
         // 패널에 변경 사항을 적용합니다.
         panel.revalidate();
