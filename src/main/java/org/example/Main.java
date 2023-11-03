@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.draw.BackGroundPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,23 +9,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
-import java.util.Objects;
 
 public class Main extends JFrame {
 
+    private BackGroundPanel backGroundPanel;
+
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
-    private static final String BACKGROUND_PATH = "/Main.jpeg";
+    private static final String BACKGROUND_PATH = "/Image/Main.jpeg";
     private static final String FONT_PATH = "/font/neodgm.ttf";
 
-    private Image backgroundImage;
-    private float transparency = 1.0f;
+
     private JPanel mainPanel;
     private Font customFont;
 
     public Main() {
         loadCustomFont();
-        loadAndResizeBackgroundImage(BACKGROUND_PATH);
+        backGroundPanel = new BackGroundPanel(BACKGROUND_PATH);
         initializeFrame();
         initializeMainPanel();
         attachMouseClickListener();
@@ -47,10 +49,7 @@ public class Main extends JFrame {
         }
     }
 
-    private void loadAndResizeBackgroundImage(String path) {
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
-        backgroundImage = icon.getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-    }
+
 
     private void initializeFrame() {
         setTitle("Main Game Screen");
@@ -61,18 +60,8 @@ public class Main extends JFrame {
     }
 
     private void initializeMainPanel() {
-        mainPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g.create();
-                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency));
-                g2d.drawImage(backgroundImage, 0, 0, this);
-                g2d.dispose();
-            }
-        };
-        mainPanel.setLayout(null);
-        mainPanel.setOpaque(false);
+        mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(backGroundPanel,BorderLayout.CENTER);
         setContentPane(mainPanel);
     }
 
@@ -90,13 +79,13 @@ public class Main extends JFrame {
         Timer timer = new Timer(40, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                transparency -= 0.1f;
-                if (transparency <= 0.2f) {
-                    transparency = 0.2f;
+                backGroundPanel.transparency -= 0.1f;
+                if (backGroundPanel.transparency <= 0.2f) {
+                    backGroundPanel.transparency = 0.2f;
                     ((Timer) e.getSource()).stop();
                     displayGameOptions();
                 }
-                mainPanel.repaint();
+                backGroundPanel.repaint();
             }
         });
         timer.start();
@@ -104,8 +93,7 @@ public class Main extends JFrame {
 
     private void displayGameOptions() {
         JPanel optionsPanel = createOptionsPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(optionsPanel, BorderLayout.CENTER);
+        backGroundPanel.add(optionsPanel, BorderLayout.CENTER);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
@@ -133,8 +121,8 @@ public class Main extends JFrame {
     }
 
     private void startNewGame() {
-        System.out.println("Start a new game");
-        // Implement new game logic here
+        CharacterSelectionUI characterSelectionUI = new CharacterSelectionUI(mainPanel);
+        characterSelectionUI.updateUI();
     }
 
     private void loadSavedGame() {
