@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.draw.BackGroundPanel;
+import org.example.etc.CustomFont;
 import org.example.service.CharacterService;
 import org.example.ui.CharacterSelectionUI;
 
@@ -19,6 +20,7 @@ public class Main extends JFrame {
 
     private BackGroundPanel backGroundPanel;
     private CharacterService characterService;
+    private Font customFont;
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
@@ -27,10 +29,9 @@ public class Main extends JFrame {
 
 
     private JPanel mainPanel;
-    private Font customFont;
 
     public Main() {
-        loadCustomFont();
+        customFont = CustomFont.loadCustomFont(24f);
         backGroundPanel = new BackGroundPanel(BACKGROUND_PATH);
         initializeFrame();
         initializeMainPanel();
@@ -52,16 +53,6 @@ public class Main extends JFrame {
         // new Thread(bgMusic).start();
     }
 
-    private void loadCustomFont() {
-        try (InputStream is = getClass().getResourceAsStream(FONT_PATH)) {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(24f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(customFont);
-        } catch (Exception e) {
-            e.printStackTrace();
-            customFont = new JLabel().getFont();
-        }
-    }
 
 
 
