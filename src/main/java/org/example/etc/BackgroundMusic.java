@@ -1,4 +1,4 @@
-package org.example;
+package org.example.etc;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;

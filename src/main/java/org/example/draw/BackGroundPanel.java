@@ -1,10 +1,7 @@
 package org.example.draw;
 
-import org.example.BackgroundMusic;
-
 import javax.swing.*;
 import java.awt.*;
-import java.nio.FloatBuffer;
 import java.util.Objects;
 
 public class BackGroundPanel extends JPanel {

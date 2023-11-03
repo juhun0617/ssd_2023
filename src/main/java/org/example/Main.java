@@ -1,7 +1,12 @@
 package org.example;
 
 import org.example.draw.BackGroundPanel;
+import org.example.service.CharacterService;
+import org.example.ui.CharacterSelectionUI;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +18,7 @@ import java.io.InputStream;
 public class Main extends JFrame {
 
     private BackGroundPanel backGroundPanel;
+    private CharacterService characterService;
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
@@ -30,6 +36,14 @@ public class Main extends JFrame {
         initializeMainPanel();
         attachMouseClickListener();
         startBackgroundMusic();
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
+        EntityManager em = emf.createEntityManager();
+
+        characterService = new CharacterService(em);
+
+
+
     }
 
     private void startBackgroundMusic() {
@@ -126,8 +140,9 @@ public class Main extends JFrame {
     }
 
     private void loadSavedGame() {
-        System.out.println("Load a saved game");
-        // Implement load game logic here
+        if(characterService.isTableEmpty("Character")){
+            JOptionPane.showMessageDialog(this,"세이브파일이 없습니다");
+        }
     }
 
     public static void main(String[] args) {
