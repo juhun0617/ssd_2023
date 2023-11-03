@@ -1,18 +1,23 @@
 package org.example.ui;
 
+import org.example.Entity.Character;
 import org.example.draw.BackGroundPanel;
 import org.example.etc.CustomFont;
 import org.example.etc.CustomRoundButton;
-import org.hibernate.type.StandardBasicTypes;
+import org.example.service.CharacterService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.util.Objects;
-import java.util.Optional;
 
 public class CharacterSelectionUI {
 
+    //data base
+    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("my-persistence-unit");
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
     private JPanel panel;
     private BackGroundPanel backGroundPanel;
     private Font customFont;
@@ -23,6 +28,9 @@ public class CharacterSelectionUI {
     private JLabel disciptionText;
     private JButton selectButton;
     private String whatCharacter;
+
+
+
 
 
     private static final String CHARACTER_CAT= "/Image/character/cat.png";
@@ -129,7 +137,7 @@ public class CharacterSelectionUI {
         // 버튼의 선호하는 크기를 설정합니다.
         selectButton.setPreferredSize(new Dimension(200, 50));
 
-        selectButton.addActionListener(e -> moveToNaming());
+        selectButton.addActionListener(e -> makeCharacter());
 
         // 버튼 패널을 backGroundPanel의 세로 중앙에 배치하기 위한 GridBagConstraints 설정
         GridBagConstraints gbc = new GridBagConstraints();
@@ -144,7 +152,7 @@ public class CharacterSelectionUI {
 
         backGroundPanel.add(selectButton, gbc);
     }
-    private void moveToNaming(){
+    private void makeCharacter(){
         System.out.println(whatCharacter);
         if(whatCharacter == null){
             JOptionPane.showMessageDialog(backGroundPanel,"캐릭터를 선택해주세요");
@@ -152,8 +160,9 @@ public class CharacterSelectionUI {
             String name = JOptionPane.showInputDialog(backGroundPanel,"캐릭터의 이름을 입력해주세요:", "이름 정하기", JOptionPane.PLAIN_MESSAGE);
             if (name != null && !name.trim().isEmpty()) {
                 System.out.println("입력받은 이름: " + name);
-                // 여기에 이름을 사용한 추가 로직을 작성합니다.
-                // 예: 새 화면으로 전환, 사용자가 입력한 이름을 캐릭터에 할당 등
+                CharacterService characterService = new CharacterService(entityManager);
+                characterService.setCharacter(name,whatCharacter);
+
             } else {
                 // 사용자가 입력을 취소하거나 비어 있는 이름을 입력했을 때의 처리를 작성합니다.
                 System.out.println("이름 입력이 취소되었거나 비어 있습니다.");
