@@ -1,6 +1,5 @@
 package org.example.ui;
 
-import org.example.Entity.Character;
 import org.example.draw.BackGroundPanel;
 import org.example.etc.CustomFont;
 import org.example.etc.CustomRoundButton;
@@ -15,10 +14,19 @@ import java.util.Objects;
 
 public class CharacterSelectionUI {
 
+    private static final String CHARACTER_CAT = "/Image/character/cat.png";
+    private static final String CHARACTER_GOAT = "/Image/character/goat.png";
+    private static final String CHARACTER_RABBIT = "/Image/character/rabbit.png";
+    private static final String CHARACTER_DUCK = "/Image/character/duck.png";
+    private static final String CHECK_IMAGE = "/Image/check.png";
+    private static final String BACKGROUND_PATH = "/Image/CharacterSelectionBack.jpeg";
+
     //data base
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("my-persistence-unit");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
-    private JPanel panel;
+
+
+    private final JPanel panel;
     private BackGroundPanel backGroundPanel;
     private Font customFont;
     private JLabel checkLabelCat;
@@ -28,21 +36,20 @@ public class CharacterSelectionUI {
     private JLabel disciptionText;
     private JButton selectButton;
     private String whatCharacter;
+    private CharacterCreationCallback callback;
 
 
-
-
-
-    private static final String CHARACTER_CAT= "/Image/character/cat.png";
-    private static final String CHARACTER_GOAT = "/Image/character/goat.png";
-    private static final String CHARACTER_RABBIT = "/Image/character/rabbit.png";
-    private static final String CHARACTER_DUCK = "/Image/character/duck.png";
-    private static final String CHECK_IMAGE = "/Image/check.png";
-
-    private static final String BACKGROUND_PATH = "/Image/CharacterSelectionBack.jpeg";
-    public CharacterSelectionUI(JPanel panel){
+    public CharacterSelectionUI(JPanel panel, CharacterCreationCallback callback) {
         this.panel = panel;
+        this.callback = callback;
     }
+
+
+    public interface CharacterCreationCallback{
+        void onCharacterCreated(String name);
+    }
+
+
 
 
     public void updateUI() {
@@ -58,14 +65,12 @@ public class CharacterSelectionUI {
     }
 
 
-
-
     private void initializeBackPanel() {
         panel.removeAll();
 
         backGroundPanel = new BackGroundPanel(BACKGROUND_PATH);
         backGroundPanel.setLayout(new GridBagLayout()); // GridBagLayout으로 설정합니다.
-        panel.add(backGroundPanel,BorderLayout.CENTER);
+        panel.add(backGroundPanel, BorderLayout.CENTER);
     }
 
 
@@ -89,21 +94,21 @@ public class CharacterSelectionUI {
         backGroundPanel.add(label, gbc); // GridBagConstraints를 사용하여 레이블 추가
     }
 
-    private void addDescription(String character){
+    private void addDescription(String character) {
 
         customFont = CustomFont.loadCustomFont(18f);
-        String discription = new String();
-        if (Objects.equals(character, "cat")){
+        String discription = "";
+        if (Objects.equals(character, "cat")) {
             discription = "<html><body>고양이<br>청결함</body></html>";
         } else if (Objects.equals(character, "goat")) {
             discription = "<html><body>염소<br>배고픔을 잘참음</body></html>";
         } else if (Objects.equals(character, "rabbit")) {
             discription = "<html><body>토끼<br>심심하지 않음</body></html>";
-        } else if (Objects.equals(character,"duck")) {
+        } else if (Objects.equals(character, "duck")) {
             discription = "<html><body>오리<br>잘 안아픔</body></html>";
         }
 
-        if (disciptionText != null){
+        if (disciptionText != null) {
             backGroundPanel.remove(disciptionText);
         }
         disciptionText = new JLabel(discription);
@@ -123,6 +128,7 @@ public class CharacterSelectionUI {
         backGroundPanel.add(disciptionText, gbc); // GridBagConstraints를 사용하여 레이블 추가
 
     }
+
     private void selectCharacter() {
         selectButton = new CustomRoundButton("SELECT");
         customFont = CustomFont.loadCustomFont(30f);
@@ -152,16 +158,19 @@ public class CharacterSelectionUI {
 
         backGroundPanel.add(selectButton, gbc);
     }
-    private void makeCharacter(){
+
+    private void makeCharacter() {
         System.out.println(whatCharacter);
-        if(whatCharacter == null){
-            JOptionPane.showMessageDialog(backGroundPanel,"캐릭터를 선택해주세요");
+        if (whatCharacter == null) {
+            JOptionPane.showMessageDialog(backGroundPanel, "캐릭터를 선택해주세요");
         } else {
-            String name = JOptionPane.showInputDialog(backGroundPanel,"캐릭터의 이름을 입력해주세요:", "이름 정하기", JOptionPane.PLAIN_MESSAGE);
-            if (name != null && !name.trim().isEmpty()) {
+            String name = JOptionPane.showInputDialog(backGroundPanel, "캐릭터의 이름을 입력해주세요:", "이름 정하기", JOptionPane.PLAIN_MESSAGE);
+            if (name != null && !name.trim()
+                    .isEmpty()) {
                 System.out.println("입력받은 이름: " + name);
                 CharacterService characterService = new CharacterService(entityManager);
-                characterService.setCharacter(name,whatCharacter);
+                characterService.setCharacter(name, whatCharacter);
+                callback.onCharacterCreated(name);
 
             } else {
                 // 사용자가 입력을 취소하거나 비어 있는 이름을 입력했을 때의 처리를 작성합니다.
@@ -171,7 +180,7 @@ public class CharacterSelectionUI {
     }
 
 
-    private void addCharacterSelectionOptions(){
+    private void addCharacterSelectionOptions() {
         // 버튼들 사이의 간격을 적당히 조절하고 중앙에 배치합니다.
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0)); // 여기서 5와 5는 버튼 사이의 간격입니다.
         buttonPanel.setOpaque(false);
@@ -198,7 +207,6 @@ public class CharacterSelectionUI {
         JPanel characterGoatPanel = createCharacterPanel(characterButtonGoat, checkLabelGoat);
         JPanel characterRabbitPanel = createCharacterPanel(characterButtonRabbit, checkLabelRabbit);
         JPanel characterDuckPanel = createCharacterPanel(characterButtonDuck, checkLabelDuck);
-
 
 
         // 버튼 패널에 각 캐릭터 패널을 추가
@@ -238,16 +246,16 @@ public class CharacterSelectionUI {
     }
 
 
-
     private JLabel createCheckLabel() {
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(CHECK_IMAGE));
         Image image = originalIcon.getImage();
-        Image resizedImage = image.getScaledInstance(30 ,30, Image.SCALE_SMOOTH);
+        Image resizedImage = image.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(resizedImage);
         JLabel checkLabel = new JLabel(icon);
         checkLabel.setVisible(false); // 초기에는 보이지 않게 설정
         return checkLabel;
     }
+
     private void selectCharacter(String characterName, JLabel checkLabel) {
         whatCharacter = characterName;
         // 다른 모든 체크 레이블을 숨깁니다.
@@ -266,11 +274,10 @@ public class CharacterSelectionUI {
     }
 
 
-
     private JButton createCharacterButton(String imagePath) {
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(imagePath));
         Image image = originalIcon.getImage();
-        Image resizedImage = image.getScaledInstance(130 ,130, Image.SCALE_SMOOTH);
+        Image resizedImage = image.getScaledInstance(130, 130, Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(resizedImage);
 
         JButton button = new JButton();
