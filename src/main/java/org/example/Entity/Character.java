@@ -17,7 +17,7 @@ public class Character {
     private String animal;
     private int hungry;
     private int thirst;
-    private int hygiene;
+    private int fun;
     private int health;
     private int level;
     private int money;
@@ -58,12 +58,12 @@ public class Character {
         this.thirst = thirst;
     }
 
-    public int getHygiene() {
-        return hygiene;
+    public int getFun() {
+        return fun;
     }
 
-    public void setHygiene(int hygiene) {
-        this.hygiene = hygiene;
+    public void setFun(int hygiene) {
+        this.fun = hygiene;
     }
 
     public int getHealth() {

@@ -5,7 +5,6 @@ import org.example.Entity.Character;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CharacterService {
 
@@ -48,7 +47,7 @@ public class CharacterService {
         character.setAnimal(whatCharacter);
         character.setHungry(100);
         character.setThirst(100);
-        character.setHygiene(100);
+        character.setFun(100);
         character.setHealth(100);
         character.setLevel(1);
         character.setMoney(0);

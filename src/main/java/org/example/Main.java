@@ -129,9 +129,15 @@ public class Main extends JFrame {
     }
 
     private void moveToDamaUI(String name) {
-        DamaUI damaUI = new DamaUI(mainPanel,name);
-        damaUI.updateUi();
+        SwingUtilities.invokeLater(() -> {
+            DamaUI damaUI = new DamaUI(mainPanel, name);
+            damaUI.updateUi();
+        });
     }
+
+
+
+
 
 
 
