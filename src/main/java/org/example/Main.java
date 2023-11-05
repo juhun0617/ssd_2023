@@ -3,6 +3,7 @@ package org.example;
 import org.example.draw.BackGroundPanel;
 import org.example.etc.BackgroundMusic;
 import org.example.etc.CustomFont;
+import org.example.etc.ShadowButton;
 import org.example.service.CharacterService;
 import org.example.ui.CharacterSelectionUI;
 import org.example.ui.DamaUI;
@@ -45,7 +46,12 @@ public class Main extends JFrame {
 
         characterService = new CharacterService(em);
 
-
+    }
+    private void backButtonProgress(){
+        mainPanel.removeAll();
+        initializeMainPanel();
+        attachMouseClickListener();
+        mainPanel.updateUI();
 
     }
 
@@ -107,12 +113,18 @@ public class Main extends JFrame {
     }
 
     private JPanel createOptionsPanel() {
-        JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 300));
+        JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 365));
         optionsPanel.setOpaque(false);
 
 
-        JButton newGameButton = createButton("새 게임", e -> startNewGame());
-        JButton loadGameButton = createButton("저장된 게임", e -> loadSavedGame());
+        JButton newGameButton = new ShadowButton("새 게임","/Image/Button/skyBlueButton.png");
+        newGameButton.addActionListener(e -> startNewGame());
+        newGameButton.setFont(customFont);
+        newGameButton.setPreferredSize(new Dimension(200,70));
+        JButton loadGameButton = new ShadowButton("저장된 게임", "/Image/Button/skyBlueButton.png");
+        loadGameButton.addActionListener(e -> loadSavedGame());
+        loadGameButton.setFont(customFont);
+        loadGameButton.setPreferredSize(new Dimension(200,70));
 
         optionsPanel.add(newGameButton);
         optionsPanel.add(loadGameButton);
@@ -147,6 +159,12 @@ public class Main extends JFrame {
             public void onCharacterCreated(String name) {
                 moveToDamaUI(name);
             }
+
+            @Override
+            public void backBotton() {
+                backButtonProgress();
+            }
+
 
         });
         characterSelectionUI.updateUI();

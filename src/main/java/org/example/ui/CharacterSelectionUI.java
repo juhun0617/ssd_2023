@@ -2,7 +2,7 @@ package org.example.ui;
 
 import org.example.draw.BackGroundPanel;
 import org.example.etc.CustomFont;
-import org.example.etc.CustomRoundButton;
+import org.example.etc.ShadowButton;
 import org.example.service.CharacterService;
 
 import javax.persistence.EntityManager;
@@ -20,13 +20,10 @@ public class CharacterSelectionUI {
     private static final String CHARACTER_DUCK = "/Image/character/duck.png";
     private static final String CHECK_IMAGE = "/Image/check.png";
     private static final String BACKGROUND_PATH = "/Image/CharacterSelectionBack.jpeg";
-
+    private final JPanel panel;
     //data base
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("my-persistence-unit");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-
-    private final JPanel panel;
     private BackGroundPanel backGroundPanel;
     private Font customFont;
     private JLabel checkLabelCat;
@@ -35,8 +32,9 @@ public class CharacterSelectionUI {
     private JLabel checkLabelDuck;
     private JLabel disciptionText;
     private JButton selectButton;
+    private JButton backButton;
     private String whatCharacter;
-    private CharacterCreationCallback callback;
+    private final CharacterCreationCallback callback;
 
 
     public CharacterSelectionUI(JPanel panel, CharacterCreationCallback callback) {
@@ -44,26 +42,18 @@ public class CharacterSelectionUI {
         this.callback = callback;
     }
 
-
-    public interface CharacterCreationCallback{
-        void onCharacterCreated(String name);
-    }
-
-
-
-
     public void updateUI() {
 
         initializeBackPanel();
         addCharacterSelectionOptions();
         addText();
         selectCharacter();
+        backProgress();
 
         // 패널에 변경 사항을 적용합니다.
         panel.revalidate();
         panel.repaint();
     }
-
 
     private void initializeBackPanel() {
         panel.removeAll();
@@ -72,7 +62,6 @@ public class CharacterSelectionUI {
         backGroundPanel.setLayout(new GridBagLayout()); // GridBagLayout으로 설정합니다.
         panel.add(backGroundPanel, BorderLayout.CENTER);
     }
-
 
     private void addText() {
         customFont = CustomFont.loadCustomFont(18f);
@@ -130,21 +119,14 @@ public class CharacterSelectionUI {
     }
 
     private void selectCharacter() {
-        selectButton = new CustomRoundButton("SELECT");
+        selectButton = new ShadowButton("SELECT", "/Image/Button/selectButton1.png");
         customFont = CustomFont.loadCustomFont(30f);
         selectButton.setFont(customFont);
 
-        // 버튼의 색상을 변경합니다.
-        selectButton.setBackground(new Color(255, 102, 102)); // 연한 빨강색
-
-        // 텍스트 색상을 변경합니다.
         selectButton.setForeground(Color.WHITE);
-
         // 버튼의 선호하는 크기를 설정합니다.
         selectButton.setPreferredSize(new Dimension(200, 50));
-
         selectButton.addActionListener(e -> makeCharacter());
-
         // 버튼 패널을 backGroundPanel의 세로 중앙에 배치하기 위한 GridBagConstraints 설정
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -157,6 +139,10 @@ public class CharacterSelectionUI {
         gbc.insets = new Insets(0, 0, 120, 130);
 
         backGroundPanel.add(selectButton, gbc);
+    }
+
+    private void changeSelButtonColor() {
+        ((ShadowButton) selectButton).setImagePath("/Image/Button/selectButton2.png");
     }
 
     private void makeCharacter() {
@@ -179,7 +165,6 @@ public class CharacterSelectionUI {
         }
     }
 
-
     private void addCharacterSelectionOptions() {
         // 버튼들 사이의 간격을 적당히 조절하고 중앙에 배치합니다.
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0)); // 여기서 5와 5는 버튼 사이의 간격입니다.
@@ -191,10 +176,22 @@ public class CharacterSelectionUI {
         JButton characterButtonRabbit = createCharacterButton(CHARACTER_RABBIT);
         JButton characterButtonDuck = createCharacterButton(CHARACTER_DUCK);
 
-        characterButtonCat.addActionListener(e -> selectCharacter("cat", checkLabelCat));
-        characterButtonGoat.addActionListener(e -> selectCharacter("goat", checkLabelGoat));
-        characterButtonRabbit.addActionListener(e -> selectCharacter("rabbit", checkLabelRabbit));
-        characterButtonDuck.addActionListener(e -> selectCharacter("duck", checkLabelDuck));
+        characterButtonCat.addActionListener(e -> {
+            selectCharacter("cat", checkLabelCat);
+            changeSelButtonColor();
+        });
+        characterButtonGoat.addActionListener(e -> {
+            selectCharacter("goat", checkLabelGoat);
+            changeSelButtonColor();
+        });
+        characterButtonRabbit.addActionListener(e -> {
+            selectCharacter("rabbit", checkLabelRabbit);
+            changeSelButtonColor();
+        });
+        characterButtonDuck.addActionListener(e -> {
+            selectCharacter("duck", checkLabelDuck);
+            changeSelButtonColor();
+        });
 
         // 체크 이미지 레이블 생성 및 초기 설정
         checkLabelCat = createCheckLabel();
@@ -245,7 +242,6 @@ public class CharacterSelectionUI {
         return panel;
     }
 
-
     private JLabel createCheckLabel() {
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(CHECK_IMAGE));
         Image image = originalIcon.getImage();
@@ -273,7 +269,6 @@ public class CharacterSelectionUI {
         checkLabelDuck.setVisible(false);
     }
 
-
     private JButton createCharacterButton(String imagePath) {
         ImageIcon originalIcon = new ImageIcon(getClass().getResource(imagePath));
         Image image = originalIcon.getImage();
@@ -288,5 +283,32 @@ public class CharacterSelectionUI {
         button.setOpaque(false);
 
         return button;
+    }
+
+    private void backProgress() {
+        backButton = new ShadowButton("back", "/Image/Button/backButton.png");
+        backButton.setFont(customFont);
+        backButton.setForeground(Color.WHITE);
+        backButton.setPreferredSize(new Dimension(100, 50));
+        backButton.addActionListener(e -> callback.backBotton());
+
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.insets = new Insets(60, 30, 0, 0);
+
+        backGroundPanel.add(backButton, gbc);
+    }
+
+    public interface CharacterCreationCallback {
+        void onCharacterCreated(String name);
+
+        void backBotton();
     }
 }

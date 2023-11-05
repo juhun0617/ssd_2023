@@ -30,6 +30,7 @@ public class DamaUI {
 
 
     private final JPanel panel;
+    private JPanel backPanel;
     private Character character;
     private Animal animal;
     private JLabel characterLabel;
@@ -56,8 +57,11 @@ public class DamaUI {
 
     private void initializeBackPanel(){
         panel.removeAll();
-        panel.setBackground(new Color(BACKGROUND[0],BACKGROUND[1],BACKGROUND[2]));
-        panel.setOpaque(false);
+        backPanel = new JPanel();
+        backPanel.setBackground(new Color(BACKGROUND[0],BACKGROUND[1],BACKGROUND[2]));
+
+
+        panel.add(backPanel,BorderLayout.CENTER);
 
     }
 
@@ -108,11 +112,12 @@ public class DamaUI {
 
 
         // 캐릭터 레이블을 패널에 추가
-        panel.add(characterLabel,BorderLayout.CENTER); // 레이블을 패널에 추가
+        backPanel.setLayout(new BorderLayout());
+        backPanel.add(characterLabel,BorderLayout.CENTER); // 레이블을 패널에 추가
 
         // 패널 업데이트
-        panel.revalidate();
-        panel.repaint();
+        backPanel.revalidate();
+        backPanel.repaint();
 
     }
 
