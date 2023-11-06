@@ -2,7 +2,8 @@ package org.example.ui;
 
 import org.example.Animal.*;
 import org.example.Entity.Character;
-import org.example.draw.BackGroundPanel;
+import org.example.etc.CustomFont;
+import org.example.etc.ImageTextOverlayLabel;
 import org.example.service.CharacterService;
 
 import javax.persistence.EntityManager;
@@ -20,6 +21,7 @@ public class DamaUI {
     private final int ANIMATION_DELAY = 100; // 애니메이션 속도
     private final int ANIMATION_DURATION = 500; // 애니메이션 지속 시간
     private final double SCALE_FACTOR = 1.1; // 확대 비율
+    private final String LEVEL_BAR_PATH = "/Image/coinAndLevelBar.png";
 
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
@@ -34,8 +36,12 @@ public class DamaUI {
     private Character character;
     private Animal animal;
     private JLabel characterLabel;
+    private ImageTextOverlayLabel levelBar;
+    private ImageIcon levelBarIcon;
     private ImageIcon characterIcon;
     private Timer animationTimer;
+    private ImageTextOverlayLabel coinBar;
+
 
 
     public DamaUI(JPanel panel,String name) {
@@ -50,6 +56,8 @@ public class DamaUI {
 
         startTimer();
         drawCharacter();
+        setLevelBar();
+        setCoinBar();
         panel.revalidate();
         panel.repaint();
 
@@ -59,7 +67,7 @@ public class DamaUI {
         panel.removeAll();
         backPanel = new JPanel();
         backPanel.setBackground(new Color(BACKGROUND[0],BACKGROUND[1],BACKGROUND[2]));
-
+        backPanel.setPreferredSize(new Dimension(800,800));
 
         panel.add(backPanel,BorderLayout.CENTER);
 
@@ -96,24 +104,24 @@ public class DamaUI {
         characterLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // characterLabel의 크기와 클릭된 위치를 기반으로 실제 클릭이 이미지 내부에서 발생했는지 판단합니다.
-                // 이를 위해 characterLabel의 위치와 이미지의 크기를 사용하여 클릭이 유효한 범위 내에서 발생했는지 확인합니다.
-                Point clickPoint = e.getPoint();
-                Rectangle imageBounds = new Rectangle(300, 300, 200, 200);
 
-                if (imageBounds.contains(clickPoint)) {
                     if (animationTimer != null && animationTimer.isRunning()) {
                         return; // 이미 애니메이션이 실행 중이라면 다시 시작하지 않음
                     }
                     animateCharacter();
-                }
             }
         });
 
 
         // 캐릭터 레이블을 패널에 추가
-        backPanel.setLayout(new BorderLayout());
-        backPanel.add(characterLabel,BorderLayout.CENTER); // 레이블을 패널에 추가
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0; // X 축 위치
+        gbc.gridy = 0; // Y 축 위치
+        gbc.anchor = GridBagConstraints.CENTER; // 상단에 고정
+        gbc.insets = new Insets(0, 0, 0, 0); // 위쪽 여백 10px
+
+        backPanel.setLayout(new GridBagLayout());
+        backPanel.add(characterLabel, gbc); // 레이블을 패널에 추가
 
         // 패널 업데이트
         backPanel.revalidate();
@@ -149,7 +157,71 @@ public class DamaUI {
         panel.revalidate();
         panel.repaint();
     }
+
+
+    private void setLevelBar() {
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource(LEVEL_BAR_PATH));
+        Image image = imageIcon.getImage();
+        Image resizedImage = image.getScaledInstance(150, 50, Image.SCALE_SMOOTH);
+        levelBarIcon = new ImageIcon(resizedImage);
+        levelBar = new ImageTextOverlayLabel(levelBarIcon);
+
+        levelBar.setText("Level: " + character.getLevel());
+        levelBar.setFont(new CustomFont().loadCustomFont(18f));
+        levelBar.setForeground(Color.white);
+        levelBar.setPreferredSize(new Dimension(150,50));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.insets = new Insets(30, 30, 0, 0);
+        backPanel.add(levelBar, gbc);
+
+
     }
+
+
+    private void setCoinBar() {
+        coinBar = new ImageTextOverlayLabel(levelBarIcon);
+
+        coinBar.setText("Coin: "+ character.getMoney());
+        coinBar.setFont(new CustomFont().loadCustomFont(18f));
+        coinBar.setForeground(Color.white);
+        coinBar.setPreferredSize(new Dimension(150,50));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.NORTHEAST;
+        gbc.insets = new Insets(30, 0, 0, 30);
+        backPanel.add(coinBar, gbc);
+
+        startLevelAndCoinUpdateTimer();
+    }
+
+    // 캐릭터 레벨 업데이트 메서드
+    private void updateLevelAndCoinUpdate() {
+        levelBar.setText("Level: " + character.getLevel());
+        coinBar.setText("Coin: "+ character.getMoney());
+        backPanel.revalidate();
+        backPanel.repaint();
+    }
+
+    // 타이머를 사용하여 레벨 값을 주기적으로 업데이트
+    private void startLevelAndCoinUpdateTimer() {
+        int delay = 1000; // 1초마다 업데이트
+        new Timer(delay, e -> updateLevelAndCoinUpdate()).start();
+    }
+
+
+
+
+}
 
 
 
