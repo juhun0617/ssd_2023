@@ -117,11 +117,15 @@ public class Main extends JFrame {
         optionsPanel.setOpaque(false);
 
 
-        JButton newGameButton = new ShadowButton("새 게임","/Image/Button/skyBlueButton.png");
+        ShadowButton newGameButton = new ShadowButton("새 게임","/Image/Button/skyBlueButton.png");
+        newGameButton.setCORNER_SIZE(40);
+        newGameButton.setSHADOW_OFFSET(0);
         newGameButton.addActionListener(e -> startNewGame());
         newGameButton.setFont(customFont);
         newGameButton.setPreferredSize(new Dimension(200,70));
-        JButton loadGameButton = new ShadowButton("저장된 게임", "/Image/Button/skyBlueButton.png");
+        ShadowButton loadGameButton = new ShadowButton("저장된 게임", "/Image/Button/skyBlueButton.png");
+        loadGameButton.setCORNER_SIZE(40);
+        loadGameButton.setSHADOW_OFFSET(0);
         loadGameButton.addActionListener(e -> loadSavedGame());
         loadGameButton.setFont(customFont);
         loadGameButton.setPreferredSize(new Dimension(200,70));
@@ -146,10 +150,6 @@ public class Main extends JFrame {
             damaUI.updateUi();
         });
     }
-
-
-
-
 
 
 

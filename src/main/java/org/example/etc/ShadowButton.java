@@ -6,8 +6,8 @@ import java.awt.geom.RoundRectangle2D;
 
 public class ShadowButton extends JButton {
     private static final int SHADOW_SIZE = 5;
-    private static final int SHADOW_OFFSET = 2;
-    private static final int CORNER_SIZE = 10;
+    private int SHADOW_OFFSET = 2;
+    private  int CORNER_SIZE = 10;
 
     private ImageIcon buttonIcon;
     private boolean mouseOver = false;
@@ -18,6 +18,12 @@ public class ShadowButton extends JButton {
         this.imagePath = imagePath;
         loadImageIcon(imagePath);
         initializeButton();
+    }
+    public void setCORNER_SIZE(int size){
+        this.CORNER_SIZE = size;
+    }
+    public void setSHADOW_OFFSET(int size){
+        this.SHADOW_OFFSET = size;
     }
 
     private void initializeButton() {
@@ -86,4 +92,6 @@ public class ShadowButton extends JButton {
         g2.dispose();
         super.paintComponent(g);
     }
+
+
 }
