@@ -136,13 +136,7 @@ public class Main extends JFrame {
         return optionsPanel;
     }
 
-    private JButton createButton(String text, ActionListener actionListener) {
-        JButton button = new JButton(text);
-        button.setFont(customFont);
-        button.setPreferredSize(new Dimension(300, 70));
-        button.addActionListener(actionListener);
-        return button;
-    }
+
 
     private void moveToDamaUI(String name) {
         SwingUtilities.invokeLater(() -> {
@@ -175,6 +169,7 @@ public class Main extends JFrame {
             JOptionPane.showMessageDialog(this,"세이브파일이 없습니다");
         } else {
             selectSaveFile();
+
         }
     }
 

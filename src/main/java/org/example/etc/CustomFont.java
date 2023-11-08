@@ -1,6 +1,5 @@
 package org.example.etc;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
 

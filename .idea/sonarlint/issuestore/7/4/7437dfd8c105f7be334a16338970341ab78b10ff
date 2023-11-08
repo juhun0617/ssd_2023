@@ -1,0 +1,25 @@
+
+i	java:S116"URename this field "BACKGROUND" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÎßÔU
+t	java:S116"ZRename this field "ANIMATION_DELAY" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡’Èñúÿÿÿÿ
+r	java:S116"]Rename this field "ANIMATION_DURATION" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÁâþŠ
+q	java:S116"WRename this field "SCALE_FACTOR" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ý»×±úÿÿÿÿ
+n	java:S116"YRename this field "LEVEL_BAR_PATH" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(îÈŒà
+<
+java:S1170"!Make this final field static too.(¡’Èñúÿÿÿÿ
+7
+java:S1170"!Make this final field static too.(ÁâþŠ
+<
+java:S1170"!Make this final field static too.(ý»×±úÿÿÿÿ
+7
+java:S1170"!Make this final field static too.(îÈŒà
+W
+java:S1075"ARefactor your code to get this URI from a customizable parameter.(îÈŒà
+E	java:S1067"+Replace this use of System.out by a logger.(ÀÕ”„úÿÿÿÿ
+L
+java:S2209ª"5Change this instance-reference to a static reference.(‘”úØ
+A
+java:S2440ª"*Remove this instantiation of "CustomFont".(‘”úØ
+Q
+java:S2209¿"5Change this instance-reference to a static reference.(í’ûÎüÿÿÿÿ
+F
+java:S2440¿"*Remove this instantiation of "CustomFont".(í’ûÎüÿÿÿÿ

@@ -57,8 +57,6 @@ public class SQLDialect extends Dialect {
 
         @Override
         public String getIdentityColumnString(int type) {
-            // SQLite는 'autoincrement' 키워드를 사용하지 않습니다.
-            // 단순히 'integer primary key'가 auto-increment를 의미합니다.
             return "";
         }
 

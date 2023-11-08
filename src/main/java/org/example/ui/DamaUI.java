@@ -3,6 +3,7 @@ package org.example.ui;
 import org.example.Animal.*;
 import org.example.Entity.Character;
 import org.example.etc.CustomFont;
+import org.example.etc.FancyProgressBar;
 import org.example.etc.ImageTextOverlayLabel;
 import org.example.service.CharacterService;
 
@@ -41,6 +42,7 @@ public class DamaUI {
     private ImageIcon characterIcon;
     private Timer animationTimer;
     private ImageTextOverlayLabel coinBar;
+    private JProgressBar healthBar;
 
 
 
@@ -58,6 +60,10 @@ public class DamaUI {
         drawCharacter();
         setLevelBar();
         setCoinBar();
+        setStatusBar();
+
+
+
         panel.revalidate();
         panel.repaint();
 
@@ -201,24 +207,75 @@ public class DamaUI {
         gbc.insets = new Insets(30, 0, 0, 30);
         backPanel.add(coinBar, gbc);
 
-        startLevelAndCoinUpdateTimer();
+
     }
 
     // 캐릭터 레벨 업데이트 메서드
-    private void updateLevelAndCoinUpdate() {
+    private void statusUpdate() {
         levelBar.setText("Level: " + character.getLevel());
         coinBar.setText("Coin: "+ character.getMoney());
+
+        //health
+        healthBar.setValue(character.getHealth());
+        healthBar.setString(character.getHealth() + "%");
+
         backPanel.revalidate();
         backPanel.repaint();
     }
 
     // 타이머를 사용하여 레벨 값을 주기적으로 업데이트
-    private void startLevelAndCoinUpdateTimer() {
+    private void statusUpdateTimer() {
         int delay = 1000; // 1초마다 업데이트
-        new Timer(delay, e -> updateLevelAndCoinUpdate()).start();
+        new Timer(delay, e -> statusUpdate()).start();
     }
 
+    public void setStatusBar(){
 
+        // Assuming backPanel is already defined and initialized somewhere in your code
+        JPanel healthPanel = new JPanel(new BorderLayout());
+        healthPanel.setOpaque(false);
+
+        JLabel healthLabel = new JLabel();
+// Initialize your health bar as before
+        FancyProgressBar ui = new FancyProgressBar();
+        JProgressBar healthBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
+        healthBar.setUI(ui);
+        ui.addHoverListener(healthBar);
+        healthBar.setStringPainted(true);
+        healthBar.setString(character.getHealth() + "%");
+        healthBar.setBackground(new Color(82, 71, 39));
+        healthBar.setForeground(new Color(249, 80, 87));
+        healthBar.setValue(character.getHealth());
+
+// Load and set the icon for the health label
+        ImageIcon icon = new ImageIcon(getClass().getResource("/Image/Icon/heartIcon.png"));
+        Image image = icon.getImage();
+        Image resizedImage = image.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(resizedImage);
+        healthLabel.setIcon(icon);
+
+// Add the health bar to the center of the health panel
+        healthPanel.add(healthBar, BorderLayout.CENTER);
+
+// Add the health label (with icon) to the west of the health panel, which will position it to the left of the health bar
+        healthPanel.add(healthLabel, BorderLayout.WEST);
+
+// Now we define the constraints for adding this health panel to the back panel
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.insets = new Insets(30, 0, 0, 0); // Adjust the insets as needed
+
+// Finally, add the health panel to the back panel using the constraints
+        backPanel.add(healthPanel, gbc);
+
+        statusUpdateTimer();
+
+    }
+
+    private void statePanel()
 
 
 }

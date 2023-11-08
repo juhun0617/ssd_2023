@@ -1,0 +1,45 @@
+
+c
+java:S1192"HDefine a constant instead of duplicating this literal "integer" 3 times.(Ñ¯âþûÿÿÿÿ
+]
+java:S1192."GDefine a constant instead of duplicating this literal "substr" 3 times.(û†ž 
+V	java:S125%"<This block of commented-out lines of code should be removed.(áÖ–ùúÿÿÿÿ
+`
+java:S1874J"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(ÙšÌé
+P
+java:S1161J":Add the "@Override" annotation above this method signature(ÙšÌé
+`
+java:S1874N"JDon't override a deprecated method or explicitly mark it as "@Deprecated".( ­ÑÊ
+P
+java:S1161N":Add the "@Override" annotation above this method signature( ­ÑÊ
+P
+java:S1161_":Add the "@Override" annotation above this method signature(æƒûà
+U
+java:S1161c":Add the "@Override" annotation above this method signature(àÜÍÉýÿÿÿÿ
+U
+java:S1161g":Add the "@Override" annotation above this method signature(šº©»ùÿÿÿÿ
+O
+java:S1161k":Add the "@Override" annotation above this method signature(³¿°
+U
+java:S1161o":Add the "@Override" annotation above this method signature(¶é“üûÿÿÿÿ
+P
+java:S1161s":Add the "@Override" annotation above this method signature(ÆñúÜ
+U
+java:S1161w":Add the "@Override" annotation above this method signature(Ö–Æõüÿÿÿÿ
+P
+java:S1161{":Add the "@Override" annotation above this method signature(Ö©ù
+P
+java:S1161":Add the "@Override" annotation above this method signature(€ÛÉ¡
+Q
+java:S1161ƒ":Add the "@Override" annotation above this method signature(Üö¦›
+Q
+java:S1161ˆ":Add the "@Override" annotation above this method signature(Ò ©ß
+Q
+java:S1161":Add the "@Override" annotation above this method signature(´©¾
+V
+java:S1161”":Add the "@Override" annotation above this method signature(Ä¿¨„üÿÿÿÿ
+V
+java:S1161˜":Add the "@Override" annotation above this method signature(ÕŸ™ˆúÿÿÿÿ
+J
+java:S1128
+"4Remove this unused import 'org.hibernate.Hibernate'.(óñ‹è
