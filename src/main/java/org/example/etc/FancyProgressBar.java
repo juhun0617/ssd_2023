@@ -103,6 +103,9 @@ public class FancyProgressBar extends BasicProgressBarUI {
         int drawX = x + (width - stringWidth) / 2;
         int drawY = y + ((height - stringHeight) / 2) + fm.getAscent();
 
+        Font customFont = CustomFont.loadCustomFont(18f);
+        g2d.setFont(customFont);
+
         g2d.setColor(Color.BLACK); // 값의 색상
         g2d.drawString(valueString, drawX, drawY);
     }

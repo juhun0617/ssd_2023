@@ -3,7 +3,6 @@ package org.example.ui;
 import org.example.Animal.*;
 import org.example.Entity.Character;
 import org.example.etc.CustomFont;
-import org.example.etc.FancyProgressBar;
 import org.example.etc.ImageTextOverlayLabel;
 import org.example.service.CharacterService;
 
@@ -18,7 +17,6 @@ import java.util.Objects;
 
 public class DamaUI {
 
-    private final int[] BACKGROUND = {252,255,217};
     private final int ANIMATION_DELAY = 100; // 애니메이션 속도
     private final int ANIMATION_DURATION = 500; // 애니메이션 지속 시간
     private final double SCALE_FACTOR = 1.1; // 확대 비율
@@ -60,7 +58,10 @@ public class DamaUI {
         drawCharacter();
         setLevelBar();
         setCoinBar();
+        statusUpdateTimer();
+
         setStatusBar();
+        setFunctionButton();
 
 
 
@@ -72,7 +73,7 @@ public class DamaUI {
     private void initializeBackPanel(){
         panel.removeAll();
         backPanel = new JPanel();
-        backPanel.setBackground(new Color(BACKGROUND[0],BACKGROUND[1],BACKGROUND[2]));
+        backPanel.setBackground(new Color(190, 190, 190));
         backPanel.setPreferredSize(new Dimension(800,800));
 
         panel.add(backPanel,BorderLayout.CENTER);
@@ -115,6 +116,15 @@ public class DamaUI {
                         return; // 이미 애니메이션이 실행 중이라면 다시 시작하지 않음
                     }
                     animateCharacter();
+
+                    int tmpFun = character.getFun();
+                    tmpFun++;
+                    character.setFun(tmpFun);
+
+                    int tmpHungry = character.getHungry();
+                    tmpHungry--;
+                    character.setHungry(tmpHungry);
+
             }
         });
 
@@ -123,8 +133,8 @@ public class DamaUI {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0; // X 축 위치
         gbc.gridy = 0; // Y 축 위치
-        gbc.anchor = GridBagConstraints.CENTER; // 상단에 고정
-        gbc.insets = new Insets(0, 0, 0, 0); // 위쪽 여백 10px
+        gbc.anchor = GridBagConstraints.SOUTH; // 상단에 고정
+        gbc.insets = new Insets(0, 0, 250, 0); // 위쪽 여백 10px
 
         backPanel.setLayout(new GridBagLayout());
         backPanel.add(characterLabel, gbc); // 레이블을 패널에 추가
@@ -215,9 +225,6 @@ public class DamaUI {
         levelBar.setText("Level: " + character.getLevel());
         coinBar.setText("Coin: "+ character.getMoney());
 
-        //health
-        healthBar.setValue(character.getHealth());
-        healthBar.setString(character.getHealth() + "%");
 
         backPanel.revalidate();
         backPanel.repaint();
@@ -229,53 +236,33 @@ public class DamaUI {
         new Timer(delay, e -> statusUpdate()).start();
     }
 
-    public void setStatusBar(){
+    private void setStatusBar(){
 
-        // Assuming backPanel is already defined and initialized somewhere in your code
-        JPanel healthPanel = new JPanel(new BorderLayout());
-        healthPanel.setOpaque(false);
+        StatusBarUI hud = new StatusBarUI(character);
+        hud.setStatusHud();
+        hud.statusUpdateTimer();
 
-        JLabel healthLabel = new JLabel();
-// Initialize your health bar as before
-        FancyProgressBar ui = new FancyProgressBar();
-        JProgressBar healthBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
-        healthBar.setUI(ui);
-        ui.addHoverListener(healthBar);
-        healthBar.setStringPainted(true);
-        healthBar.setString(character.getHealth() + "%");
-        healthBar.setBackground(new Color(82, 71, 39));
-        healthBar.setForeground(new Color(249, 80, 87));
-        healthBar.setValue(character.getHealth());
-
-// Load and set the icon for the health label
-        ImageIcon icon = new ImageIcon(getClass().getResource("/Image/Icon/heartIcon.png"));
-        Image image = icon.getImage();
-        Image resizedImage = image.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        icon = new ImageIcon(resizedImage);
-        healthLabel.setIcon(icon);
-
-// Add the health bar to the center of the health panel
-        healthPanel.add(healthBar, BorderLayout.CENTER);
-
-// Add the health label (with icon) to the west of the health panel, which will position it to the left of the health bar
-        healthPanel.add(healthLabel, BorderLayout.WEST);
-
-// Now we define the constraints for adding this health panel to the back panel
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
         gbc.anchor = GridBagConstraints.NORTH;
-        gbc.insets = new Insets(30, 0, 0, 0); // Adjust the insets as needed
-
-// Finally, add the health panel to the back panel using the constraints
-        backPanel.add(healthPanel, gbc);
-
-        statusUpdateTimer();
-
+        gbc.insets = new Insets(30, 0, 0, 0);
+        backPanel.add(hud,gbc);
     }
 
-    private void statePanel()
+    private void setFunctionButton(){
+        FunctionButtonUI functionButton = new FunctionButtonUI();
+        functionButton.setFunctionButton();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.anchor = GridBagConstraints.SOUTH;
+        gbc.insets = new Insets(0, 0, 70, 0);
+        backPanel.add(functionButton,gbc);
+
+    }
 
 
 }
