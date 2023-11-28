@@ -64,7 +64,7 @@ public class CharacterSelectionUI {
     }
 
     private void addText() {
-        customFont = CustomFont.loadCustomFont(18f);
+        customFont = CustomFont.loadCustomFont(25f);
 
         JLabel label = new JLabel("<html><body>가장 친구가 되고 싶은 동물을 선택해봐!<br>각각의 동물을 누르면 특성을 확인할 수 있어</body></html>");
         label.setFont(customFont);
@@ -85,7 +85,7 @@ public class CharacterSelectionUI {
 
     private void addDescription(String character) {
 
-        customFont = CustomFont.loadCustomFont(18f);
+        customFont = CustomFont.loadCustomFont(25f);
         String discription = "";
         if (Objects.equals(character, "cat")) {
             discription = "<html><body>고양이<br>청결함</body></html>";

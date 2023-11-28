@@ -18,7 +18,7 @@ public class CustomFont {
                 return null;
             }
         }
-        return customFont;
+        return customFont.deriveFont(size);
     }
 
 }

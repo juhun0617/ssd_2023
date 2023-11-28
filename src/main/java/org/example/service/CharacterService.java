@@ -39,6 +39,26 @@ public class CharacterService {
         }
     }
 
+    public void saveCharacter(Character character) {
+        try {
+            entityManager.getTransaction().begin(); // Start transaction
+
+            if (!entityManager.contains(character)) {
+                character = entityManager.merge(character); // Merge if detached
+            } else {
+                entityManager.persist(character); // Persist if new
+            }
+
+            entityManager.getTransaction().commit(); // Commit transaction
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback(); // Rollback in case of error
+            e.printStackTrace();
+        } finally {
+            close(); // Close EntityManager
+        }
+    }
+
+
 
 
     public void setCharacter(String name, String whatCharacter){

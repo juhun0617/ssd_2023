@@ -61,7 +61,8 @@ public class DamaUI {
         statusUpdateTimer();
 
         setStatusBar();
-        setFunctionButton();
+        setFunctionButton(character,panel,animal);
+
 
 
 
@@ -183,7 +184,7 @@ public class DamaUI {
         levelBar = new ImageTextOverlayLabel(levelBarIcon);
 
         levelBar.setText("Level: " + character.getLevel());
-        levelBar.setFont(new CustomFont().loadCustomFont(18f));
+        levelBar.setFont(new CustomFont().loadCustomFont(25f));
         levelBar.setForeground(Color.white);
         levelBar.setPreferredSize(new Dimension(150,50));
 
@@ -204,7 +205,7 @@ public class DamaUI {
         coinBar = new ImageTextOverlayLabel(levelBarIcon);
 
         coinBar.setText("Coin: "+ character.getMoney());
-        coinBar.setFont(new CustomFont().loadCustomFont(18f));
+        coinBar.setFont(new CustomFont().loadCustomFont(25f));
         coinBar.setForeground(Color.white);
         coinBar.setPreferredSize(new Dimension(150,50));
 
@@ -251,9 +252,9 @@ public class DamaUI {
         backPanel.add(hud,gbc);
     }
 
-    private void setFunctionButton(){
+    private void setFunctionButton(Character character,JPanel panel,Animal animal){
         FunctionButtonUI functionButton = new FunctionButtonUI();
-        functionButton.setFunctionButton();
+        functionButton.setFunctionButton(character,panel,animal);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
