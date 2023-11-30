@@ -24,4 +24,16 @@ public class Deco {
     public Long getId() {
         return id;
     }
+    public String getDecoName(){
+        return decoName;
+    }
+    public String getDecoImagePath(){
+        return decoImagePath;
+    }
+    public int getDecoPrice(){
+        return decoPrice;
+    }
+    public String getDecoClass(){
+        return decoClass;
+    }
 }

@@ -154,7 +154,7 @@ public class CharacterSelectionUI {
             if (name != null && !name.trim()
                     .isEmpty()) {
                 System.out.println("입력받은 이름: " + name);
-                CharacterService characterService = new CharacterService(entityManager);
+                CharacterService characterService = new CharacterService(entityManagerFactory);
                 characterService.setCharacter(name, whatCharacter);
                 callback.onCharacterCreated(name);
 

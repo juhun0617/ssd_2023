@@ -21,7 +21,7 @@ public class FunctionButtonUI extends JPanel {
     JButton shopButton;
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
     EntityManager em = emf.createEntityManager();
-    CharacterService characterService = new CharacterService(em);
+    CharacterService characterService = new CharacterService(emf);
 
     public FunctionButtonUI(){
 
@@ -67,6 +67,15 @@ public class FunctionButtonUI extends JPanel {
         closetButton.setBorderPainted(false);
         closetButton.setContentAreaFilled(false);
         closetButton.setFocusPainted(false);
+        closetButton.addActionListener(e -> {
+            StorageUI storageUI = new StorageUI(panel,character,() -> {
+                DamaUI damaUI = new DamaUI(panel, character.getName());
+                damaUI.updateUi();
+            });
+            animal.stopAllTimers();
+            characterService.saveCharacter(character);
+            storageUI.updateUI();
+        });
 
 
     }

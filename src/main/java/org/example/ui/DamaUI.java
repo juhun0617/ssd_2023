@@ -2,9 +2,11 @@ package org.example.ui;
 
 import org.example.Animal.*;
 import org.example.Entity.Character;
+import org.example.draw.BackGroundPanel;
 import org.example.etc.CustomFont;
 import org.example.etc.ImageTextOverlayLabel;
 import org.example.service.CharacterService;
+import org.example.service.DecoService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +27,8 @@ public class DamaUI {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
     EntityManager em = emf.createEntityManager();
-    CharacterService characterService = new CharacterService(em);
+    CharacterService characterService = new CharacterService(emf);
+    DecoService decoService = new DecoService(em);
 
 
 
@@ -73,10 +76,14 @@ public class DamaUI {
 
     private void initializeBackPanel(){
         panel.removeAll();
-        backPanel = new JPanel();
-        backPanel.setBackground(new Color(190, 190, 190));
-        backPanel.setPreferredSize(new Dimension(800,800));
-
+        if (character.getBackId() !=0){
+            String path = decoService.findDecoById(character.getBackId()).getDecoImagePath();
+            backPanel = new BackGroundPanel(path);
+        } else {
+            backPanel = new JPanel();
+            backPanel.setBackground(new Color(190, 190, 190));
+            backPanel.setPreferredSize(new Dimension(800,800));
+        }
         panel.add(backPanel,BorderLayout.CENTER);
 
     }

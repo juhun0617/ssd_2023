@@ -8,27 +8,29 @@ import java.util.List;
 
 public class CharacterService {
 
-    private EntityManager entityManager;
+    private EntityManagerFactory entityManagerFactory;
     private Character character;
 
-    public CharacterService(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public CharacterService(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     public boolean isTableEmpty(String tableName) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         Query query = entityManager.createQuery("SELECT COUNT(t) FROM " + tableName + " t");
         Long count = (Long) query.getSingleResult();
         return count == 0;
     }
 
     public List<String> getCharacterNames() {
-        // 캐릭터 이름만 조회하여 리스트로 반환하는 쿼리 실행
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         TypedQuery<String> query = entityManager.createQuery(
                 "SELECT c.name FROM Character c", String.class);
         return query.getResultList();
     }
 
     public Character findCharacterByName(String name) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             TypedQuery<Character> query = entityManager.createQuery(
                     "SELECT c FROM Character c WHERE c.name = :name", Character.class);
@@ -40,6 +42,7 @@ public class CharacterService {
     }
 
     public void saveCharacter(Character character) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             entityManager.getTransaction().begin(); // Start transaction
 
@@ -54,7 +57,7 @@ public class CharacterService {
             entityManager.getTransaction().rollback(); // Rollback in case of error
             e.printStackTrace();
         } finally {
-            close(); // Close EntityManager
+            entityManager.close();
         }
     }
 
@@ -62,6 +65,7 @@ public class CharacterService {
 
 
     public void setCharacter(String name, String whatCharacter){
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         character = new Character();
         character.setName(name);
         character.setAnimal(whatCharacter);
@@ -88,12 +92,7 @@ public class CharacterService {
         }
     }
 
-    // 리소스 정리를 위한 메서드
-    public void close() {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-    }
+
 }
 
 

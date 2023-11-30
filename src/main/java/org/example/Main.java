@@ -25,6 +25,7 @@ public class Main extends JFrame {
     private CharacterService characterService;
     private Font customFont;
 
+
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
     private static final String BACKGROUND_PATH = "/Image/Main.jpeg";
@@ -44,7 +45,7 @@ public class Main extends JFrame {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
         EntityManager em = emf.createEntityManager();
 
-        characterService = new CharacterService(em);
+        characterService = new CharacterService(emf);
 
     }
     private void backButtonProgress(){
@@ -192,6 +193,8 @@ public class Main extends JFrame {
             moveToDamaUI(selectedName);
         }
     }
+
+
 
 
 

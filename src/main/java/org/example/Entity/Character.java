@@ -9,7 +9,7 @@ public class Character {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
 
 
@@ -25,6 +25,14 @@ public class Character {
     private int max_score_2;
     private int max_score_3;
     private int max_score_4;
+    private Long backId;
+    public Long getBackId(){
+        return backId;
+    }
+
+    public void setBackId(Long backId) {
+        this.backId = backId;
+    }
 
     public String getName() {
         return name;
@@ -122,11 +130,11 @@ public class Character {
         this.max_score_4 = max_score_4;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 }
