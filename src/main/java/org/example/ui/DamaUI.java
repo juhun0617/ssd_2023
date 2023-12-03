@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.Animal.*;
 import org.example.Entity.Character;
+import org.example.Entity.Deco;
 import org.example.draw.BackGroundPanel;
 import org.example.etc.CustomFont;
 import org.example.etc.ImageTextOverlayLabel;
@@ -65,6 +66,8 @@ public class DamaUI {
 
         setStatusBar();
         setFunctionButton(character,panel,animal);
+        setTabel();
+        setChair();
 
 
 
@@ -86,6 +89,55 @@ public class DamaUI {
         }
         panel.add(backPanel,BorderLayout.CENTER);
 
+    }
+    private void setTabel(){
+        if (character.getTableId() != null){
+            System.out.println("-----------------------------");
+            Deco deco = decoService.findDecoById(character.getTableId());
+            ImageIcon temp = new ImageIcon(getClass().getResource(deco.getDecoImagePath()));
+            Image image = temp.getImage();
+            Image resizedImage = image.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
+            ImageIcon table = new ImageIcon(resizedImage);
+            JLabel label = new JLabel(table);
+
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0; // X 축 위치
+            gbc.gridy = 0; // Y 축 위치
+            gbc.anchor = GridBagConstraints.SOUTHWEST;
+            gbc.insets = new Insets(0, 70, 280, 0); // 위쪽 여백 10px
+
+            backPanel.add(label, gbc);
+
+            // 패널 업데이트
+            backPanel.revalidate();
+            backPanel.repaint();
+
+        }
+    }
+    private void setChair(){
+        if (character.getChairId() != null){
+            Deco deco = decoService.findDecoById(character.getChairId());
+            ImageIcon temp = new ImageIcon(getClass().getResource(deco.getDecoImagePath()));
+            Image image = temp.getImage();
+            Image resizedImage = image.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            ImageIcon table = new ImageIcon(resizedImage);
+            JLabel label = new JLabel(table);
+
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0; // X 축 위치
+            gbc.gridy = 0; // Y 축 위치
+            gbc.anchor = GridBagConstraints.SOUTHEAST;
+            gbc.insets = new Insets(0, 0, 300, 70); // 위쪽 여백 10px
+
+            backPanel.add(label, gbc);
+
+            // 패널 업데이트
+            backPanel.revalidate();
+            backPanel.repaint();
+
+        }
     }
 
     private void startTimer(){

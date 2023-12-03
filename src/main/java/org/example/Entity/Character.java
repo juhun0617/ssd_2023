@@ -2,6 +2,7 @@ package org.example.Entity;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Character {
@@ -26,6 +27,22 @@ public class Character {
     private int max_score_3;
     private int max_score_4;
     private Long backId;
+
+    private Long tableId;
+    private Long chairId;
+
+    public Long getTableId(){
+        return tableId;
+    }
+    public void setTableId(Long tableId){
+        this.tableId = tableId;
+    }
+    public Long getChairId(){
+        return chairId;
+    }
+    public void setChairId(Long chairId){
+        this.chairId = chairId;
+    }
     public Long getBackId(){
         return backId;
     }

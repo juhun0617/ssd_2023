@@ -250,7 +250,7 @@ public class StorageUI {
                 JOptionPane.QUESTION_MESSAGE,
                 itemIcon);
         if (result == JOptionPane.YES_OPTION && characterDecoService.countDecosByCharacterIdAndDecoId(character.getId(),deco.getId()) >= 1){
-            if (!Objects.equals(deco.getDecoClass(), "back")){
+            if (Objects.equals(deco.getDecoClass(), "food")){
                 characterDecoService.deleteFirstMatchingCharacterDeco(character.getId(), deco.getId());
             }
             DecoFunc decoFunc = new DecoFunc(character,deco);
@@ -261,7 +261,7 @@ public class StorageUI {
             JOptionPane.showMessageDialog(
                     backPanel,
                     label,
-                    deco.getDecoName()+"구매",
+                    deco.getDecoName()+"사용",
                     JOptionPane.INFORMATION_MESSAGE,
                     itemIcon);
         }

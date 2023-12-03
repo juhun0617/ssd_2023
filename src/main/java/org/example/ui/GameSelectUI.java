@@ -5,6 +5,7 @@ import org.example.draw.BackGroundPanel;
 import org.example.etc.CustomFont;
 import org.example.etc.ShadowButton;
 import org.example.game.Mulgoging.Mulgoging;
+import org.example.game.Pacman.Pacman;
 
 import javax.swing.*;
 import java.awt.*;
@@ -96,7 +97,13 @@ public class GameSelectUI {
                         Mulgoging windows = new Mulgoging(character);
                         windows.frame.setVisible(true);
                     });
-
+                    break;
+                case "팩맨" :
+                    button.addActionListener(e -> {
+                        Pacman pacman = new Pacman(character);
+                        pacman.setVisible(true);
+                    });
+                    break;
             }
             gamePanel.add(button);
         }

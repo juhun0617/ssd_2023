@@ -29,8 +29,23 @@ public class DecoFunc {
             backGroundFunc();
         } else if (Objects.equals(deco.getDecoClass(),"food")){
             foodFunc();
+        } else {
+            furnitureFunc();
         }
     }
+
+    private void furnitureFunc(){
+        String decoName = deco.getDecoName();
+        if (decoName.contains("테이블")){
+            character.setTableId(deco.getId());
+            characterService.saveCharacter(character);
+        } else {
+            character.setChairId(deco.getId());
+            characterService.saveCharacter(character);
+        }
+
+    }
+
 
     private void backGroundFunc(){
         character.setBackId(deco.getId());

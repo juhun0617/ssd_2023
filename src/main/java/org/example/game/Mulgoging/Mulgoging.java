@@ -61,6 +61,7 @@ public class Mulgoging {
             character.setMax_score_3(finalScore);
             character.setMoney(character.getMoney()+(finalScore*100));
             character.setFun(character.getFun()+10);
+            character.setHungry(character.getHungry()-10);
             characterService.saveCharacter(character);
         }
     }

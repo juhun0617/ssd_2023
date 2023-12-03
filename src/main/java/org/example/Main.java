@@ -65,7 +65,7 @@ public class Main extends JFrame {
 
 
     private void initializeFrame() {
-        setTitle("Main Game Screen");
+        setTitle("RETRO PET");
         setSize(WIDTH, HEIGHT);
         setResizable(false);
         setLocationRelativeTo(null);

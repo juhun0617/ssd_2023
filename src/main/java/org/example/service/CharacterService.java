@@ -79,6 +79,7 @@ public class CharacterService {
         character.setMax_score_2(0);
         character.setMax_score_3(0);
         character.setMax_score_4(0);
+        character.setBackId(0L);
 
         try {
             entityManager.getTransaction().begin();
