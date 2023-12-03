@@ -55,7 +55,14 @@ public class Character {
     }
 
     public void setHungry(int hungry) {
-        this.hungry = hungry;
+
+        if (hungry > 100){
+            this.hungry = 100;
+        } else if (hungry < 0){
+            this.hungry = 0;
+        } else {
+            this.hungry = hungry;
+        }
     }
 
     public int getThirst() {
@@ -63,15 +70,28 @@ public class Character {
     }
 
     public void setThirst(int thirst) {
-        this.thirst = thirst;
+        if (thirst > 100){
+            this.thirst = 100;
+        } else if (thirst < 0){
+            this.thirst = 0;
+        } else {
+            this.thirst = thirst;
+        }
     }
 
     public int getFun() {
         return fun;
     }
 
-    public void setFun(int hygiene) {
-        this.fun = hygiene;
+    public void setFun(int fun) {
+        if (fun > 100){
+            this.fun = 100;
+        } else if (fun < 0){
+            this.fun = 0;
+        } else {
+            this.fun = fun;
+        }
+
     }
 
     public int getHealth() {
@@ -79,7 +99,13 @@ public class Character {
     }
 
     public void setHealth(int health) {
-        this.health = health;
+        if (health > 100){
+            this.health = 100;
+        } else if (health < 0){
+            this.health = 0;
+        } else {
+            this.health = health;
+        }
     }
 
     public int getLevel() {

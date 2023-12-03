@@ -103,6 +103,15 @@ public class FunctionButtonUI extends JPanel {
         gameButton.setBorderPainted(false);
         gameButton.setContentAreaFilled(false);
         gameButton.setFocusPainted(false);
+        gameButton.addActionListener(e -> {
+            GameSelectUI gameSelectUI = new GameSelectUI(panel,character,()-> {
+                DamaUI damaUI = new DamaUI(panel, character.getName());
+                damaUI.updateUi();
+            });
+            animal.stopAllTimers();
+            characterService.saveCharacter(character);
+            gameSelectUI.updateUI();
+        });
     }
 
     private void setShopButton(){

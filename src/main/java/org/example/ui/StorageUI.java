@@ -249,13 +249,21 @@ public class StorageUI {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 itemIcon);
-        if (result == JOptionPane.YES_OPTION){
+        if (result == JOptionPane.YES_OPTION && characterDecoService.countDecosByCharacterIdAndDecoId(character.getId(),deco.getId()) >= 1){
             if (!Objects.equals(deco.getDecoClass(), "back")){
                 characterDecoService.deleteFirstMatchingCharacterDeco(character.getId(), deco.getId());
             }
             DecoFunc decoFunc = new DecoFunc(character,deco);
             decoFunc.funcStart();
-        }else {
+        }else if (result == JOptionPane.YES_OPTION && characterDecoService.countDecosByCharacterIdAndDecoId(character.getId(),deco.getId()) == 0) {
+            JLabel label = new JLabel("재고가 부족합니다");
+            label.setFont(CustomFont.loadCustomFont(18f));
+            JOptionPane.showMessageDialog(
+                    backPanel,
+                    label,
+                    deco.getDecoName()+"구매",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    itemIcon);
         }
     }
 

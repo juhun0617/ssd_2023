@@ -29,14 +29,12 @@ public class Main extends JFrame {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
     private static final String BACKGROUND_PATH = "/Image/Main.jpeg";
-    private static final String FONT_PATH = "/font/neodgm.ttf";
 
 
     private JPanel mainPanel;
 
     public Main() {
         customFont = CustomFont.loadCustomFont(24f);
-        backGroundPanel = new BackGroundPanel(BACKGROUND_PATH);
         initializeFrame();
         initializeMainPanel();
         attachMouseClickListener();
@@ -76,6 +74,7 @@ public class Main extends JFrame {
 
     private void initializeMainPanel() {
         mainPanel = new JPanel(new BorderLayout());
+        backGroundPanel = new BackGroundPanel(BACKGROUND_PATH);
         mainPanel.add(backGroundPanel,BorderLayout.CENTER);
         setContentPane(mainPanel);
     }
