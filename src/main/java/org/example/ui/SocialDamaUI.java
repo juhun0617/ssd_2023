@@ -18,20 +18,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 
-public class DamaUI {
+public class SocialDamaUI {
 
     private final int ANIMATION_DELAY = 100; // 애니메이션 속도
     private final int ANIMATION_DURATION = 500; // 애니메이션 지속 시간
     private final double SCALE_FACTOR = 1.1; // 확대 비율
     private final String LEVEL_BAR_PATH = "/Image/coinAndLevelBar.png";
-
-
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager em = emf.createEntityManager();
-    CharacterService characterService = new CharacterService(emf);
-    DecoService decoService = new DecoService(em);
-
-
 
 
     private final JPanel panel;
@@ -42,67 +34,34 @@ public class DamaUI {
     private ImageTextOverlayLabel levelBar;
     private ImageIcon levelBarIcon;
     private ImageIcon characterIcon;
-    private Timer animationTimer;
     private ImageTextOverlayLabel coinBar;
-    private JProgressBar healthBar;
+    private Timer animationTimer;
 
 
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
+    EntityManager em = emf.createEntityManager();
+    CharacterService characterService = new CharacterService(emf);
+    DecoService decoService = new DecoService(em);
 
-    public DamaUI(JPanel panel,String name) {
+    public SocialDamaUI(JPanel panel,Character character){
         this.panel = panel;
-        this.character = characterService.findCharacterByName(name);
+        this.character = character;
     }
-
     public void updateUi(){
-
         initializeBackPanel();
-        System.out.println(character.getAnimal() + "-" + character.getName());
-
-        startTimer();
+        makeAnimalObject();
         drawCharacter();
         setLevelBar();
         setCoinBar();
-        statusUpdateTimer();
-
         setStatusBar();
-        setFunctionButton(character,panel,animal);
         setTabel();
         setChair();
-        updateXp();
-        updateHealth();
         setSocial();
-
 
         panel.revalidate();
         panel.repaint();
 
-    }
-    private void updateHealth(){
-        if (character.getHealth() <= 0){
-            ImageIcon temp = new ImageIcon(getClass().getResource(animal.getPATH()));
-            Image image = temp.getImage();
-            Image resizedImage = image.getScaledInstance(50,50,Image.SCALE_SMOOTH);
-            ImageIcon imageIcon = new ImageIcon(resizedImage);
-            JLabel label = new JLabel("캐릭터가 사망하였습니다.");
-            label.setFont(CustomFont.loadCustomFont(18f));
-            JOptionPane.showMessageDialog(
-                    backPanel,
-                    label,
-                    character.getName()+ " 사망",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    imageIcon
-            );
-            characterService.deleteCharacter(character);
-            System.exit(0);
 
-        }
-    }
-    private void updateXp(){
-        if (character.getXp() >= 50){
-            character.setXp(0);
-            character.setLevel(character.getLevel()+1);
-            characterService.saveCharacter(character);
-        }
     }
 
     private void initializeBackPanel(){
@@ -118,8 +77,50 @@ public class DamaUI {
         panel.add(backPanel,BorderLayout.CENTER);
 
     }
+
+
+    private void setSocial(){
+        ImageIcon temp = new ImageIcon(getClass().getResource("/Image/social.png"));
+        Image image = temp.getImage();
+        Image resizedImage = image.getScaledInstance(60,60,Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(resizedImage);
+        JButton button = new JButton(imageIcon);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(false);
+        button.addActionListener(e -> {
+            SocialUI socialUI = new SocialUI(panel,character,()->{
+                SocialDamaUI socialDamaUI = new SocialDamaUI(panel,character);
+                socialDamaUI.updateUi();
+            });
+            socialUI.updateUI();
+        });
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.NORTHEAST;
+        gbc.insets = new Insets(100, 0, 0, 60);
+        backPanel.add(button, gbc);
+
+    }
+    private void makeAnimalObject(){
+        if(Objects.equals(character.getAnimal(),"cat")){
+            animal = new Cat(character);
+        } else if (Objects.equals(character.getAnimal(), "rabbit")) {
+            animal = new Rabbit(character);
+        } else if (Objects.equals(character.getAnimal(),"goat")){
+            animal = new Goat(character);
+        } else if (Objects.equals(character.getAnimal(),"duck")){
+            animal = new Duck(character);
+        }
+    }
+
     private void setTabel(){
         if (character.getTableId() != -1){
+            System.out.println("-----------------------------");
             Deco deco = decoService.findDecoById(character.getTableId());
             ImageIcon temp = new ImageIcon(getClass().getResource(deco.getDecoImagePath()));
             Image image = temp.getImage();
@@ -144,8 +145,6 @@ public class DamaUI {
     }
     private void setChair(){
         if (character.getChairId() != -1){
-            System.out.println("--------------------------------------------");
-            System.out.println(character.getChairId());
             Deco deco = decoService.findDecoById(character.getChairId());
             ImageIcon temp = new ImageIcon(getClass().getResource(deco.getDecoImagePath()));
             Image image = temp.getImage();
@@ -169,52 +168,6 @@ public class DamaUI {
         }
     }
 
-    private void startTimer(){
-        makeAnimalObject();
-        animal.startAllTimers();
-        Runtime.getRuntime().addShutdownHook(new Thread(animal::stopAllTimers));
-    }
-
-    private void makeAnimalObject(){
-        if(Objects.equals(character.getAnimal(),"cat")){
-            animal = new Cat(character);
-        } else if (Objects.equals(character.getAnimal(), "rabbit")) {
-            animal = new Rabbit(character);
-        } else if (Objects.equals(character.getAnimal(),"goat")){
-            animal = new Goat(character);
-        } else if (Objects.equals(character.getAnimal(),"duck")){
-            animal = new Duck(character);
-        }
-    }
-    private void setSocial(){
-        ImageIcon temp = new ImageIcon(getClass().getResource("/Image/social.png"));
-        Image image = temp.getImage();
-        Image resizedImage = image.getScaledInstance(60,60,Image.SCALE_SMOOTH);
-        ImageIcon imageIcon = new ImageIcon(resizedImage);
-        JButton button = new JButton(imageIcon);
-        button.setBorderPainted(false);
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.addActionListener(e -> {
-            SocialUI socialUI = new SocialUI(panel,character,()->{
-                DamaUI damaUI = new DamaUI(panel,character.getName());
-                damaUI.updateUi();
-            });
-            animal.stopAllTimers();
-            characterService.saveCharacter(character);
-            socialUI.updateUI();
-        });
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-        gbc.anchor = GridBagConstraints.NORTHEAST;
-        gbc.insets = new Insets(100, 0, 0, 60);
-        backPanel.add(button, gbc);
-
-    }
 
     private void drawCharacter(){
 
@@ -230,18 +183,18 @@ public class DamaUI {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                    if (animationTimer != null && animationTimer.isRunning()) {
-                        return; // 이미 애니메이션이 실행 중이라면 다시 시작하지 않음
-                    }
-                    animateCharacter();
+                if (animationTimer != null && animationTimer.isRunning()) {
+                    return; // 이미 애니메이션이 실행 중이라면 다시 시작하지 않음
+                }
+                animateCharacter();
 
-                    int tmpFun = character.getFun();
-                    tmpFun++;
-                    character.setFun(tmpFun);
+                int tmpFun = character.getFun();
+                tmpFun++;
+                character.setFun(tmpFun);
 
-                    int tmpHungry = character.getHungry();
-                    tmpHungry--;
-                    character.setHungry(tmpHungry);
+                int tmpHungry = character.getHungry();
+                tmpHungry--;
+                character.setHungry(tmpHungry);
 
             }
         });
@@ -337,23 +290,6 @@ public class DamaUI {
 
 
     }
-
-    // 캐릭터 레벨 업데이트 메서드
-    private void statusUpdate() {
-        levelBar.setText("Level: " + character.getLevel());
-        coinBar.setText("Coin: "+ character.getMoney());
-
-
-        backPanel.revalidate();
-        backPanel.repaint();
-    }
-
-    // 타이머를 사용하여 레벨 값을 주기적으로 업데이트
-    private void statusUpdateTimer() {
-        int delay = 1000; // 1초마다 업데이트
-        new Timer(delay, e -> statusUpdate()).start();
-    }
-
     private void setStatusBar(){
 
         StatusBarUI hud = new StatusBarUI(character);
@@ -369,21 +305,4 @@ public class DamaUI {
         backPanel.add(hud,gbc);
     }
 
-    private void setFunctionButton(Character character,JPanel panel,Animal animal){
-        FunctionButtonUI functionButton = new FunctionButtonUI();
-        functionButton.setFunctionButton(character,panel,animal);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1;
-        gbc.anchor = GridBagConstraints.SOUTH;
-        gbc.insets = new Insets(0, 0, 70, 0);
-        backPanel.add(functionButton,gbc);
-
-    }
-
-
 }
-
-
-

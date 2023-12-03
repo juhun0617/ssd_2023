@@ -104,6 +104,8 @@ public class CharacterService {
         character.setMax_score_4(0);
         character.setBackId(0L);
         character.setXp(0);
+        character.setTableId(-1L);
+        character.setChairId(-1L);
 
         try {
             entityManager.getTransaction().begin();

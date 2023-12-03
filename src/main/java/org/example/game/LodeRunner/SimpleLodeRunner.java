@@ -22,36 +22,29 @@ import java.util.*;
 
 public class SimpleLodeRunner extends JFrame {
 
-    private static JFrame frame;
+    private Clip clip;
 
-    public void startGame(Character character){
-        SwingUtilities.invokeLater(() -> {
-            frame = new SimpleLodeRunner(character);
-            frame.setTitle("Simple Lode Runner Game");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setResizable(false);
-            frame.pack();
-            frame.setVisible(true);
-            frame.setLocationRelativeTo(null);
-        });
-    }
+
 
     public SimpleLodeRunner(Character character) {
-        add(new GamePanel(character));
-        pack();
-
-
         playBackgroundMusic("src/resources/LoadRunner/sounds/lbg.wav");
-
-
+        add(new GamePanel(character,this,clip));
+        pack();
+        this.setTitle("Simple Lode Runner Game");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.pack();
+        this.setVisible(true);
+        this.setLocationRelativeTo(null);
     }
     public void playBackgroundMusic (String filePath) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(audioInputStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+
         } catch (Exception e) {
             System.out.println("Error with playing sound: " + e.getMessage());
         }
@@ -106,6 +99,7 @@ public class SimpleLodeRunner extends JFrame {
         public int money = 0;
         private int currentStage = 1;
         private static final int MAX_STAGES = 3;
+        private JFrame frame;
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
         CharacterService characterService = new CharacterService(emf);
@@ -121,12 +115,15 @@ public class SimpleLodeRunner extends JFrame {
 
 
         private Character character;
-        public GamePanel(Character character) {
+
+        private Clip clip1;
+        public GamePanel(Character character,JFrame frame,Clip clip) {
 
             // Inside the GamePanel constructor
             initializeGameOverComponents();
-
+            this.clip1 = clip;
             this.character = character;
+            this.frame = frame;
             enemies = new ArrayList<>();
             enemyAIs = new ArrayList<>();
             this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -169,6 +166,9 @@ public class SimpleLodeRunner extends JFrame {
 
             startGame();
         }
+        private void stopBackgroundMusic(){
+            clip1.stop();
+        }
         private void initializeGameOverComponents() {
             // Initialize the components
             restartButton = new JButton("Restart");
@@ -202,6 +202,7 @@ public class SimpleLodeRunner extends JFrame {
                     character.setMax_score_1(money);
                 }
                 characterService.saveCharacter(character);
+                stopBackgroundMusic();
                 frame.dispose();
             });
 
@@ -596,7 +597,7 @@ public class SimpleLodeRunner extends JFrame {
                     Point enemyPosition = enemyAI.getEnemyPosition();
                     if (player.distance(enemyPosition) < UNIT_SIZE) {
                         gameOver = true;
-                        ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("resources/sounds/over.wav");
+                        ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("src/resources/LoadRunner/sounds/over.wav");
                         timer.stop();
                         break;
                     }

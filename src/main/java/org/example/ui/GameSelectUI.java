@@ -109,7 +109,6 @@ public class GameSelectUI {
                 case "로드러너" :
                     button.addActionListener(e -> {
                         SimpleLodeRunner simpleLodeRunner = new SimpleLodeRunner(character);
-                        simpleLodeRunner.startGame(character);
 
                     });
                     break;

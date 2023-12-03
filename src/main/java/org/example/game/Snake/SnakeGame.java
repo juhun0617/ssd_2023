@@ -18,21 +18,22 @@ import java.util.Random;
 
 public class SnakeGame extends JFrame {
 
+    private Clip clip;
     public SnakeGame(Character character) {
-        this.add(new GamePanel(character,this));
+        playBackgroundMusic("src/resources/Snake/sounds/sbg.wav");
+        this.add(new GamePanel(character,clip,this));
         this.setTitle("Snake Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.pack();
         this.setVisible(true);
         this.setLocationRelativeTo(null);
-        playBackgroundMusic("src/resources/Snake/sounds/sbg.wav");
     }
 
     private void playBackgroundMusic(String filePath) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
             clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -40,6 +41,7 @@ public class SnakeGame extends JFrame {
             e.printStackTrace();
         }
     }
+
 
 
 
@@ -56,7 +58,7 @@ class GamePanel extends JPanel implements ActionListener {
 
 
     public int money = 0;
-
+    private Clip clip1;
     static final int SCREEN_WIDTH = 800;
     static final int SCREEN_HEIGHT = 800;
     static final int UNIT_SIZE = 25;
@@ -78,9 +80,10 @@ class GamePanel extends JPanel implements ActionListener {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
     CharacterService characterService = new CharacterService(emf);
 
-    GamePanel(Character character,JFrame frame) {
+    GamePanel(Character character,Clip clip,JFrame frame) {
         this.character = character;
         this.frame = frame;
+        this.clip1 = clip;
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
@@ -122,6 +125,7 @@ class GamePanel extends JPanel implements ActionListener {
                 character.setMax_score_1(money);
             }
             characterService.saveCharacter(character);
+            stopBackgroundMusic();
             frame.dispose();
         });
 
@@ -129,6 +133,9 @@ class GamePanel extends JPanel implements ActionListener {
         restartButton.setVisible(false);
         exitButton.setVisible(false);
         scoreLabel.setVisible(false);
+    }
+    private void stopBackgroundMusic(){
+        clip1.stop();
     }
 
     private void restartGame() {
@@ -279,7 +286,7 @@ class GamePanel extends JPanel implements ActionListener {
                 DELAY -= 5;
                 timer.setDelay(DELAY);
             }
-            playSoundEffect("/src/resources/Snake/sounds/sitem.wav");
+            playSoundEffect("src/resources/Snake/sounds/sitem.wav");
         }
     }
 
