@@ -7,6 +7,7 @@ import org.example.etc.ShadowButton;
 import org.example.game.LodeRunner.SimpleLodeRunner;
 import org.example.game.Mulgoging.Mulgoging;
 import org.example.game.Pacman.Pacman;
+import org.example.game.Snake.SnakeGame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,7 +110,15 @@ public class GameSelectUI {
                     button.addActionListener(e -> {
                         SimpleLodeRunner simpleLodeRunner = new SimpleLodeRunner(character);
                         simpleLodeRunner.startGame(character);
+
                     });
+                    break;
+                case "스네이크" :
+                    button.addActionListener(e -> {
+                        SnakeGame snakeGame = new SnakeGame(character);
+
+                    });
+                    break;
             }
             gamePanel.add(button);
         }
