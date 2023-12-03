@@ -61,6 +61,29 @@ public class CharacterService {
         }
     }
 
+    public void deleteCharacter(Character character) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+
+
+            if (!entityManager.contains(character)) {
+                character = entityManager.merge(character);
+            }
+
+
+            entityManager.remove(character);
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+
 
 
 
@@ -80,6 +103,7 @@ public class CharacterService {
         character.setMax_score_3(0);
         character.setMax_score_4(0);
         character.setBackId(0L);
+        character.setXp(0);
 
         try {
             entityManager.getTransaction().begin();

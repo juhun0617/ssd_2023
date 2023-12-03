@@ -4,6 +4,7 @@ import org.example.Entity.Character;
 import org.example.draw.BackGroundPanel;
 import org.example.etc.CustomFont;
 import org.example.etc.ShadowButton;
+import org.example.game.LodeRunner.SimpleLodeRunner;
 import org.example.game.Mulgoging.Mulgoging;
 import org.example.game.Pacman.Pacman;
 
@@ -104,6 +105,11 @@ public class GameSelectUI {
                         pacman.setVisible(true);
                     });
                     break;
+                case "로드러너" :
+                    button.addActionListener(e -> {
+                        SimpleLodeRunner simpleLodeRunner = new SimpleLodeRunner(character);
+                        simpleLodeRunner.startGame(character);
+                    });
             }
             gamePanel.add(button);
         }

@@ -628,6 +628,7 @@ public class Board extends JPanel implements ActionListener {
                     if (character.getMax_score_4() < score){
                         character.setMax_score_4(score);
                     }
+                    character.setXp(character.getXp()+10);
                     characterService.saveCharacter(character);
                     frame.dispose();
                 }

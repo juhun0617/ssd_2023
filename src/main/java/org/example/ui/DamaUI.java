@@ -68,13 +68,41 @@ public class DamaUI {
         setFunctionButton(character,panel,animal);
         setTabel();
         setChair();
-
+        updateXp();
+        updateHealth();
 
 
 
         panel.revalidate();
         panel.repaint();
 
+    }
+    private void updateHealth(){
+        if (character.getHealth() <= 0){
+            ImageIcon temp = new ImageIcon(getClass().getResource(animal.getPATH()));
+            Image image = temp.getImage();
+            Image resizedImage = image.getScaledInstance(50,50,Image.SCALE_SMOOTH);
+            ImageIcon imageIcon = new ImageIcon(resizedImage);
+            JLabel label = new JLabel("캐릭터가 사망하였습니다.");
+            label.setFont(CustomFont.loadCustomFont(18f));
+            JOptionPane.showMessageDialog(
+                    backPanel,
+                    label,
+                    character.getName()+ " 사망",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    imageIcon
+            );
+            characterService.deleteCharacter(character);
+            System.exit(0);
+
+        }
+    }
+    private void updateXp(){
+        if (character.getXp() >= 50){
+            character.setXp(0);
+            character.setLevel(character.getLevel()+1);
+            characterService.saveCharacter(character);
+        }
     }
 
     private void initializeBackPanel(){
