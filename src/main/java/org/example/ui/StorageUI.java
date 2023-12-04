@@ -16,7 +16,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class StorageUI {
@@ -24,11 +27,11 @@ public class StorageUI {
     private static String BACKGROUND_PATH = "/Image/shopBack.png";
 
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager em = emf.createEntityManager();
-    DecoService decoService = new DecoService(em);
-    CharacterService characterService = new CharacterService(emf);
-    Character_DecoService characterDecoService = new Character_DecoService(emf);
+    EntityManagerFactory emf;
+    EntityManager em;
+    DecoService decoService;
+    CharacterService characterService;
+    Character_DecoService characterDecoService;
     private JPanel panel;
     private BackGroundPanel backPanel;
     private Character character;
@@ -42,6 +45,20 @@ public class StorageUI {
 
     private final storageUICallback callback;
     public StorageUI(JPanel panel, Character character, storageUICallback callback){
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        em = emf.createEntityManager();
+
+        characterService = new CharacterService(emf);
+        characterDecoService = new Character_DecoService(emf);
+        decoService = new DecoService(em);
+
         this.panel = panel;
         this.character = character;
         this.callback = callback;
@@ -64,7 +81,7 @@ public class StorageUI {
     }
 
     private void backProgress(){
-        ShadowButton backButton = new ShadowButton("Back", "/Image/Button/shopBAckButton.png");
+        ShadowButton backButton = new ShadowButton("Back", "/Image/Button/ShopBackButton.png");
         Font customFont = CustomFont.loadCustomFont(30f);
         backButton.setFont(customFont);
         backButton.setForeground(Color.white);

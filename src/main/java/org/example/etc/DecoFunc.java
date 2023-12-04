@@ -3,23 +3,38 @@ package org.example.etc;
 import org.example.Entity.Character;
 import org.example.Entity.Deco;
 import org.example.service.CharacterService;
+import org.example.service.Character_DecoService;
 import org.example.service.DecoService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class DecoFunc {
     private Deco deco;
     private Character character;
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager em = emf.createEntityManager();
-    CharacterService characterService = new CharacterService(emf);
-    DecoService decoService = new DecoService(em);
+    EntityManagerFactory emf;
+    EntityManager em;
+    CharacterService characterService;
+
 
     public DecoFunc(Character character,Deco deco){
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        em = emf.createEntityManager();
+
+        characterService = new CharacterService(emf);
         this.character = character;
         this.deco = deco;
 

@@ -17,6 +17,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class SocialDamaUI {
@@ -40,12 +43,22 @@ public class SocialDamaUI {
     private final SocialDamaUICallback callback;
 
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager em = emf.createEntityManager();
-    CharacterService characterService = new CharacterService(emf);
-    DecoService decoService = new DecoService(em);
+    EntityManagerFactory emf;
+    EntityManager em;
+    DecoService decoService;
 
     public SocialDamaUI(JPanel panel,Character character,SocialDamaUICallback callback){
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        em = emf.createEntityManager();
+        decoService = new DecoService(em);
+
         this.panel = panel;
         this.character = character;
         this.callback = callback;
@@ -61,10 +74,25 @@ public class SocialDamaUI {
         setChair();
         setSocial();
         setBackButton();
+        setNameLabel();
 
         panel.revalidate();
         panel.repaint();
 
+
+    }
+    private void setNameLabel(){
+        JLabel label = new JLabel(character.getName());
+        label.setFont(CustomFont.loadCustomFont(20f));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.insets = new Insets(300, 0, 0, 0);
+        backPanel.add(label, gbc);
 
     }
 

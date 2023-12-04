@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.Animal.Animal;
 import org.example.Entity.Character;
+import org.example.etc.BackgroundMusic;
 import org.example.service.CharacterService;
 import org.hibernate.type.CharacterType;
 
@@ -10,6 +11,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FunctionButtonUI extends JPanel {
     JPanel panel;
@@ -19,15 +23,24 @@ public class FunctionButtonUI extends JPanel {
     JButton doorButton;
     JButton gameButton;
     JButton shopButton;
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager em = emf.createEntityManager();
-    CharacterService characterService = new CharacterService(emf);
+    EntityManagerFactory emf;
+    EntityManager em;
+    CharacterService characterService;
 
     public FunctionButtonUI(){
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
 
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        em = emf.createEntityManager();
+        characterService = new CharacterService(emf);
     }
-
-    public void setFunctionButton(Character character, JPanel panel, Animal animal){
+    private BackgroundMusic backgroundMusic;
+    public void setFunctionButton(Character character, JPanel panel, Animal animal, BackgroundMusic bgMusic){
+        this.backgroundMusic = bgMusic;
         this.panel = panel;
         this.animal = animal;
         this.setLayout(new GridBagLayout());
@@ -75,6 +88,7 @@ public class FunctionButtonUI extends JPanel {
             animal.stopAllTimers();
             characterService.saveCharacter(character);
             storageUI.updateUI();
+            backgroundMusic.stopMusic();
         });
 
 
@@ -111,6 +125,7 @@ public class FunctionButtonUI extends JPanel {
             animal.stopAllTimers();
             characterService.saveCharacter(character);
             gameSelectUI.updateUI();
+            backgroundMusic.stopMusic();
         });
     }
 
@@ -131,7 +146,7 @@ public class FunctionButtonUI extends JPanel {
             animal.stopAllTimers();
             characterService.saveCharacter(character);
             shopUI.updateUI();
-
+            backgroundMusic.stopMusic();
         });
     }
 

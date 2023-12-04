@@ -3,6 +3,7 @@ package org.example.etc;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Objects;
 
 public class ShadowButton extends JButton {
     private static final int SHADOW_SIZE = 5;
@@ -50,7 +51,7 @@ public class ShadowButton extends JButton {
 
     private void loadImageIcon(String path) {
         if (path != null && !path.trim().isEmpty()) {
-            buttonIcon = new ImageIcon(getClass().getResource(path));
+            buttonIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
         } else {
             buttonIcon = null;
         }

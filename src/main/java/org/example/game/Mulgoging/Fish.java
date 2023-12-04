@@ -3,6 +3,7 @@ package org.example.game.Mulgoging;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.Objects;
 
 public class Fish {
 
@@ -35,7 +36,7 @@ public class Fish {
         this.y = y;
         this.speed = speed;
         this.angle = Math.random() * 2 * Math.PI;
-        this.image = new ImageIcon(imagePath).getImage();
+        this.image = new ImageIcon(Objects.requireNonNull(getClass().getResource(imagePath))).getImage();
         this.panelWidth = panelWidth;
         this.panelHeight = panelHeight;
     }

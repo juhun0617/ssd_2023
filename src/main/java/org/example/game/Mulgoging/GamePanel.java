@@ -1,11 +1,14 @@
 
 package org.example.game.Mulgoging;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class GamePanel extends JPanel {
@@ -17,7 +20,7 @@ public class GamePanel extends JPanel {
     private EndPanel endPanel;
     private SoundManager hitSoundManager;
     //타이머
-    private int remainingTime = 90; // 타이머 시간 (초 단위)
+    private int remainingTime = 30; // 타이머 시간 (초 단위)
     private Timer gameTimer;
     //화살
     private Arrow arrow; // 화살 객체
@@ -37,7 +40,7 @@ public class GamePanel extends JPanel {
     //게임
     private int score; // 점수
     private boolean gameRunning; // 게임 진행 상태
-
+    private Clip clip1;
     //이미지
     private Image backgroundImage;
     private Image bunnyImage;
@@ -65,8 +68,24 @@ public class GamePanel extends JPanel {
         return String.format("%d:%02d", minutes, seconds);
     }
 
+    private void playBackgroundMusic(String filePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(filePath)));
+            clip1 = AudioSystem.getClip();
+            clip1 = AudioSystem.getClip();
+            clip1.open(audioInputStream);
+            clip1.start();
+            clip1.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+    private void stopBackgroundMusic(){
+        clip1.stop();
+    }
     // 생성자
     public GamePanel(JFrame superFrame, CardLayout cl, Mulgoging mainClass, String characterName) {
+        playBackgroundMusic("/Mulgoging/Sound/Mulgoging.wav");
         this.superFrame = superFrame;
         this.cl = cl;
         this.mainClass = mainClass;
@@ -74,7 +93,7 @@ public class GamePanel extends JPanel {
         arrowAngle = 0;
         new Timer(40, e -> updateGame()).start();
 
-        arrow = new Arrow(210,500, "src/Image/arrow_1.png");
+        arrow = new Arrow(210,500, "/Mulgoging/Image/arrow_1.png");
 
         sliderTimer = new Timer(5, new ActionListener() {
             @Override
@@ -96,7 +115,7 @@ public class GamePanel extends JPanel {
         });
         fishes = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            fishes.add(new Fish(Math.random() * getWidth(), Math.random() * getHeight(), 1, "C:Users/iseoy/Mulgoging/src/Image/fish.png", getWidth(), getHeight()));
+            fishes.add(new Fish(Math.random() * getWidth(), Math.random() * getHeight(), 1, "/Mulgoging/Image/fish.png", getWidth(), getHeight()));
         }
 
         setFocusable(true);
@@ -110,17 +129,17 @@ public class GamePanel extends JPanel {
     }
 
     private void loadImages() {
-        ImageIcon backgroundIcon = new ImageIcon("src/Image/물고깅배경.jpg");
+        ImageIcon backgroundIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Mulgoging/Image/물고깅배경.jpg")));
         backgroundImage = backgroundIcon.getImage();
 
 
-        ImageIcon powerBarIcon = new ImageIcon("src/Image/powerbar.png"); // 힘 조절 바 이미지 경로
+        ImageIcon powerBarIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Mulgoging/Image/powerbar.png"))); // 힘 조절 바 이미지 경로
         powerBarImage = powerBarIcon.getImage();
 
-        ImageIcon directionIcon = new ImageIcon("src/Image/directionbar.png"); // 힘 조절 바 이미지 경로
+        ImageIcon directionIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Mulgoging/Image/directionbar.png"))); // 힘 조절 바 이미지 경로
         directionImage = directionIcon.getImage();
 
-        ImageIcon sliderIcon = new ImageIcon("src/Image/barstick.png"); // 힘 조절 바 이미지 경로
+        ImageIcon sliderIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Mulgoging/Image/barstick.png"))); // 힘 조절 바 이미지 경로
         sliderImage = sliderIcon.getImage();
 
 
@@ -137,7 +156,7 @@ public class GamePanel extends JPanel {
         gameRunning = false;
         // 게임 점수 및 기타 변수 초기화
 
-        remainingTime = 90; // 예를 들어, 타이머를 10초로 다시 설정
+        remainingTime = 30; // 예를 들어, 타이머를 10초로 다시 설정
 
         // 기존 게임 타이머가 실행 중이라면 중지
         if (gameTimer != null) {
@@ -191,14 +210,14 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 5; i++) {
             double x = Math.random() * getWidth();
             double y = Math.random() * getHeight();
-            String imagePath = "src/Image/fish.png"; // 올바른 이미지 경로
+            String imagePath = "/Mulgoging/Image/fish.png"; // 올바른 이미지 경로
             fishes.add(new Fish(x, y, 1, imagePath, getWidth(), getHeight()));
         }
     }
 
     // 화살 상태를 초기화하는 메서드
     private void resetArrow() {
-        arrow = new Arrow(210, 500, "src/Image/arrow_1.png");
+        arrow = new Arrow(210, 500, "/Mulgoging/Image/arrow_1.png");
         // 화살 관련 기타 설정
     }
 
@@ -208,6 +227,7 @@ public class GamePanel extends JPanel {
     private void gameOver() {
         gameRunning = false;
         mainClass.endGame(score);
+        stopBackgroundMusic();
     }
     // 리스너 초기화
     private void initListeners() {
@@ -293,8 +313,8 @@ public class GamePanel extends JPanel {
     private void updateArrowAngle() {
         if (!settingArrowDirection) return;
 
-        final double minAngle = -80; // 슬라이더가 최소일 때의 각도
-        final double maxAngle = 0; // 슬라이더가 최대일 때의 각도
+        final double minAngle = 0; // 슬라이더가 최소일 때의 각도
+        final double maxAngle = -80; // 슬라이더가 최대일 때의 각도
 
         double angle = minAngle + (double) arrowDirectionProgress / 100 * (maxAngle - minAngle);
 
@@ -361,7 +381,7 @@ public class GamePanel extends JPanel {
         }
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 21));
-        g.drawString(formatTime(remainingTime), 147, 146); // 타이머위치
+        g.drawString(formatTime(remainingTime), 147, 164); // 타이머위치
 
     }
 
@@ -441,7 +461,7 @@ public class GamePanel extends JPanel {
     private void addNewFish() {
         double x = Math.random() * getWidth();
         double y = Math.random() * getHeight();
-        String imagePath = "src/Image/fish.png"; // 올바른 이미지 경로
+        String imagePath = "/Mulgoging/Image/fish.png"; // 올바른 이미지 경로
         fishes.add(new Fish(x, y, 1, imagePath, getWidth(), getHeight()));
     }
 
@@ -450,7 +470,7 @@ public class GamePanel extends JPanel {
         // 점수 표시
         g2d.setColor(Color.white);
         g2d.setFont(new Font("Arial", Font.BOLD, 18));
-        g2d.drawString(" " + score, 160, 70);
+        g2d.drawString(" " + score, 160, 78);
 
         // 추가적인 게임 요소 그리기 (예: 화살, 물고기 등)
     }

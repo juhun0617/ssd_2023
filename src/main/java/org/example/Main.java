@@ -17,7 +17,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+
 
 public class Main extends JFrame {
 
@@ -33,19 +41,54 @@ public class Main extends JFrame {
 
     private JPanel mainPanel;
 
+    private BackgroundMusic bgMusic;
+
     public Main() {
         customFont = CustomFont.loadCustomFont(24f);
         initializeFrame();
         initializeMainPanel();
         attachMouseClickListener();
-        //startBackgroundMusic();
+        startBackgroundMusic();
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        System.out.println(targetPath);
+        extractDatabase("/SQLiteDB.db",targetPath);
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
+
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
         EntityManager em = emf.createEntityManager();
 
         characterService = new CharacterService(emf);
 
     }
+
+    public static void extractDatabase(String resourcePath, String targetPath) {
+        File targetFile = new File(targetPath);
+
+
+        // 대상 파일이 이미 존재하지 않는 경우에만 추출
+        if (!targetFile.exists()) {
+            System.out.println(resourcePath);
+            try (InputStream is = Main.class.getResourceAsStream(resourcePath);
+                 OutputStream os = new FileOutputStream(targetFile)) {
+
+                // 리소스 스트림에서 데이터를 읽어서 파일에 쓴다
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); // 오류 처리
+            }
+        }
+    }
+
+
     private void backButtonProgress(){
         mainPanel.removeAll();
         initializeMainPanel();
@@ -56,9 +99,13 @@ public class Main extends JFrame {
 
     private void startBackgroundMusic() {
         // Assuming BackgroundMusic is a runnable that plays music
-        BackgroundMusic bgMusic = new BackgroundMusic();
+        bgMusic = new BackgroundMusic();
         bgMusic.startMusic("/Music.wav");
         new Thread(String.valueOf(bgMusic)).start();
+    }
+
+    private void stopBackgroundMusic(){
+        bgMusic.stopMusic();
     }
 
 
@@ -140,6 +187,7 @@ public class Main extends JFrame {
 
     private void moveToDamaUI(String name) {
         SwingUtilities.invokeLater(() -> {
+            stopBackgroundMusic();
             DamaUI damaUI = new DamaUI(mainPanel, name);
             damaUI.updateUi();
         });

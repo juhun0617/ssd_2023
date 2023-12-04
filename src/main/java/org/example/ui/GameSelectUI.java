@@ -51,7 +51,7 @@ public class GameSelectUI {
 
 
     private void backProgress(){
-        ShadowButton backButton = new ShadowButton("Back", "/Image/Button/shopBAckButton.png");
+        ShadowButton backButton = new ShadowButton("Back", "/Image/Button/ShopBackButton.png");
         Font customFont = CustomFont.loadCustomFont(30f);
         backButton.setFont(customFont);
         backButton.setForeground(Color.white);

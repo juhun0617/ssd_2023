@@ -6,6 +6,7 @@ package org.example.game.Mulgoging;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.Objects;
 
 public class Arrow {
     private double arrowPosX;
@@ -25,7 +26,7 @@ public class Arrow {
         this.arrowPosX = posX;
         this.arrowPosY = posY;
 
-        this.arrowImage = new ImageIcon(imagePath).getImage(); // 이미지 경로 설정
+        this.arrowImage = new ImageIcon(Objects.requireNonNull(getClass().getResource(imagePath))).getImage(); // 이미지 경로 설정
 
 
 

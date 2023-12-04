@@ -8,6 +8,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Mulgoging {
 
@@ -17,9 +20,9 @@ public class Mulgoging {
     private IntroPanel introPanel;
     private EndPanel endPanel;
     private Character character;
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
+    EntityManagerFactory emf;
 
-    CharacterService characterService = new CharacterService(emf);
+    CharacterService characterService;
 
 
     public Mulgoging(Character character) {
@@ -28,6 +31,15 @@ public class Mulgoging {
     }
 
     private void initialize(String characterName) {
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        characterService = new CharacterService(emf);
         frame = new JFrame();
         frame.setBounds(100, 100, 800, 800);
         frame.setLocationRelativeTo(null);

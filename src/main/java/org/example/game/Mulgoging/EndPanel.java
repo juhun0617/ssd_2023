@@ -5,6 +5,7 @@ import org.example.ui.DamaUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class EndPanel extends JPanel {
 
@@ -18,7 +19,7 @@ public class EndPanel extends JPanel {
         this.frame = frame;
         setLayout(null); // 레이아웃 매니저를 비활성화합니다.
 
-        loadImage("src/Image/점수창.png");
+        loadImage("/Mulgoging/Image/점수창.png");
         setupScoreLabel(score);
         addButtons();
         setOpaque(false);
@@ -28,31 +29,31 @@ public class EndPanel extends JPanel {
         scoreLabel = new JLabel(String.valueOf(score));
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 28));
         scoreLabel.setHorizontalAlignment(JLabel.CENTER);
-        scoreLabel.setBounds(410, 298, 80, 30); // 점수 레이블의 위치와 크기를 지정합니다.
+        scoreLabel.setBounds(410, 330, 80, 30); // 점수 레이블의 위치와 크기를 지정합니다.
         add(scoreLabel);
     }
 
     private void loadImage(String imagePath) {
-        ImageIcon icon = new ImageIcon(imagePath);
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(imagePath)));
         backgroundImage = icon.getImage();
     }
 
     private void addButtons() {
-        JButton restartButton = createImageButton("src/Image/restart.png", e -> mainClass.restartGame());
-        JButton exitButton = createImageButton("src/Image/exit.png", e ->{
+        JButton restartButton = createImageButton("/Mulgoging/Image/restart.png", e -> mainClass.restartGame());
+        JButton exitButton = createImageButton("/Mulgoging/Image/exit.png", e ->{
             frame.dispose();
         });
 
         // 버튼의 위치와 크기를 설정합니다.
-        restartButton.setBounds(210, 330, 200, 100); // 재시작 버튼의 위치와 크기
-        exitButton.setBounds(396, 330, 200, 100); // 종료 버튼의 위치와 크기
+        restartButton.setBounds(210, 348, 200, 100); // 재시작 버튼의 위치와 크기
+        exitButton.setBounds(396, 348, 200, 100); // 종료 버튼의 위치와 크기
 
         add(restartButton);
         add(exitButton);
     }
 
     private JButton createImageButton(String imagePath, ActionListener actionListener) {
-        ImageIcon icon = new ImageIcon(imagePath);
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(imagePath)));
         JButton button = new JButton(icon);
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setContentAreaFilled(false);

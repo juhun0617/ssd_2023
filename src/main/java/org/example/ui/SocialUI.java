@@ -14,16 +14,18 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SocialUI {
 
     private static String BACKGROUND_PATH = "/Image/shopBack.png";
 
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager em = emf.createEntityManager();
-    DecoService decoService = new DecoService(em);
-    CharacterService characterService = new CharacterService(emf);
+    EntityManagerFactory emf;
+    EntityManager em;
+
     Character_DecoService characterDecoService = new Character_DecoService(emf);
     private JPanel panel;
     private BackGroundPanel backPanel;
@@ -32,6 +34,16 @@ public class SocialUI {
 
     private final socialUICallback callback;
     public SocialUI(JPanel panel,Character character,socialUICallback callback){
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        em = emf.createEntityManager();
+
         this.panel = panel;
         this.character = character;
         this.callback = callback;
@@ -56,7 +68,7 @@ public class SocialUI {
     }
 
     private void backProgress(){
-        ShadowButton backButton = new ShadowButton("Back", "/Image/Button/shopBAckButton.png");
+        ShadowButton backButton = new ShadowButton("Back", "/Image/Button/ShopBackButton.png");
         Font customFont = CustomFont.loadCustomFont(30f);
         backButton.setFont(customFont);
         backButton.setForeground(Color.white);

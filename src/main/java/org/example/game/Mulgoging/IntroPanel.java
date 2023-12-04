@@ -26,7 +26,7 @@ public class IntroPanel extends JPanel {
     }
 
     private void loadImage() {
-        ImageIcon icon = new ImageIcon("src/Image/게임규칙.png");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/Mulgoging/Image/게임규칙.png"));
         backgroundImage = icon.getImage();
     }
 

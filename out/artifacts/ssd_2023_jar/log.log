@@ -1,0 +1,693 @@
+/Users/juhun_park/sqlite.db
+Hibernate: 
+    select
+        count(character0_.id) as col_0_0_ 
+    from
+        Character character0_
+Hibernate: 
+    select
+        character0_.name as col_0_0_ 
+    from
+        Character character0_
+Hibernate: 
+    select
+        character0_.id as id1_0_,
+        character0_.animal as animal2_0_,
+        character0_.backId as backid3_0_,
+        character0_.chairId as chairid4_0_,
+        character0_.fun as fun5_0_,
+        character0_.health as health6_0_,
+        character0_.hungry as hungry7_0_,
+        character0_.level as level8_0_,
+        character0_.max_score_1 as max_scor9_0_,
+        character0_.max_score_2 as max_sco10_0_,
+        character0_.max_score_3 as max_sco11_0_,
+        character0_.max_score_4 as max_sco12_0_,
+        character0_.money as money13_0_,
+        character0_.name as name14_0_,
+        character0_.tableId as tableid15_0_,
+        character0_.thirst as thirst16_0_,
+        character0_.xp as xp17_0_ 
+    from
+        Character character0_ 
+    where
+        character0_.name=?
+Hibernate: 
+    select
+        deco0_.id as id1_2_,
+        deco0_.decoClass as decoclas2_2_,
+        deco0_.decoImagePath as decoimag3_2_,
+        deco0_.decoName as deconame4_2_,
+        deco0_.decoPrice as decopric5_2_ 
+    from
+        Deco deco0_ 
+    where
+        deco0_.id=?
+duck-더덕
+Fun timer task executed at: Mon Dec 04 13:57:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 13:57:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 13:57:46 KST 2023
+Health timer task executed at: Mon Dec 04 13:57:46 KST 2023
+Hibernate: 
+    select
+        deco0_.id as id1_2_,
+        deco0_.decoClass as decoclas2_2_,
+        deco0_.decoImagePath as decoimag3_2_,
+        deco0_.decoName as deconame4_2_,
+        deco0_.decoPrice as decopric5_2_ 
+    from
+        Deco deco0_ 
+    where
+        deco0_.id=?
+--------------------------------------------
+10
+Hibernate: 
+    select
+        deco0_.id as id1_2_,
+        deco0_.decoClass as decoclas2_2_,
+        deco0_.decoImagePath as decoimag3_2_,
+        deco0_.decoName as deconame4_2_,
+        deco0_.decoPrice as decopric5_2_ 
+    from
+        Deco deco0_ 
+    where
+        deco0_.id=?
+Hunger timer task executed at: Mon Dec 04 13:58:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 13:58:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 13:58:46 KST 2023
+Fun timer task executed at: Mon Dec 04 13:58:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 13:59:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 13:59:16 KST 2023
+Health timer task executed at: Mon Dec 04 13:59:16 KST 2023
+Fun timer task executed at: Mon Dec 04 13:59:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 13:59:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:00:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:00:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:00:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:00:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:00:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:00:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:01:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:01:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:01:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:01:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:02:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:02:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:02:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:02:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:02:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:03:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:03:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:03:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:03:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:03:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:03:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:04:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:04:31 KST 2023
+Fun timer task executed at: Mon Dec 04 14:04:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:04:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:05:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:05:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:05:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:05:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:05:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:06:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:06:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:06:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:06:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:06:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:06:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:07:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:07:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:07:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:07:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:08:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:08:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:08:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:08:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:08:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:09:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:09:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:09:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:09:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:09:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:09:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:10:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:10:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:10:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:10:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:11:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:11:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:11:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:11:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:11:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:12:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:12:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:12:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:12:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:12:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:12:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:13:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:13:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:13:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:13:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:14:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:14:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:14:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:14:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:14:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:15:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:15:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:15:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:15:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:15:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:15:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:16:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:16:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:16:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:16:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:17:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:17:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:17:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:17:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:17:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:18:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:18:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:18:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:18:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:18:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:18:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:19:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:19:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:19:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:19:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:20:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:20:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:20:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:20:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:20:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:21:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:21:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:21:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:21:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:21:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:21:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:22:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:22:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:22:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:22:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:23:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:23:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:23:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:23:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:23:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:24:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:24:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:24:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:24:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:24:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:24:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:25:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:25:31 KST 2023
+Fun timer task executed at: Mon Dec 04 14:25:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:25:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:26:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:26:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:26:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:26:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:26:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:27:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:27:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:27:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:27:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:27:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:27:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:28:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:28:31 KST 2023
+Fun timer task executed at: Mon Dec 04 14:28:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:28:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:29:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:29:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:29:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:29:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:29:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:30:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:30:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:30:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:30:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:30:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:30:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:31:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:31:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:31:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:31:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:32:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:32:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:32:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:32:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:32:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:33:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:33:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:33:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:33:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:33:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:33:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:34:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:34:31 KST 2023
+Fun timer task executed at: Mon Dec 04 14:34:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:34:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:35:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:35:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:35:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:35:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:35:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:36:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:36:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:36:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:36:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:36:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:36:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:37:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:37:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:37:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:37:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:38:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:38:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:38:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:38:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:38:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:39:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:39:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:39:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:39:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:39:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:39:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:40:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:40:31 KST 2023
+Fun timer task executed at: Mon Dec 04 14:40:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:40:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:41:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:41:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:41:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:41:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:41:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:42:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:42:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:42:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:42:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:42:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:42:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:43:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:43:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:43:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:43:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:44:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:44:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:44:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:44:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:44:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:45:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:45:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:45:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:45:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:45:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:45:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:46:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:46:31 KST 2023
+Fun timer task executed at: Mon Dec 04 14:46:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:46:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:47:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:47:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:47:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:47:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:47:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:48:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:48:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:48:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:48:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:48:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:48:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:49:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:49:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:49:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:49:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:50:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:50:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:50:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:50:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:50:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:51:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:51:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:51:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:51:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:51:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:51:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:52:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:52:31 KST 2023
+Fun timer task executed at: Mon Dec 04 14:52:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:52:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:53:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:53:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:53:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:53:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:53:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:54:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:54:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:54:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:54:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:54:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:54:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:55:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:55:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:55:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:55:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:56:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:56:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:56:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:56:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:56:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:57:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:57:16 KST 2023
+Fun timer task executed at: Mon Dec 04 14:57:46 KST 2023
+Health timer task executed at: Mon Dec 04 14:57:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:57:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:57:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:58:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:58:31 KST 2023
+Fun timer task executed at: Mon Dec 04 14:58:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:58:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 14:59:16 KST 2023
+Health timer task executed at: Mon Dec 04 14:59:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:59:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 14:59:46 KST 2023
+Fun timer task executed at: Mon Dec 04 14:59:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:00:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:00:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:00:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:00:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:00:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:00:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:01:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:01:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:01:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:01:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:02:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:02:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:02:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:02:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:02:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:03:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:03:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:03:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:03:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:03:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:03:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:04:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:04:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:04:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:04:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:05:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:05:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:05:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:05:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:05:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:06:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:06:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:06:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:06:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:06:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:06:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:07:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:07:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:07:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:07:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:08:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:08:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:08:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:08:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:08:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:09:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:09:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:09:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:09:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:09:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:09:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:10:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:10:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:10:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:10:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:11:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:11:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:11:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:11:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:11:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:12:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:12:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:12:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:12:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:12:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:12:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:13:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:13:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:13:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:13:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:14:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:14:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:14:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:14:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:14:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:15:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:15:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:15:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:15:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:15:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:15:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:16:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:16:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:16:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:16:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:17:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:17:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:17:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:17:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:17:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:18:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:18:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:18:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:18:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:18:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:18:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:19:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:19:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:19:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:19:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:20:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:20:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:20:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:20:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:20:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:21:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:21:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:21:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:21:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:21:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:21:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:22:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:22:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:22:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:22:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:23:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:23:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:23:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:23:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:23:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:24:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:24:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:24:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:24:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:24:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:24:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:25:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:25:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:25:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:25:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:26:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:26:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:26:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:26:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:26:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:27:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:27:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:27:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:27:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:27:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:27:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:28:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:28:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:28:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:28:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:29:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:29:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:29:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:29:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:29:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:30:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:30:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:30:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:30:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:30:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:30:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:31:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:31:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:31:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:31:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:32:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:32:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:32:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:32:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:32:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:33:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:33:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:33:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:33:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:33:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:33:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:34:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:34:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:34:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:34:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:35:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:35:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:35:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:35:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:35:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:36:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:36:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:36:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:36:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:36:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:36:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:37:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:37:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:37:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:37:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:38:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:38:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:38:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:38:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:38:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:39:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:39:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:39:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:39:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:39:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:39:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:40:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:40:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:40:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:40:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:41:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:41:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:41:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:41:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:41:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:42:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:42:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:42:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:42:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:42:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:42:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:43:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:43:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:43:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:43:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:44:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:44:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:44:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:44:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:44:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:45:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:45:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:45:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:45:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:45:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:45:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:46:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:46:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:46:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:46:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:47:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:47:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:47:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:47:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:47:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:48:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:48:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:48:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:48:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:48:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:48:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:49:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:49:31 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:49:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:49:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:50:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:50:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:50:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:50:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:50:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:51:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:51:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:51:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:51:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:51:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:51:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:52:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:52:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:52:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:52:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:53:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:53:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:53:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:53:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:53:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:54:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:54:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:54:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:54:46 KST 2023
+Health timer task executed at: Mon Dec 04 15:54:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:54:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:55:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:55:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:55:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:55:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:56:16 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:56:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:56:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:56:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:56:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:57:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:57:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:57:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:57:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:57:46 KST 2023
+Fun timer task executed at: Mon Dec 04 15:57:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:58:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:58:31 KST 2023
+Fun timer task executed at: Mon Dec 04 15:58:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:58:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:59:16 KST 2023
+Health timer task executed at: Mon Dec 04 15:59:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 15:59:16 KST 2023
+Fun timer task executed at: Mon Dec 04 15:59:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 15:59:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 16:00:01 KST 2023
+Hunger timer task executed at: Mon Dec 04 16:00:16 KST 2023
+Health timer task executed at: Mon Dec 04 16:00:46 KST 2023
+Thirst timer task executed at: Mon Dec 04 16:00:46 KST 2023
+Fun timer task executed at: Mon Dec 04 16:00:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 16:00:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 16:01:16 KST 2023
+Thirst timer task executed at: Mon Dec 04 16:01:31 KST 2023
+Fun timer task executed at: Mon Dec 04 16:01:46 KST 2023
+Hunger timer task executed at: Mon Dec 04 16:01:46 KST 2023

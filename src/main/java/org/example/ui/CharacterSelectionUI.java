@@ -10,6 +10,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class CharacterSelectionUI {
@@ -22,8 +25,8 @@ public class CharacterSelectionUI {
     private static final String BACKGROUND_PATH = "/Image/CharacterSelectionBack.jpeg";
     private final JPanel panel;
     //data base
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    EntityManagerFactory emf;
+    EntityManager entityManager;
     private BackGroundPanel backGroundPanel;
     private Font customFont;
     private JLabel checkLabelCat;
@@ -38,6 +41,15 @@ public class CharacterSelectionUI {
 
 
     public CharacterSelectionUI(JPanel panel, CharacterCreationCallback callback) {
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        entityManager = emf.createEntityManager();
         this.panel = panel;
         this.callback = callback;
     }
@@ -154,7 +166,7 @@ public class CharacterSelectionUI {
             if (name != null && !name.trim()
                     .isEmpty()) {
                 System.out.println("입력받은 이름: " + name);
-                CharacterService characterService = new CharacterService(entityManagerFactory);
+                CharacterService characterService = new CharacterService(emf);
                 characterService.setCharacter(name, whatCharacter);
                 callback.onCharacterCreated(name);
 

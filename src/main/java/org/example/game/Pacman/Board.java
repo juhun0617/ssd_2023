@@ -5,13 +5,19 @@ import org.example.service.CharacterService;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.List;
 
 public class Board extends JPanel implements ActionListener {
@@ -82,15 +88,25 @@ public class Board extends JPanel implements ActionListener {
     private short[] screenData;
     private Timer timer;
     private JFrame frame;
-    private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("my-persistence-unit");
+    private EntityManagerFactory emf;
+    private Clip clip1;
 
     public Board(JFrame frame,Character character) {
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
         this.frame = frame;
         this.character = character;
-        characterService = new CharacterService(entityManagerFactory);
-        loadImages();
+        characterService = new CharacterService(emf);
+        loadImages(character.getAnimal());
         initVariables();
         initBoard();
+        playBackgroundMusic("/Pacman/Sound/pacman_opening.wav");
     }
 
     private void initBoard() {
@@ -229,9 +245,27 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    private void playBackgroundMusic(String filePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(filePath)));
+            clip1 = AudioSystem.getClip();
+            clip1 = AudioSystem.getClip();
+            clip1.open(audioInputStream);
+            clip1.start();
+            clip1.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+    private void stopBackgroundMusic(){
+        clip1.stop();
+    }
+
+
     private void death(Graphics2D g2d) {
 
         pacsLeft--;
+        playSoundEffect("/Pacman/Sound/pacman_death.wav");
 
         if (pacsLeft == 0) {
         inGame= false;
@@ -241,7 +275,6 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void moveGhosts(Graphics2D g2d) {
-
         short i;
         int pos;
         int count;
@@ -276,18 +309,8 @@ public class Board extends JPanel implements ActionListener {
                     count++;
                 }
 
-                if (count == 0) {
-
-                    if ((screenData[pos] & 15) == 15) {
-                        ghost_dx[i] = 0;
-                        ghost_dy[i] = 0;
-                    } else {
-                        ghost_dx[i] = -ghost_dx[i];
-                        ghost_dy[i] = -ghost_dy[i];
-                    }
-
-                } else {
-
+                // 새로운 랜덤 방향을 설정
+                if (count > 0) {
                     count = (int) (Math.random() * count);
 
                     if (count > 3) {
@@ -296,6 +319,30 @@ public class Board extends JPanel implements ActionListener {
 
                     ghost_dx[i] = dx[count];
                     ghost_dy[i] = dy[count];
+                }
+                // 유령이 팩맨을 향해 이동하도록 수정
+                if (inGame) {
+                    int ghostTileX = ghost_x[i] / BLOCK_SIZE;
+                    int ghostTileY = ghost_y[i] / BLOCK_SIZE;
+                    int pacmanTileX = pacman_x / BLOCK_SIZE;
+                    int pacmanTileY = pacman_y / BLOCK_SIZE;
+
+                    // 팩맨이 유령의 범위 내에 있으면 팩맨을 향해 이동
+                    if (Math.abs(ghostTileX - pacmanTileX) + Math.abs(ghostTileY - pacmanTileY) <= 5) {
+                        if (ghostTileX < pacmanTileX) {
+                            ghost_dx[i] = 1;
+                            ghost_dy[i] = 0;
+                        } else if (ghostTileX > pacmanTileX) {
+                            ghost_dx[i] = -1;
+                            ghost_dy[i] = 0;
+                        } else if (ghostTileY < pacmanTileY) {
+                            ghost_dx[i] = 0;
+                            ghost_dy[i] = 1;
+                        } else if (ghostTileY > pacmanTileY) {
+                            ghost_dx[i] = 0;
+                            ghost_dy[i] = -1;
+                        }
+                    }
                 }
 
             }
@@ -307,7 +354,6 @@ public class Board extends JPanel implements ActionListener {
             if (pacman_x > (ghost_x[i] - 12) && pacman_x < (ghost_x[i] + 12)
                     && pacman_y > (ghost_y[i] - 12) && pacman_y < (ghost_y[i] + 12)
                     && inGame) {
-
                 dying = true;
             }
         }
@@ -316,6 +362,18 @@ public class Board extends JPanel implements ActionListener {
     private void drawGhost(Graphics2D g2d, int x, int y) {
 
         g2d.drawImage(ghost, x, y, this);
+    }
+
+    private void playSoundEffect(String filePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(filePath)));
+            System.out.println(filePath);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     private void movePacman() {
@@ -337,6 +395,7 @@ public class Board extends JPanel implements ActionListener {
             if ((ch & 16) != 0) {
                 screenData[pos] = (short) (ch & 15);
                 score++;
+                playSoundEffect("/Pacman/Sound/pacman_eating.wav");
             }
 
             if (req_dx != 0 || req_dy != 0) {
@@ -367,7 +426,7 @@ public class Board extends JPanel implements ActionListener {
     private void drawPacman(Graphics2D g2d) {
 
         if (view_dx == -1) {
-            drawPacnanLeft(g2d);
+            drawPacmanLeft(g2d);
         } else if (view_dx == 1) {
             drawPacmanRight(g2d);
         } else if (view_dy == -1) {
@@ -390,7 +449,7 @@ public class Board extends JPanel implements ActionListener {
                 g2d.drawImage(pacman4up, pacman_x + 1, pacman_y + 1, this);
                 break;
             default:
-                g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
+                g2d.drawImage(pacman2up, pacman_x + 1, pacman_y + 1, this);
                 break;
         }
     }
@@ -408,12 +467,12 @@ public class Board extends JPanel implements ActionListener {
                 g2d.drawImage(pacman4down, pacman_x + 1, pacman_y + 1, this);
                 break;
             default:
-                g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
+                g2d.drawImage(pacman2down, pacman_x + 1, pacman_y + 1, this);
                 break;
         }
     }
 
-    private void drawPacnanLeft(Graphics2D g2d) {
+    private void drawPacmanLeft(Graphics2D g2d) {
 
         switch (pacmanAnimPos) {
             case 1:
@@ -426,7 +485,7 @@ public class Board extends JPanel implements ActionListener {
                 g2d.drawImage(pacman4left, pacman_x + 1, pacman_y + 1, this);
                 break;
             default:
-                g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
+                g2d.drawImage(pacman2left, pacman_x + 1, pacman_y + 1, this);
                 break;
         }
     }
@@ -444,7 +503,7 @@ public class Board extends JPanel implements ActionListener {
                 g2d.drawImage(pacman4right, pacman_x + 1, pacman_y + 1, this);
                 break;
             default:
-                g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
+                g2d.drawImage(pacman2right, pacman_x + 1, pacman_y + 1, this);
                 break;
         }
     }
@@ -540,22 +599,22 @@ public class Board extends JPanel implements ActionListener {
         dying = false;
     }
 
-    private void loadImages() {
+    private void loadImages(String name) {
 
-        ghost = new ImageIcon("src/resources/Pacman/images/tiger.png").getImage();
-        pacman1 = new ImageIcon("src/resources/Pacman/images/pacman.png").getImage();
-        pacman2up = new ImageIcon("src/resources/Pacman/images/up1.png").getImage();
-        pacman3up = new ImageIcon("src/resources/Pacman/images/up2.png").getImage();
-        pacman4up = new ImageIcon("src/resources/Pacman/images/up3.png").getImage();
-        pacman2down = new ImageIcon("src/resources/Pacman/images/down1.png").getImage();
-        pacman3down = new ImageIcon("src/resources/Pacman/images/down2.png").getImage();
-        pacman4down = new ImageIcon("src/resources/Pacman/images/down3.png").getImage();
-        pacman2left = new ImageIcon("src/resources/Pacman/images/left1.png").getImage();
-        pacman3left = new ImageIcon("src/resources/Pacman/images/left2.png").getImage();
-        pacman4left = new ImageIcon("src/resources/Pacman/images/left3.png").getImage();
-        pacman2right = new ImageIcon("src/resources/Pacman/images/right1.png").getImage();
-        pacman3right = new ImageIcon("src/resources/Pacman/images/right2.png").getImage();
-        pacman4right = new ImageIcon("src/resources/Pacman/images/right3.png").getImage();
+        ghost = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/tiger.png"))).getImage();
+        pacman1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+".png"))).getImage();
+        pacman2up = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_up1.png"))).getImage();
+        pacman3up = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_up2.png"))).getImage();
+        pacman4up = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_up3.png"))).getImage();
+        pacman2down = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_down1.png"))).getImage();
+        pacman3down = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_down2.png"))).getImage();
+        pacman4down = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_down3.png"))).getImage();
+        pacman2left = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_left1.png"))).getImage();
+        pacman3left = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_left2.png"))).getImage();
+        pacman4left = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_left3.png"))).getImage();
+        pacman2right = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_right1.png"))).getImage();
+        pacman3right = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_right2.png"))).getImage();
+        pacman4right = new ImageIcon(Objects.requireNonNull(getClass().getResource("/Pacman/images/"+name+"_right3.png"))).getImage();
 
     }
 
@@ -630,6 +689,7 @@ public class Board extends JPanel implements ActionListener {
                     }
                     character.setXp(character.getXp()+10);
                     characterService.saveCharacter(character);
+                    stopBackgroundMusic();
                     frame.dispose();
                 }
             }

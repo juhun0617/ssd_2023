@@ -14,13 +14,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 public class SnakeGame extends JFrame {
 
     private Clip clip;
     public SnakeGame(Character character) {
-        playBackgroundMusic("src/resources/Snake/sounds/sbg.wav");
+        playBackgroundMusic("/Snake/sounds/sbg.wav");
         this.add(new GamePanel(character,clip,this));
         this.setTitle("Snake Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,7 +36,8 @@ public class SnakeGame extends JFrame {
 
     private void playBackgroundMusic(String filePath) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(filePath)));
+            clip = AudioSystem.getClip();
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -77,10 +82,18 @@ class GamePanel extends JPanel implements ActionListener {
     int animal;
     private Character character;
     private JFrame frame;
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    CharacterService characterService = new CharacterService(emf);
+    EntityManagerFactory emf;
+    CharacterService characterService;
 
     GamePanel(Character character,Clip clip,JFrame frame) {
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        characterService = new CharacterService(emf);
         this.character = character;
         this.frame = frame;
         this.clip1 = clip;
@@ -120,9 +133,9 @@ class GamePanel extends JPanel implements ActionListener {
             character.setXp(character.getXp()+10);
             character.setFun(character.getFun()+10);
             character.setHungry(character.getHungry());
-            character.setMoney(character.getMoney() + (money*2));
-            if (character.getMax_score_1() < money){
-                character.setMax_score_1(money);
+            character.setMoney(character.getMoney() + (money));
+            if (character.getMax_score_2() < money){
+                character.setMax_score_2(money);
             }
             characterService.saveCharacter(character);
             stopBackgroundMusic();
@@ -164,7 +177,8 @@ class GamePanel extends JPanel implements ActionListener {
     }
     private void playSoundEffect(String filePath) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(filePath)));
+            System.out.println(filePath);
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -286,7 +300,7 @@ class GamePanel extends JPanel implements ActionListener {
                 DELAY -= 5;
                 timer.setDelay(DELAY);
             }
-            playSoundEffect("src/resources/Snake/sounds/sitem.wav");
+            playSoundEffect("/Snake/sounds/sitem.wav");
         }
     }
 

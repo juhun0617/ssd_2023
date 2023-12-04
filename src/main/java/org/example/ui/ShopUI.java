@@ -16,17 +16,17 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class ShopUI {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager em = emf.createEntityManager();
-    DecoService decoService = new DecoService(em);
-    Character_DecoService characterDecoService = new Character_DecoService(emf);
-    CharacterService characterService = new CharacterService(emf);
+    EntityManagerFactory emf;
+    EntityManager em;
+    DecoService decoService ;
+    Character_DecoService characterDecoService;
+    CharacterService characterService;
     private static String BACKGROUND_PATH = "/Image/shopBack.png";
     private final JPanel panel;
     private BackGroundPanel backPanel;
@@ -45,6 +45,19 @@ public class ShopUI {
 
     private final shopUICallback callback;
     public ShopUI(JPanel panel, Character character,shopUICallback callback) {
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        em = emf.createEntityManager();
+        characterService = new CharacterService(emf);
+        characterDecoService = new Character_DecoService(emf);
+        decoService = new DecoService(em);
+
         this.panel = panel;
         this.callback = callback;
         this.character = character;
@@ -68,7 +81,7 @@ public class ShopUI {
 
     }
     private void backProgress(){
-        backButton = new ShadowButton("Back","/Image/Button/shopBAckButton.png");
+        backButton = new ShadowButton("Back","/Image/Button/ShopBackButton.png");
         customFont = CustomFont.loadCustomFont(30f);
         backButton.setFont(customFont);
         backButton.setForeground(Color.white);

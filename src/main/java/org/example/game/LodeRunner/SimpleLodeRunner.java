@@ -16,18 +16,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
+
 
 public class SimpleLodeRunner extends JFrame {
 
     private Clip clip;
-
+    private EntityManagerFactory emf;
 
 
     public SimpleLodeRunner(Character character) {
-        playBackgroundMusic("src/resources/LoadRunner/sounds/lbg.wav");
+        playBackgroundMusic("/LoadRunner/sounds/lbg.wav");
         add(new GamePanel(character,this,clip));
         pack();
         this.setTitle("Simple Lode Runner Game");
@@ -39,7 +43,9 @@ public class SimpleLodeRunner extends JFrame {
     }
     public void playBackgroundMusic (String filePath) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+            InputStream inputStream = getClass().getResourceAsStream(filePath);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedInputStream);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -51,8 +57,9 @@ public class SimpleLodeRunner extends JFrame {
     }
     public void playSoundEffect(String filePath) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
+            InputStream inputStream = getClass().getResourceAsStream(filePath);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedInputStream);            Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
         } catch (Exception e) {
@@ -101,8 +108,9 @@ public class SimpleLodeRunner extends JFrame {
         private static final int MAX_STAGES = 3;
         private JFrame frame;
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-        CharacterService characterService = new CharacterService(emf);
+        String homeDirectory = System.getProperty("user.home");
+
+        CharacterService characterService;
 
         enum GameState {
             PLAYING,
@@ -118,6 +126,13 @@ public class SimpleLodeRunner extends JFrame {
 
         private Clip clip1;
         public GamePanel(Character character,JFrame frame,Clip clip) {
+            String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+            Map<String, String> properties = new HashMap<>();
+            properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+            characterService = new CharacterService(emf);
 
             // Inside the GamePanel constructor
             initializeGameOverComponents();
@@ -144,21 +159,21 @@ public class SimpleLodeRunner extends JFrame {
 
             try {
                 // Player images
-                ImageIcon originalIcon = new ImageIcon("src/resources/LoadRunner/image/player/idle.png");
+                ImageIcon originalIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/idle.png")));
                 Image originalImage = originalIcon.getImage();
                 playerImage = originalImage.getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
 
-                walkImage1 = new ImageIcon("src/resources/LoadRunner/image/player/run1.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                walkImage2 = new ImageIcon("src/resources/LoadRunner/image/player/run2.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                climbImage = new ImageIcon("src/resources/LoadRunner/image/player/up.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                digImage = new ImageIcon("src/resources/LoadRunner/image/player/broke.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                walkImage1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/run1.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                walkImage2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/run2.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                climbImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/up.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                digImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/broke.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
 
                 // Sprite images
-                ladderImage = new ImageIcon("src/resources/LoadRunner/image/sprite/lad4.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                keyImage = new ImageIcon("src/resources/LoadRunner/image/sprite/gold.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                wallImage = new ImageIcon("src/resources/LoadRunner/image/sprite/wall3.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                enemyImage = new ImageIcon("src/resources/LoadRunner/image/sprite/enemy.png").getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                backgroundImage = new ImageIcon("src/resources/LoadRunner/image/sprite/bg1.png").getImage();
+                ladderImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/lad4.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                keyImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/gold.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                wallImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/wall3.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                enemyImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/enemy.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                backgroundImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/bg1.png"))).getImage();
 
             } catch (Exception e) {
                 System.out.println("Error loading images: " + e.getMessage());
@@ -166,6 +181,7 @@ public class SimpleLodeRunner extends JFrame {
 
             startGame();
         }
+
         private void stopBackgroundMusic(){
             clip1.stop();
         }
@@ -227,7 +243,7 @@ public class SimpleLodeRunner extends JFrame {
 
         public void startGame() {
 
-            if (currentStage == 1) {
+            if (currentStage == 3) {
 
                 player = new Point(UNIT_SIZE * 4, PANEL_HEIGHT - 4 * UNIT_SIZE);
 
@@ -350,7 +366,7 @@ public class SimpleLodeRunner extends JFrame {
                 coins.add(new Point(UNIT_SIZE * 5, PANEL_HEIGHT - 19 * UNIT_SIZE));
             }
 
-            else if (currentStage == 3) {
+            else if (currentStage == 1) {
 
                 player = new Point(UNIT_SIZE * 3, PANEL_HEIGHT - 3 * UNIT_SIZE);
 
@@ -449,7 +465,7 @@ public class SimpleLodeRunner extends JFrame {
 
             draw(g);
 
-            draw(g);
+            drawText(g);
 
             if (gameState == GameState.TRANSITIONING) {
                 g.setColor(new Color(0, 0, 0, Math.min(1.0f, transitionProgress)));
@@ -476,6 +492,12 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
+        private void drawText(Graphics g) {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 12));
+            String text = "You can break the block with 'Q' or 'E'.";
+            g.drawString(text, 10, getHeight() - 10);
+        }
 
         public void draw(Graphics g) {
 
@@ -597,7 +619,7 @@ public class SimpleLodeRunner extends JFrame {
                     Point enemyPosition = enemyAI.getEnemyPosition();
                     if (player.distance(enemyPosition) < UNIT_SIZE) {
                         gameOver = true;
-                        ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("src/resources/LoadRunner/sounds/over.wav");
+                        ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("/LoadRunner/sounds/over.wav");
                         timer.stop();
                         break;
                     }
@@ -699,12 +721,12 @@ public class SimpleLodeRunner extends JFrame {
             while (iterator.hasNext()) {
                 Point coin = iterator.next();
                 if (player.distance(coin) < UNIT_SIZE) {
-                    ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("resources/sounds/coin.wav");
+                    ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("/LoadRunner/sounds/coin.wav");
 
                     iterator.remove();
                     collectedCoins++;
                     if (collectedCoins >= TOTAL_COINS) {
-                        ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("resources/sounds/clear.wav");
+                        ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("/LoadRunner/sounds/clear.wav");
                         checkGameOver();
                     }
                 }
@@ -823,7 +845,7 @@ public class SimpleLodeRunner extends JFrame {
             int y = player.y + UNIT_SIZE;
             Point digPoint = new Point(x, y);
             if (ground.contains(digPoint)) {
-                ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("resources/sounds/broke.wav");
+                ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("/LoadRunner/sounds/broke.wav");
                 ground.remove(digPoint);
                 brokenGrounds.add(digPoint);
                 brokenGroundsTimers.put(digPoint, System.currentTimeMillis());

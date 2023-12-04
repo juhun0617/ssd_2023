@@ -4,6 +4,7 @@ import org.example.Animal.*;
 import org.example.Entity.Character;
 import org.example.Entity.Deco;
 import org.example.draw.BackGroundPanel;
+import org.example.etc.BackgroundMusic;
 import org.example.etc.CustomFont;
 import org.example.etc.ImageTextOverlayLabel;
 import org.example.service.CharacterService;
@@ -16,6 +17,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class DamaUI {
@@ -26,10 +30,10 @@ public class DamaUI {
     private final String LEVEL_BAR_PATH = "/Image/coinAndLevelBar.png";
 
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
-    EntityManager em = emf.createEntityManager();
-    CharacterService characterService = new CharacterService(emf);
-    DecoService decoService = new DecoService(em);
+    EntityManagerFactory emf;
+    EntityManager em;
+    CharacterService characterService;
+    DecoService decoService;
 
 
 
@@ -44,16 +48,29 @@ public class DamaUI {
     private ImageIcon characterIcon;
     private Timer animationTimer;
     private ImageTextOverlayLabel coinBar;
-    private JProgressBar healthBar;
-
+    private BackgroundMusic bgMusic;
 
 
     public DamaUI(JPanel panel,String name) {
+
+        String homeDirectory = System.getProperty("user.home");
+        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
+
+
+        emf = Persistence.createEntityManagerFactory("my-persistence-unit", properties);
+        em = emf.createEntityManager();
+        characterService = new CharacterService(emf);
+        decoService = new DecoService(em);
+
+
         this.panel = panel;
         this.character = characterService.findCharacterByName(name);
     }
 
     public void updateUi(){
+        startBackgroundMusic();
 
         initializeBackPanel();
         System.out.println(character.getAnimal() + "-" + character.getName());
@@ -65,7 +82,7 @@ public class DamaUI {
         statusUpdateTimer();
 
         setStatusBar();
-        setFunctionButton(character,panel,animal);
+        setFunctionButton(character,panel,animal,bgMusic);
         setTabel();
         setChair();
         updateXp();
@@ -77,6 +94,18 @@ public class DamaUI {
         panel.repaint();
 
     }
+
+    private void startBackgroundMusic() {
+
+            // Assuming BackgroundMusic is a runnable that plays music
+        bgMusic = new BackgroundMusic();
+        bgMusic.startMusic("/Sound/dama.wav");
+        new Thread(String.valueOf(bgMusic)).start();
+        System.out.println("----------------Music Start");
+
+    }
+
+
     private void updateHealth(){
         if (character.getHealth() <= 0){
             ImageIcon temp = new ImageIcon(getClass().getResource(animal.getPATH()));
@@ -369,9 +398,9 @@ public class DamaUI {
         backPanel.add(hud,gbc);
     }
 
-    private void setFunctionButton(Character character,JPanel panel,Animal animal){
+    private void setFunctionButton(Character character,JPanel panel,Animal animal,BackgroundMusic bgMusic){
         FunctionButtonUI functionButton = new FunctionButtonUI();
-        functionButton.setFunctionButton(character,panel,animal);
+        functionButton.setFunctionButton(character,panel,animal,bgMusic);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
