@@ -197,7 +197,7 @@ public class SimpleLodeRunner extends JFrame {
                 character.setXp(character.getXp()+10);
                 character.setFun(character.getFun()+10);
                 character.setHungry(character.getHungry());
-                character.setMoney(character.getMoney() + (money*100));
+                character.setMoney(character.getMoney() + (money));
                 if (character.getMax_score_1() < money){
                     character.setMax_score_1(money);
                 }

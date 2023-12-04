@@ -6,6 +6,7 @@ import org.example.Entity.Deco;
 import org.example.draw.BackGroundPanel;
 import org.example.etc.CustomFont;
 import org.example.etc.ImageTextOverlayLabel;
+import org.example.etc.ShadowButton;
 import org.example.service.CharacterService;
 import org.example.service.DecoService;
 
@@ -36,6 +37,7 @@ public class SocialDamaUI {
     private ImageIcon characterIcon;
     private ImageTextOverlayLabel coinBar;
     private Timer animationTimer;
+    private final SocialDamaUICallback callback;
 
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
@@ -43,9 +45,10 @@ public class SocialDamaUI {
     CharacterService characterService = new CharacterService(emf);
     DecoService decoService = new DecoService(em);
 
-    public SocialDamaUI(JPanel panel,Character character){
+    public SocialDamaUI(JPanel panel,Character character,SocialDamaUICallback callback){
         this.panel = panel;
         this.character = character;
+        this.callback = callback;
     }
     public void updateUi(){
         initializeBackPanel();
@@ -57,6 +60,7 @@ public class SocialDamaUI {
         setTabel();
         setChair();
         setSocial();
+        setBackButton();
 
         panel.revalidate();
         panel.repaint();
@@ -89,8 +93,8 @@ public class SocialDamaUI {
         button.setFocusPainted(false);
         button.setContentAreaFilled(false);
         button.addActionListener(e -> {
-            SocialUI socialUI = new SocialUI(panel,character,()->{
-                SocialDamaUI socialDamaUI = new SocialDamaUI(panel,character);
+            SocialUI2 socialUI = new SocialUI2(panel,character,()->{
+                SocialDamaUI socialDamaUI = new SocialDamaUI(panel,character,callback);
                 socialDamaUI.updateUi();
             });
             socialUI.updateUI();
@@ -303,6 +307,32 @@ public class SocialDamaUI {
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.insets = new Insets(30, 0, 0, 0);
         backPanel.add(hud,gbc);
+    }
+    private void setBackButton(){
+        ShadowButton button = new ShadowButton("돌아가기","/Image/Button/backButton.png");
+        button.setFont(CustomFont.loadCustomFont(30f));
+        button.setForeground(Color.white);
+        button.setPreferredSize(new Dimension(200,70));
+        button.addActionListener(e -> {
+            callback.backButton();
+        });
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.anchor = GridBagConstraints.SOUTHWEST;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.insets = new Insets(0, 60, 70, 0);
+
+        backPanel.add(button, gbc);
+
+    }
+
+    public interface SocialDamaUICallback{
+        void backButton();
     }
 
 }

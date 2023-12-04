@@ -26,7 +26,7 @@ public abstract class Animal {
             @Override
             public void run() {
                 System.out.println("Hunger timer task executed at: " + new java.util.Date());
-                character.setHungry(character.getHungry()-1);
+                   character.setHungry(character.getHungry()-1);
             }
         };
         hungerTimer.scheduleAtFixedRate(task, 0, 30000); // 30초마다 실행

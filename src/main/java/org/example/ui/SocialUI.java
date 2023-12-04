@@ -170,7 +170,10 @@ public class SocialUI {
             if (inputToken != null && !inputToken.trim().isEmpty() && !"null".equals(inputToken)) {
                 try {
                     Character character = SocialString.createCharacterFromEncryptedString(inputToken);
-                    SocialDamaUI socialDamaUI = new SocialDamaUI(panel, character);
+                    SocialDamaUI socialDamaUI = new SocialDamaUI(panel, character,()->{
+                        DamaUI damaUI = new DamaUI(panel,this.character.getName());
+                        damaUI.updateUi();
+                    });
                     socialDamaUI.updateUi();
 
                 } catch (Exception ex) {

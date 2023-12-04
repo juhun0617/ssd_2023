@@ -13,4 +13,6 @@ public class Rabbit extends Animal{
     public String getPATH() {
         return PATH;
     }
+
+
 }

@@ -12,4 +12,6 @@ public class Cat extends Animal{
     public String getPATH() {
         return PATH;
     }
+
+
 }
