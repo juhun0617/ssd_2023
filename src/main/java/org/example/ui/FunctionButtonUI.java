@@ -15,6 +15,11 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author juhun_park
+ * 사용자 인터페이스 내의 기능 버튼을 관리하는 클래스.
+ * 이 클래스는 다양한 기능을 제공하는 버튼들을 초기화하고, 이벤트 리스너를 추가합니다.
+ */
 public class FunctionButtonUI extends JPanel {
     JPanel panel;
     Character character;
@@ -26,10 +31,16 @@ public class FunctionButtonUI extends JPanel {
     EntityManagerFactory emf;
     EntityManager em;
     CharacterService characterService;
+    private BackgroundMusic backgroundMusic;
 
-    public FunctionButtonUI(){
+    /**
+     * 기본 생성자.
+     * 데이터베이스 연결을 설정하고, 캐릭터 서비스를 초기화합니다.
+     */
+    public FunctionButtonUI() {
         String homeDirectory = System.getProperty("user.home");
-        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        String targetPath = Paths.get(homeDirectory, "sqlite.db")
+                .toString();
         Map<String, String> properties = new HashMap<>();
         properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
 
@@ -38,8 +49,16 @@ public class FunctionButtonUI extends JPanel {
         em = emf.createEntityManager();
         characterService = new CharacterService(emf);
     }
-    private BackgroundMusic backgroundMusic;
-    public void setFunctionButton(Character character, JPanel panel, Animal animal, BackgroundMusic bgMusic){
+
+    /**
+     * 패널에 기능 버튼을 설정합니다.
+     *
+     * @param character 현재 캐릭터 객체
+     * @param panel     UI가 표시될 패널
+     * @param animal    캐릭터의 동물 객체
+     * @param bgMusic   배경 음악 객체
+     */
+    public void setFunctionButton(Character character, JPanel panel, Animal animal, BackgroundMusic bgMusic) {
         this.backgroundMusic = bgMusic;
         this.panel = panel;
         this.animal = animal;
@@ -59,19 +78,22 @@ public class FunctionButtonUI extends JPanel {
         gbc.anchor = GridBagConstraints.WEST; // Anchor to the left
         gbc.insets = new Insets(0, 30, 0, 30);
 
-        this.add(closetButton,gbc);
+        this.add(closetButton, gbc);
 
         gbc.gridx++;
-        this.add(doorButton,gbc);
+        this.add(doorButton, gbc);
 
         gbc.gridx++;
-        this.add(gameButton,gbc);
+        this.add(gameButton, gbc);
 
         gbc.gridx++;
-        this.add(shopButton,gbc);
+        this.add(shopButton, gbc);
     }
 
-    private void setClosetButton(){
+    /**
+     * 옷장 버튼을 초기화하고, 이벤트 리스너를 추가합니다.
+     */
+    private void setClosetButton() {
         ImageIcon icon = new ImageIcon(getClass().getResource("/Image/Button/closet.png"));
         Image image = icon.getImage();
         Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -81,7 +103,7 @@ public class FunctionButtonUI extends JPanel {
         closetButton.setContentAreaFilled(false);
         closetButton.setFocusPainted(false);
         closetButton.addActionListener(e -> {
-            StorageUI storageUI = new StorageUI(panel,character,() -> {
+            StorageUI storageUI = new StorageUI(panel, character, () -> {
                 DamaUI damaUI = new DamaUI(panel, character.getName());
                 damaUI.updateUi();
             });
@@ -93,7 +115,12 @@ public class FunctionButtonUI extends JPanel {
 
 
     }
-    private void setDoorButton(){
+
+    /**
+     * 출구 버튼을 초기화하고, 이벤트 리스너를 추가합니다.
+     * 이 버튼은 애플리케이션을 종료하는 기능을 수행합니다.
+     */
+    private void setDoorButton() {
         ImageIcon icon = new ImageIcon(getClass().getResource("/Image/Button/door.png"));
         Image image = icon.getImage();
         Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -108,7 +135,11 @@ public class FunctionButtonUI extends JPanel {
         });
 
     }
-    private void setGameButton(){
+
+    /**
+     * 게임 선택 버튼을 초기화하고, 이벤트 리스너를 추가합니다.
+     */
+    private void setGameButton() {
         ImageIcon icon = new ImageIcon(getClass().getResource("/Image/Button/game.png"));
         Image image = icon.getImage();
         Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -118,7 +149,7 @@ public class FunctionButtonUI extends JPanel {
         gameButton.setContentAreaFilled(false);
         gameButton.setFocusPainted(false);
         gameButton.addActionListener(e -> {
-            GameSelectUI gameSelectUI = new GameSelectUI(panel,character,()-> {
+            GameSelectUI gameSelectUI = new GameSelectUI(panel, character, () -> {
                 DamaUI damaUI = new DamaUI(panel, character.getName());
                 damaUI.updateUi();
             });
@@ -129,7 +160,10 @@ public class FunctionButtonUI extends JPanel {
         });
     }
 
-    private void setShopButton(){
+    /**
+     * 상점 버튼을 초기화하고, 이벤트 리스너를 추가합니다.
+     */
+    private void setShopButton() {
         ImageIcon icon = new ImageIcon(getClass().getResource("/Image/Button/shop.png"));
         Image image = icon.getImage();
         Image resizedImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -139,7 +173,7 @@ public class FunctionButtonUI extends JPanel {
         shopButton.setContentAreaFilled(false);
         shopButton.setFocusPainted(false);
         shopButton.addActionListener(e -> {
-            ShopUI shopUI = new ShopUI(panel,character,() -> {
+            ShopUI shopUI = new ShopUI(panel, character, () -> {
                 DamaUI damaUI = new DamaUI(panel, character.getName());
                 damaUI.updateUi();
             });

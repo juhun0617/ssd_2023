@@ -4,6 +4,11 @@ package org.example.Entity;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * @author juhun_park
+ * 캐릭터 엔티티 클래스
+ * 데이터베이스 접근을 할 때 사용하는 엔티티
+ */
 @Entity
 public class Character {
 
@@ -11,7 +16,6 @@ public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
 
 
     private String name;
@@ -40,19 +44,23 @@ public class Character {
         this.xp = xp;
     }
 
-    public Long getTableId(){
+    public Long getTableId() {
         return tableId;
     }
-    public void setTableId(Long tableId){
+
+    public void setTableId(Long tableId) {
         this.tableId = tableId;
     }
-    public Long getChairId(){
+
+    public Long getChairId() {
         return chairId;
     }
-    public void setChairId(Long chairId){
+
+    public void setChairId(Long chairId) {
         this.chairId = chairId;
     }
-    public Long getBackId(){
+
+    public Long getBackId() {
         return backId;
     }
 
@@ -82,9 +90,9 @@ public class Character {
 
     public void setHungry(int hungry) {
 
-        if (hungry > 100){
+        if (hungry > 100) {
             this.hungry = 100;
-        } else if (hungry < 0){
+        } else if (hungry < 0) {
             this.hungry = 0;
         } else {
             this.hungry = hungry;
@@ -96,9 +104,9 @@ public class Character {
     }
 
     public void setThirst(int thirst) {
-        if (thirst > 100){
+        if (thirst > 100) {
             this.thirst = 100;
-        } else if (thirst < 0){
+        } else if (thirst < 0) {
             this.thirst = 0;
         } else {
             this.thirst = thirst;
@@ -110,9 +118,9 @@ public class Character {
     }
 
     public void setFun(int fun) {
-        if (fun > 100){
+        if (fun > 100) {
             this.fun = 100;
-        } else if (fun < 0){
+        } else if (fun < 0) {
             this.fun = 0;
         } else {
             this.fun = fun;
@@ -125,9 +133,9 @@ public class Character {
     }
 
     public void setHealth(int health) {
-        if (health > 100){
+        if (health > 100) {
             this.health = 100;
-        } else if (health < 0){
+        } else if (health < 0) {
             this.health = 0;
         } else {
             this.health = health;
@@ -182,11 +190,11 @@ public class Character {
         this.max_score_4 = max_score_4;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

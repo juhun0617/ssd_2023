@@ -8,10 +8,20 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
+/**
+ * @author juhun_park
+ * 사용자 정의 프로그레스 바 UI를 구현하는 클래스.
+ * 이 클래스는 기본 프로그레스 바의 시각적 스타일을 변경하고, 마우스 호버 상태에 따라 추가 정보를 표시합니다.
+ */
 public class FancyProgressBar extends BasicProgressBarUI {
     private boolean isHovered = false;
 
-    // 마우스 리스너를 추가하는 생성자
+    /**
+     * 프로그레스 바에 마우스 호버 리스너를 추가합니다.
+     * 마우스가 프로그레스 바 위에 있을 때와 없을 때의 상태 변화를 감지합니다.
+     *
+     * @param progressBar 마우스 리스너를 추가할 프로그레스 바
+     */
     public void addHoverListener(JProgressBar progressBar) {
         progressBar.addMouseListener(new MouseAdapter() {
             @Override
@@ -28,18 +38,34 @@ public class FancyProgressBar extends BasicProgressBarUI {
         });
     }
 
+    /**
+     * 프로그레스 바의 세로 방향에 대한 선호 크기를 반환합니다.
+     *
+     * @return 세로 방향 선호 크기
+     */
     @Override
     protected Dimension getPreferredInnerVertical() {
         return new Dimension(20, 146);
     }
 
+    /**
+     * 프로그레스 바의 가로 방향에 대한 선호 크기를 반환합니다.
+     *
+     * @return 가로 방향 선호 크기
+     */
     @Override
     protected Dimension getPreferredInnerHorizontal() {
         return new Dimension(300, 20);
     }
 
 
-
+    /**
+     * 프로그레스 바의 결정된 상태를 그립니다.
+     * 이 메서드는 프로그레스 바의 진행률을 시각적으로 나타냅니다.
+     *
+     * @param g 그래픽스 컨텍스트
+     * @param c 컴포넌트
+     */
     @Override
     protected void paintDeterminate(Graphics g, JComponent c) {
 
@@ -94,6 +120,17 @@ public class FancyProgressBar extends BasicProgressBarUI {
     }
 
 
+    /**
+     * 프로그레스 바에 진행률 문자열을 그립니다.
+     * 문자열은 프로그레스 바의 중앙에 위치합니다.
+     *
+     * @param g2d         그래픽스 2D 컨텍스트
+     * @param valueString 표시할 문자열
+     * @param x           문자열의 x 좌표
+     * @param y           문자열의 y 좌표
+     * @param width       문자열 영역의 너비
+     * @param height      문자열 영역의 높이
+     */
     protected void drawValueString(Graphics2D g2d, String valueString, int x, int y, int width, int height) {
         FontMetrics fm = progressBar.getFontMetrics(progressBar.getFont());
         int stringWidth = fm.stringWidth(valueString);
@@ -110,6 +147,14 @@ public class FancyProgressBar extends BasicProgressBarUI {
         g2d.drawString(valueString, drawX, drawY);
     }
 
+
+    /**
+     * 프로그레스 바의 불확정 상태를 그립니다.
+     * 이 메서드는 상속받은 기본 동작을 그대로 사용합니다.
+     *
+     * @param g 그래픽스 컨텍스트
+     * @param c 컴포넌트
+     */
     @Override
     protected void paintIndeterminate(Graphics g, JComponent c) {
         super.paintIndeterminate(g, c); //To change body of generated methods, choose Tools | Templates.

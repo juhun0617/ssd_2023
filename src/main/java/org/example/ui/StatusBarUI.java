@@ -6,6 +6,12 @@ import org.example.etc.FancyProgressBar;
 import javax.swing.*;
 import java.awt.*;
 
+
+/**
+ * @author juhun_park
+ * 게임 캐릭터의 다양한 상태(건강, 배고픔, 목마름, 즐거움)를 시각적으로 보여주는 클래스입니다.
+ * 이 클래스는 상태 표시줄들을 포함한 JPanel을 확장하여 구현되었습니다.
+ */
 public class StatusBarUI extends JPanel {
 
     private final Character character;
@@ -19,10 +25,21 @@ public class StatusBarUI extends JPanel {
     JProgressBar funBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
 
 
+    /**
+     * StatusBarUI 클래스의 생성자입니다.
+     * 캐릭터의 현재 상태를 표시하기 위한 정보를 초기화합니다.
+     *
+     * @param character 게임 캐릭터 객체.
+     */
     public StatusBarUI(Character character) {
         this.character = character;
     }
 
+
+    /**
+     * 상태 표시줄 UI를 설정합니다.
+     * 건강, 배고픔, 목마름, 즐거움 각각의 상태를 표시하는 패널을 초기화하고 추가합니다.
+     */
     public void setStatusHud() {
         this.setLayout(new GridBagLayout());
         this.setOpaque(false);
@@ -51,7 +68,9 @@ public class StatusBarUI extends JPanel {
         this.add(funPanel, gbc);
     }
 
-
+    /**
+     * 건강 상태 패널을 추가합니다.
+     */
     private void setHealthPanel() {
         healthPanel.setOpaque(false);
 
@@ -81,6 +100,9 @@ public class StatusBarUI extends JPanel {
         healthPanel.add(healthLabel, BorderLayout.WEST);
     }
 
+    /**
+     * 배고픔 상태 패널을 추가합니다.
+     */
     private void setHungryPanel() {
         hungryPanel.setOpaque(false);
 
@@ -110,6 +132,9 @@ public class StatusBarUI extends JPanel {
         hungryPanel.add(hungryLabel, BorderLayout.WEST);
     }
 
+    /**
+     * 목마름 패널을 초기화 합니다.
+     */
     private void setThirstyPanel() {
         thirstyPanel.setOpaque(false);
 
@@ -138,6 +163,9 @@ public class StatusBarUI extends JPanel {
         thirstyPanel.add(thirstyLabel, BorderLayout.WEST);
     }
 
+    /**
+     * 흥미 상태 패널을 설정합니다.
+     */
     private void setFunPanel() {
         funPanel.setOpaque(false);
 
@@ -166,11 +194,20 @@ public class StatusBarUI extends JPanel {
         funPanel.add(funLabel, BorderLayout.WEST);
     }
 
+    /**
+     * 상태 표시줄의 값을 주기적으로 업데이트하는 타이머를 설정합니다.
+     * 1초마다 캐릭터의 상태를 체크하고 UI를 업데이트합니다.
+     */
     public void statusUpdateTimer() {
         int delay = 1000; // 1초마다 업데이트
         new Timer(delay, e -> HudUpdate()).start();
     }
 
+
+    /**
+     * 상태 표시줄의 값을 실제로 업데이트하는 메서드입니다.
+     * 캐릭터 객체로부터 상태 값을 가져와 각각의 JProgressBar에 반영합니다.
+     */
     private void HudUpdate() {
 
         healthBar.setValue(character.getHealth());

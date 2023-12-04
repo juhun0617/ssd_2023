@@ -23,7 +23,11 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 
-
+/**
+ * @author younghun_kim
+ * <p>
+ * 로드러너 게임의 메인 어플리케이션 클래스입니다.
+ */
 public class SimpleLodeRunner extends JFrame {
 
     private Clip clip;
@@ -32,7 +36,7 @@ public class SimpleLodeRunner extends JFrame {
 
     public SimpleLodeRunner(Character character) {
         playBackgroundMusic("/LoadRunner/sounds/lbg.wav");
-        add(new GamePanel(character,this,clip));
+        add(new GamePanel(character, this, clip));
         pack();
         this.setTitle("Simple Lode Runner Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,7 +45,13 @@ public class SimpleLodeRunner extends JFrame {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
-    public void playBackgroundMusic (String filePath) {
+
+    /**
+     * playBackgroundMusic 메서드는 배경 음악을 재생하는 데 사용됩니다.
+     *
+     * @param filePath 재생할 음악 파일의 경로
+     */
+    public void playBackgroundMusic(String filePath) {
         try {
             InputStream inputStream = getClass().getResourceAsStream(filePath);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
@@ -55,78 +65,79 @@ public class SimpleLodeRunner extends JFrame {
             System.out.println("Error with playing sound: " + e.getMessage());
         }
     }
+
+    /**
+     * playSoundEffect 메서드는 효과음을 재생하는 데 사용됩니다.
+     *
+     * @param filePath 재생할 효과음 파일의 경로
+     */
+
     public void playSoundEffect(String filePath) {
         try {
             InputStream inputStream = getClass().getResourceAsStream(filePath);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedInputStream);            Clip clip = AudioSystem.getClip();
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedInputStream);
+            Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
         } catch (Exception e) {
             System.out.println("Error with playing sound effect: " + e.getMessage());
         }
     }
+
+
+    /**
+     * GamePanel 클래스는 게임의 메인 패널을 나타냅니다.
+     * 게임의 로직과 그래픽 요소를 관리합니다.
+     */
+
     static class GamePanel extends JPanel implements ActionListener {
 
-        private JButton restartButton;
-        private JButton exitButton;
-        private JLabel scoreLabel;
-
-
-        private List<Point> enemies; // 적의 위치를 저장하는 리스트
-        private List<EnemyAI> enemyAIs;
-        private boolean gameOver = false;
-        private boolean gameClear = false;
         private static final int PANEL_WIDTH = 800;
         private static final int PANEL_HEIGHT = 800;
         private static final int UNIT_SIZE = 32;
         private static final int DELAY = 150;
         private static final long MOVE_DELAY = 150;
+        private static final int TOTAL_COINS = 5;
+        private static final int WALK_ANIMATION_DELAY = 500;
+        private static final int MAX_STAGES = 3;
         private final Set<Point> ground = new HashSet<>();
         private final Set<Point> ladders = new HashSet<>();
         private final Set<Point> coins = new HashSet<>();
         private final Set<Point> brokenGrounds = new HashSet<>();
         private final Map<Point, Long> brokenGroundsTimers = new HashMap<>();
+        public int money = 0;
+        String homeDirectory = System.getProperty("user.home");
+        CharacterService characterService;
+        private JButton restartButton;
+        private JButton exitButton;
+        private JLabel scoreLabel;
+        private List<Point> enemies; // 적의 위치를 저장하는 리스트
+        private List<EnemyAI> enemyAIs;
+        private boolean gameOver = false;
+        private boolean gameClear = false;
         private Point player, enemy;
         private EnemyAI enemyAI;
         private Timer timer;
         private int collectedCoins = 0;
-        private static final int TOTAL_COINS = 5;
         private boolean isFalling = false;
         private long lastMoveTime = 0;
-
-        private Image playerImage,ladderImage, keyImage, wallImage, enemyImage,
+        private Image playerImage, ladderImage, keyImage, wallImage, enemyImage,
                 walkImage1, walkImage2, climbImage, digImage, backgroundImage;
         private Image currentWalkImage;
         private Timer walkTimer;
-        private static final int WALK_ANIMATION_DELAY = 500;
         private String playerState = "idle";
         private boolean facingRight = true;
-
-        public int money = 0;
         private int currentStage = 1;
-        private static final int MAX_STAGES = 3;
         private JFrame frame;
-
-        String homeDirectory = System.getProperty("user.home");
-
-        CharacterService characterService;
-
-        enum GameState {
-            PLAYING,
-            TRANSITIONING,
-            NEXT_STAGE
-        }
-
         private GameState gameState = GameState.PLAYING;
         private float transitionProgress = 0.0f;
-
-
         private Character character;
-
         private Clip clip1;
-        public GamePanel(Character character,JFrame frame,Clip clip) {
-            String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+
+        public GamePanel(Character character, JFrame frame, Clip clip) {
+            String targetPath = Paths.get(homeDirectory, "sqlite.db")
+                    .toString();
             Map<String, String> properties = new HashMap<>();
             properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
 
@@ -163,16 +174,24 @@ public class SimpleLodeRunner extends JFrame {
                 Image originalImage = originalIcon.getImage();
                 playerImage = originalImage.getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
 
-                walkImage1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/run1.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                walkImage2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/run2.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                climbImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/up.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                digImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/broke.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                walkImage1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/run1.png"))).getImage()
+                        .getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                walkImage2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/run2.png"))).getImage()
+                        .getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                climbImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/up.png"))).getImage()
+                        .getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                digImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/player/broke.png"))).getImage()
+                        .getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
 
                 // Sprite images
-                ladderImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/lad4.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                keyImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/gold.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                wallImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/wall3.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
-                enemyImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/enemy.png"))).getImage().getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                ladderImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/lad4.png"))).getImage()
+                        .getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                keyImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/gold.png"))).getImage()
+                        .getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                wallImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/wall3.png"))).getImage()
+                        .getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
+                enemyImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/enemy.png"))).getImage()
+                        .getScaledInstance(UNIT_SIZE, UNIT_SIZE, Image.SCALE_SMOOTH);
                 backgroundImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/LoadRunner/image/sprite/bg1.png"))).getImage();
 
             } catch (Exception e) {
@@ -182,9 +201,14 @@ public class SimpleLodeRunner extends JFrame {
             startGame();
         }
 
-        private void stopBackgroundMusic(){
+        /**
+         * stopBackgroundMusic 메서드는 배경 음악을 정지하는 데 사용됩니다.
+         */
+
+        private void stopBackgroundMusic() {
             clip1.stop();
         }
+
         private void initializeGameOverComponents() {
             // Initialize the components
             restartButton = new JButton("Restart");
@@ -210,11 +234,11 @@ public class SimpleLodeRunner extends JFrame {
             add(exitButton);
             exitButton.addActionListener(e -> {
 
-                character.setXp(character.getXp()+10);
-                character.setFun(character.getFun()+10);
+                character.setXp(character.getXp() + 10);
+                character.setFun(character.getFun() + 10);
                 character.setHungry(character.getHungry());
                 character.setMoney(character.getMoney() + (money));
-                if (character.getMax_score_1() < money){
+                if (character.getMax_score_1() < money) {
                     character.setMax_score_1(money);
                 }
                 characterService.saveCharacter(character);
@@ -228,6 +252,11 @@ public class SimpleLodeRunner extends JFrame {
             scoreLabel.setVisible(false);
         }
 
+        /**
+         * initializeGameOverComponents 메서드는 게임 오버 화면의 UI 컴포넌트를 초기화합니다.
+         * 이 메서드에서는 점수 표시 레이블, 재시작 버튼, 종료 버튼을 설정하고 화면에 나타냅니다.
+         */
+
         private void restartGame() {
 
             resetGame();
@@ -239,6 +268,10 @@ public class SimpleLodeRunner extends JFrame {
             scoreLabel.setVisible(false);
         }
 
+        /**
+         * startGame 메서드는 게임을 시작합니다.
+         * 스테이지에 따라 플레이어와 적의 위치를 설정하고 게임의 상태를 초기화합니다.
+         */
 
 
         public void startGame() {
@@ -257,7 +290,6 @@ public class SimpleLodeRunner extends JFrame {
 
                 Point enemy3 = new Point(PANEL_WIDTH - 10 * UNIT_SIZE, PANEL_HEIGHT - 20 * UNIT_SIZE); // 4층
                 Point enemy4 = new Point(UNIT_SIZE * 7, PANEL_HEIGHT - 24 * UNIT_SIZE); // 5층
-
 
 
                 enemies.addAll(Arrays.asList(enemy1, enemy2, enemy3, enemy4));
@@ -303,17 +335,13 @@ public class SimpleLodeRunner extends JFrame {
                 }
 
 
-
                 coins.add(new Point(UNIT_SIZE * 18, PANEL_HEIGHT - 7 * UNIT_SIZE));
                 coins.add(new Point(UNIT_SIZE * 8, PANEL_HEIGHT - 11 * UNIT_SIZE));
                 coins.add(new Point(UNIT_SIZE * 14, PANEL_HEIGHT - 15 * UNIT_SIZE));
                 coins.add(new Point(UNIT_SIZE * 10, PANEL_HEIGHT - 19 * UNIT_SIZE));
 
                 coins.add(new Point(UNIT_SIZE * 4, PANEL_HEIGHT - 23 * UNIT_SIZE));
-            }
-
-
-            else if (currentStage == 2) {
+            } else if (currentStage == 2) {
 
                 player = new Point(UNIT_SIZE * 3, PANEL_HEIGHT - 3 * UNIT_SIZE);
 
@@ -364,9 +392,7 @@ public class SimpleLodeRunner extends JFrame {
                 coins.add(new Point(UNIT_SIZE * 20, PANEL_HEIGHT - 7 * UNIT_SIZE));
                 coins.add(new Point(UNIT_SIZE * 3, PANEL_HEIGHT - 15 * UNIT_SIZE));
                 coins.add(new Point(UNIT_SIZE * 5, PANEL_HEIGHT - 19 * UNIT_SIZE));
-            }
-
-            else if (currentStage == 1) {
+            } else if (currentStage == 1) {
 
                 player = new Point(UNIT_SIZE * 3, PANEL_HEIGHT - 3 * UNIT_SIZE);
 
@@ -433,6 +459,11 @@ public class SimpleLodeRunner extends JFrame {
             timer.start();
         }
 
+        /**
+         * resetGame 메서드는 게임을 초기화합니다.
+         * 게임 오버 상태와 게임 내 요소들을 초기화합니다.
+         */
+
         private void resetGame() {
             if (timer != null) {
                 timer.stop();
@@ -449,14 +480,15 @@ public class SimpleLodeRunner extends JFrame {
 
         }
 
+        /**
+         * paintComponent 메서드는 화면을 그리는 역할을 합니다. 게임 오버 상태, 게임 클리어 상태,
+         * 그리고 게임 진행 중의 상태에 따라 화면을 그리고 상태를 표시합니다.
+         */
 
         protected void paintComponent(Graphics g) {
 
 
-
             super.paintComponent(g);
-
-
 
 
             if (backgroundImage != null) {
@@ -482,7 +514,6 @@ public class SimpleLodeRunner extends JFrame {
             }
 
 
-
             if (gameOver) {
                 showGameStatus(g, "Game over");
             }
@@ -492,6 +523,9 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
+        /**
+         * drawText 메서드는 화면에 텍스트를 그립니다.
+         */
         private void drawText(Graphics g) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 12));
@@ -499,9 +533,11 @@ public class SimpleLodeRunner extends JFrame {
             g.drawString(text, 10, getHeight() - 10);
         }
 
+        /**
+         * draw 메서드는 게임 화면의 요소들을 그립니다. 땅, 사다리, 코인, 플레이어, 적 등을 그립니다.
+         */
+
         public void draw(Graphics g) {
-
-
 
 
             for (Point pt : ground) {
@@ -543,7 +579,6 @@ public class SimpleLodeRunner extends JFrame {
                 }
 
 
-
             }
             for (EnemyAI enemyAI : enemyAIs) {
                 Point enemyPosition = enemyAI.getEnemyPosition();
@@ -553,14 +588,11 @@ public class SimpleLodeRunner extends JFrame {
             }
 
 
-
-
-
-
         }
 
-
-
+        /**
+         * flipImageHorizontally 메서드는 이미지를 수평으로 뒤집어 줍니다.
+         */
 
         private Image flipImageHorizontally(Image img) {
             int width = img.getWidth(this);
@@ -572,8 +604,11 @@ public class SimpleLodeRunner extends JFrame {
             return flippedImage;
         }
 
-
-
+        /**
+         * actionPerformed 메서드는 타이머 이벤트에 대한 처리를 합니다.
+         * <p>
+         * 게임 진행 중에는 적의 업데이트, 땅 재생성, 중력 적용, 코인 수집 확인, 게임 오버 확인 로직을 처리합니다.
+         */
         public void actionPerformed(ActionEvent e) {
             if (gameState == GameState.TRANSITIONING) {
                 transitionProgress += 0.02f;
@@ -605,9 +640,9 @@ public class SimpleLodeRunner extends JFrame {
             repaint();
         }
 
-
-
-
+        /**
+         * 게임 오버 여부를 확인하고 처리하는 메서드입니다.
+         */
         private void checkGameOver() {
             if (player.y > PANEL_HEIGHT) {
                 gameOver = true;
@@ -662,8 +697,9 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
-
-
+        /**
+         * 다음 스테이지로 이동하는 메서드입니다.
+         */
         private void goToNextStage() {
 
             currentStage++;
@@ -672,7 +708,9 @@ public class SimpleLodeRunner extends JFrame {
             startGame();
         }
 
-
+        /**
+         * 파괴된 지면을 재생성하는 메서드입니다.
+         */
 
         private void regenerateBrokenGrounds() {
             long currentTime = System.currentTimeMillis();
@@ -680,7 +718,7 @@ public class SimpleLodeRunner extends JFrame {
             while (iterator.hasNext()) {
                 Point brokenGround = iterator.next();
                 Long brokenTime = brokenGroundsTimers.get(brokenGround);
-                if (brokenTime != null && (currentTime - brokenTime) >= 4000) {
+                if (brokenTime != null && (currentTime - brokenTime) >= 2000) {
                     ground.add(brokenGround);
                     iterator.remove();
                     brokenGroundsTimers.remove(brokenGround);
@@ -688,6 +726,9 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
+        /**
+         * 중력을 적용하는 메서드입니다.
+         */
         private void applyGravity() {
             Point below = new Point(player.x, player.y + UNIT_SIZE);
             if (!ground.contains(below) && !ladders.contains(below)) {
@@ -714,7 +755,9 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
-
+        /**
+         * 코인 획득 여부를 확인하고 처리하는 메서드입니다.
+         */
 
         private void checkCoinCollection() {
             Iterator<Point> iterator = coins.iterator();
@@ -733,7 +776,9 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
-
+        /**
+         * 게임 상태를 화면에 표시하는 메서드입니다.
+         */
         private void showGameStatus(Graphics g, String status) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Ink Free", Font.BOLD, 40));
@@ -741,6 +786,89 @@ public class SimpleLodeRunner extends JFrame {
             g.drawString(status, (PANEL_WIDTH - metrics.stringWidth(status)) / 2, PANEL_HEIGHT / 2);
         }
 
+        /**
+         * 플레이어를 움직이는 메서드입니다.
+         *
+         * @param xDirection x축 방향으로의 이동 (-1: 왼쪽, 1: 오른쪽)
+         * @param yDirection y축 방향으로의 이동 (-1: 위로, 1: 아래로)
+         */
+
+        private void movePlayer(int xDirection, int yDirection) {
+            int newX = player.x + xDirection * UNIT_SIZE;
+            int newY = player.y + yDirection * UNIT_SIZE;
+
+            boolean onLadder = ladders.contains(new Point(player.x, player.y));
+            boolean moveToLadder = ladders.contains(new Point(newX, newY));
+            boolean onGround = ground.contains(new Point(player.x, player.y + UNIT_SIZE));
+            boolean moveToGround = ground.contains(new Point(newX, newY + UNIT_SIZE));
+
+            if (newX >= 0 && newX < PANEL_WIDTH && (onGround || onLadder || moveToLadder)) {
+                player.setLocation(newX, player.y);
+            }
+
+            if (newY >= 0 && newY < PANEL_HEIGHT && (onLadder || moveToLadder)) {
+                player.setLocation(player.x, newY);
+            }
+
+            if (newX >= 0 && newX < PANEL_WIDTH && newY >= 0 && newY < PANEL_HEIGHT) {
+                if (!ground.contains(new Point(newX, newY))) {
+                    player.setLocation(newX, newY);
+                }
+            }
+        }
+
+        /**
+         * 수평 중력을 적용하는 메서드입니다.
+         *
+         * @param xDirection x축 방향으로의 이동 (-1: 왼쪽, 1: 오른쪽)
+         */
+
+        private void applyHorizontalGravityMovement(int xDirection) {
+            int newX = player.x + xDirection * UNIT_SIZE;
+            if (newX >= 0 && newX < PANEL_WIDTH) {
+                player.setLocation(newX, player.y);
+            }
+        }
+
+        /**
+         * 사다리를 오르거나 내려가는 메서드입니다.
+         *
+         * @param yDirection y축 방향으로의 이동 (-1: 위로 오르기, 1: 아래로 내려가기)
+         */
+
+        private void climbLadder(int yDirection) {
+            int newY = player.y + yDirection * UNIT_SIZE;
+            if (ladders.contains(new Point(player.x, newY)) && newY >= 0 && newY < PANEL_HEIGHT) {
+                player.setLocation(player.x, newY);
+            }
+        }
+
+        /**
+         * 지면을 파괴하는 메서드입니다.
+         *
+         * @param direction 파괴 방향 (-1: 왼쪽, 1: 오른쪽)
+         */
+        private void digGround(int direction) {
+            int x = player.x + direction * UNIT_SIZE;
+            int y = player.y + UNIT_SIZE;
+            Point digPoint = new Point(x, y);
+            if (ground.contains(digPoint)) {
+                ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("/LoadRunner/sounds/broke.wav");
+                ground.remove(digPoint);
+                brokenGrounds.add(digPoint);
+                brokenGroundsTimers.put(digPoint, System.currentTimeMillis());
+            }
+        }
+
+        enum GameState {
+            PLAYING,
+            TRANSITIONING,
+            NEXT_STAGE
+        }
+
+        /**
+         * 사용자의 키 입력을 처리하고 플레이어의 방향을 제어합니다.
+         */
         private class MyKeyAdapter extends KeyAdapter {
             public void keyPressed(KeyEvent e) {
                 long currentTime = System.currentTimeMillis();
@@ -785,7 +913,6 @@ public class SimpleLodeRunner extends JFrame {
                 }
 
 
-
                 if (moved) {
                     lastMoveTime = currentTime;
                 }
@@ -796,64 +923,17 @@ public class SimpleLodeRunner extends JFrame {
                     movePlayer(xDirection, 0);
                 }
             }
+
             public void keyReleased(KeyEvent e) {
 
                 playerState = "idle";
             }
         }
-
-        private void movePlayer(int xDirection, int yDirection) {
-            int newX = player.x + xDirection * UNIT_SIZE;
-            int newY = player.y + yDirection * UNIT_SIZE;
-
-            boolean onLadder = ladders.contains(new Point(player.x, player.y));
-            boolean moveToLadder = ladders.contains(new Point(newX, newY));
-            boolean onGround = ground.contains(new Point(player.x, player.y + UNIT_SIZE));
-            boolean moveToGround = ground.contains(new Point(newX, newY + UNIT_SIZE));
-
-            if (newX >= 0 && newX < PANEL_WIDTH && (onGround || onLadder || moveToLadder)) {
-                player.setLocation(newX, player.y);
-            }
-
-            if (newY >= 0 && newY < PANEL_HEIGHT && (onLadder || moveToLadder)) {
-                player.setLocation(player.x, newY);
-            }
-
-            if (newX >= 0 && newX < PANEL_WIDTH && newY >= 0 && newY < PANEL_HEIGHT) {
-                if (!ground.contains(new Point(newX, newY))) {
-                    player.setLocation(newX, newY);
-                }
-            }
-        }
-
-        private void applyHorizontalGravityMovement(int xDirection) {
-            int newX = player.x + xDirection * UNIT_SIZE;
-            if (newX >= 0 && newX < PANEL_WIDTH) {
-                player.setLocation(newX, player.y);
-            }
-        }
-
-        private void climbLadder(int yDirection) {
-            int newY = player.y + yDirection * UNIT_SIZE;
-            if (ladders.contains(new Point(player.x, newY)) && newY >= 0 && newY < PANEL_HEIGHT) {
-                player.setLocation(player.x, newY);
-            }
-        }
-
-        private void digGround(int direction) {
-            int x = player.x + direction * UNIT_SIZE;
-            int y = player.y + UNIT_SIZE;
-            Point digPoint = new Point(x, y);
-            if (ground.contains(digPoint)) {
-                ((SimpleLodeRunner) SwingUtilities.getWindowAncestor(this)).playSoundEffect("/LoadRunner/sounds/broke.wav");
-                ground.remove(digPoint);
-                brokenGrounds.add(digPoint);
-                brokenGroundsTimers.put(digPoint, System.currentTimeMillis());
-            }
-        }
     }
 
-
+    /**
+     * 적 AI 클래스입니다.
+     */
 
     static class EnemyAI {
         private Point enemyPosition;
@@ -863,6 +943,15 @@ public class SimpleLodeRunner extends JFrame {
         private double enemySpeed;
         private double moveCounter = 0;
 
+        /**
+         * EnemyAI 클래스의 생성자입니다.
+         *
+         * @param enemyPosition 적의 초기 위치
+         * @param ladders       사다리 위치 집합
+         * @param ground        지면 위치 집합
+         * @param unitSize      게임 유닛 크기
+         */
+
         public EnemyAI(Point enemyPosition, Set<Point> ladders, Set<Point> ground, int unitSize) {
             this.enemyPosition = enemyPosition;
             this.ladders = ladders;
@@ -870,6 +959,13 @@ public class SimpleLodeRunner extends JFrame {
             this.unitSize = unitSize;
             this.enemySpeed = 0.6;
         }
+
+
+        /**
+         * 적 AI를 업데이트하는 메서드입니다.
+         *
+         * @param playerPosition 플레이어의 현재 위치
+         */
 
         public void update(Point playerPosition) {
             moveCounter += enemySpeed;
@@ -887,12 +983,27 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
+        /**
+         * 가까운 사다리를 찾아가는 메서드입니다.
+         *
+         * @param playerPosition
+         * @param goingUp
+         */
+
         private void moveToNearestLadder(Point playerPosition, boolean goingUp) {
             Point nearestLadder = findNearestLadder(playerPosition, goingUp);
             if (nearestLadder != null) {
                 moveTowardsPoint(nearestLadder, goingUp);
             }
         }
+
+        /**
+         * 가장 가까운 사다리를 찾는 메서드입니다.
+         *
+         * @param playerPosition 플레이어의 현재 위치
+         * @param goingUp        올라가야하는지 확인
+         * @return 가장 가까운 사다리의 위치
+         */
 
         private Point findNearestLadder(Point playerPosition, boolean goingUp) {
             Point nearestLadder = null;
@@ -907,6 +1018,13 @@ public class SimpleLodeRunner extends JFrame {
             return nearestLadder;
         }
 
+        /**
+         * 지점으로 이동하는 메서드입니다.
+         *
+         * @param target  이동할 지점의 위치
+         * @param goingUp 적이 올라가는 중인지 여부
+         */
+
         private void moveTowardsPoint(Point target, boolean goingUp) {
             int xDirection = Integer.compare(target.x, enemyPosition.x);
             int yDirection = goingUp ? -1 : 1;
@@ -917,9 +1035,21 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
+        /**
+         * 사다리 위에 있는지 확인하는 메서드입니다.
+         *
+         * @return 적의 포지션
+         */
+
         private boolean isOnLadder() {
             return ladders.contains(enemyPosition);
         }
+
+        /**
+         * 사다리를 오르는 메서드입니다.
+         *
+         * @param yDirection
+         */
 
         private void moveOnLadder(int yDirection) {
             int newY = enemyPosition.y + yDirection * unitSize;
@@ -928,10 +1058,23 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
+        /**
+         * 플레이어를 추격하는 메서드입니다.
+         *
+         * @param playerPosition
+         */
+
         private void trackPlayer(Point playerPosition) {
             int xDirection = Integer.compare(playerPosition.x, enemyPosition.x);
             moveEnemy(xDirection, 0);
         }
+
+        /**
+         * 적을 이동시키는 메서드입니다.
+         *
+         * @param xDirection x축 방향으로의 이동 (-1: 왼쪽, 1: 오른쪽)
+         * @param yDirection y축 방향으로의 이동 (-1: 위로, 1: 아래로)
+         */
 
         private void moveEnemy(int xDirection, int yDirection) {
             int newX = enemyPosition.x + xDirection * unitSize;
@@ -942,6 +1085,14 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
+        /**
+         * 이동 가능한지 확인하는 메서드입니다.
+         *
+         * @param x 이동할 x 좌표
+         * @param y 이동할 y 좌표
+         * @return 이동 가능한 경우 true, 그렇지 않은 경우 false 반환
+         */
+
         private boolean canMove(int x, int y) {
             boolean onLadder = ladders.contains(new Point(enemyPosition.x, enemyPosition.y));
             boolean moveToLadder = ladders.contains(new Point(x, y));
@@ -951,6 +1102,10 @@ public class SimpleLodeRunner extends JFrame {
                     (onGround || onLadder || moveToLadder);
         }
 
+        /**
+         * 중력을 적용하는 메서드입니다.
+         */
+
         private void applyGravity() {
             Point below = new Point(enemyPosition.x, enemyPosition.y + unitSize);
             if (!ground.contains(below) && !ladders.contains(below)) {
@@ -958,23 +1113,26 @@ public class SimpleLodeRunner extends JFrame {
             }
         }
 
+        /**
+         * 현재 적의 위치를 반환하는 메서드입니다.
+         *
+         * @return 적의 현재 위치
+         */
+
         public Point getEnemyPosition() {
             return enemyPosition;
         }
+
+        /**
+         * 적의 이동 속도를 설정하는 메서드입니다.
+         *
+         * @param speed 적의 이동 속도
+         */
 
         public void setEnemySpeed(double speed) {
             this.enemySpeed = speed;
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 }

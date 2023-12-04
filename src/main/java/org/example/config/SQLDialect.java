@@ -12,7 +12,16 @@ import org.hibernate.dialect.identity.IdentityColumnSupport;
 import org.hibernate.dialect.identity.IdentityColumnSupportImpl;
 import org.hibernate.type.StandardBasicTypes;
 
+/**
+ * @author juhun_park
+ * SQLite 데이터베이스에 특화된 Hibernate 방언을 정의하는 클래스입니다.
+ * 이 클래스는 SQLite의 데이터 타입, SQL 함수, 그리고 특정 SQL 구문 지원 여부를 정의합니다.
+ */
 public class SQLDialect extends Dialect {
+    /**
+     * SQLDialect 클래스의 생성자입니다.
+     * SQLite의 데이터 타입과 일부 표준 SQL 함수를 등록합니다.
+     */
     public SQLDialect() {
         super();
         registerColumnType(Types.BIT, "integer");

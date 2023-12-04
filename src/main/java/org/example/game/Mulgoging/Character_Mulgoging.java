@@ -5,8 +5,8 @@ import java.awt.*;
 import java.util.Objects;
 
 public class Character_Mulgoging {
-    private String name;
-    private Image image;
+    private final String name;
+    private final Image image;
 
     public Character_Mulgoging(String name) {
         this.name = name;
@@ -15,7 +15,7 @@ public class Character_Mulgoging {
 
     private Image loadImage(String characterName) {
         String imagePath;
-        switch(characterName) {
+        switch (characterName) {
             case "rabbit":
                 imagePath = "/Mulgoging/Image/animalimg/Rabbit_1.png";
                 break;

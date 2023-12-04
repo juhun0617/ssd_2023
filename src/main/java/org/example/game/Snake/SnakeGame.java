@@ -20,12 +20,24 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * @author younghun_kim
+ * <p>
+ * 스네이크 게임의 메인 어플리케이션 클래스입니다.
+ */
 public class SnakeGame extends JFrame {
 
     private Clip clip;
+
+
+    /**
+     * SnakeGame 클래스의 생성자입니다.
+     *
+     * @param character 게임 캐릭터
+     */
     public SnakeGame(Character character) {
         playBackgroundMusic("/Snake/sounds/sbg.wav");
-        this.add(new GamePanel(character,clip,this));
+        this.add(new GamePanel(character, clip, this));
         this.setTitle("Snake Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -34,6 +46,11 @@ public class SnakeGame extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * 배경 음악을 재생하는 메서드입니다.
+     *
+     * @param filePath 재생할 음악 파일의 경로
+     */
     private void playBackgroundMusic(String filePath) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(filePath)));
@@ -48,29 +65,25 @@ public class SnakeGame extends JFrame {
     }
 
 
-
-
-
-
-
 }
+
+/**
+ * Snake 게임의 게임 화면을 나타내는 패널 클래스입니다.
+ */
 
 class GamePanel extends JPanel implements ActionListener {
 
-    JButton restartButton;
-    JButton exitButton;
-    JLabel scoreLabel;
-
-
-    public int money = 0;
-    private Clip clip1;
     static final int SCREEN_WIDTH = 800;
     static final int SCREEN_HEIGHT = 800;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
-    int DELAY = 100;
     final int[] x = new int[GAME_UNITS];
     final int[] y = new int[GAME_UNITS];
+    public int money = 0;
+    JButton restartButton;
+    JButton exitButton;
+    JLabel scoreLabel;
+    int DELAY = 100;
     int bodyParts = 6;
     int applesEaten;
     int appleX;
@@ -80,14 +93,24 @@ class GamePanel extends JPanel implements ActionListener {
     Timer timer;
     Random random;
     int animal;
-    private Character character;
-    private JFrame frame;
     EntityManagerFactory emf;
     CharacterService characterService;
+    private Clip clip1;
+    private Character character;
+    private JFrame frame;
 
-    GamePanel(Character character,Clip clip,JFrame frame) {
+    /**
+     * GamePanel 클래스의 생성자입니다.
+     *
+     * @param character 게임 캐릭터
+     * @param clip      음악 클립
+     * @param frame     게임 프레임
+     */
+
+    GamePanel(Character character, Clip clip, JFrame frame) {
         String homeDirectory = System.getProperty("user.home");
-        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        String targetPath = Paths.get(homeDirectory, "sqlite.db")
+                .toString();
         Map<String, String> properties = new HashMap<>();
         properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
 
@@ -106,6 +129,9 @@ class GamePanel extends JPanel implements ActionListener {
         startGame();
     }
 
+    /**
+     * 게임 오버 화면의 컴포넌트를 초기화하는 메서드입니다.
+     */
     private void initializeGameOverComponents() {
         // Initialize the components
         restartButton = new JButton("Restart");
@@ -130,11 +156,11 @@ class GamePanel extends JPanel implements ActionListener {
         exitButton.setBounds(450, 500, 100, 50);
         add(exitButton);
         exitButton.addActionListener(e -> {
-            character.setXp(character.getXp()+10);
-            character.setFun(character.getFun()+10);
+            character.setXp(character.getXp() + 10);
+            character.setFun(character.getFun() + 10);
             character.setHungry(character.getHungry());
             character.setMoney(character.getMoney() + (money));
-            if (character.getMax_score_2() < money){
+            if (character.getMax_score_2() < money) {
                 character.setMax_score_2(money);
             }
             characterService.saveCharacter(character);
@@ -147,10 +173,17 @@ class GamePanel extends JPanel implements ActionListener {
         exitButton.setVisible(false);
         scoreLabel.setVisible(false);
     }
-    private void stopBackgroundMusic(){
+
+    /**
+     * 배경 음악을 정지하는 메서드입니다.
+     */
+    private void stopBackgroundMusic() {
         clip1.stop();
     }
 
+    /**
+     * 게임을 재시작하는 메서드입니다.
+     */
     private void restartGame() {
         // 게임 재시작 로직
         bodyParts = 6;
@@ -163,6 +196,11 @@ class GamePanel extends JPanel implements ActionListener {
         startGame();
     }
 
+    /**
+     * 게임 오버 화면을 그리는 메서드입니다.
+     *
+     * @param g 그래픽스 컨텍스트
+     */
     public void gameOver(Graphics g) {
 
         g.setColor(Color.WHITE);
@@ -175,6 +213,12 @@ class GamePanel extends JPanel implements ActionListener {
         restartButton.setVisible(true);
         exitButton.setVisible(true);
     }
+
+    /**
+     * 사운드 효과를 재생하는 메서드입니다.
+     *
+     * @param filePath 재생할 사운드 효과 파일의 경로
+     */
     private void playSoundEffect(String filePath) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(filePath)));
@@ -187,6 +231,9 @@ class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * 게임을 시작하는 메서드입니다.
+     */
     public void startGame() {
         for (int i = 0; i < bodyParts; i++) {
             x[i] = SCREEN_WIDTH / 2 - i * UNIT_SIZE;
@@ -199,10 +246,22 @@ class GamePanel extends JPanel implements ActionListener {
         animal = 2; // 동물색
     }
 
+    /**
+     * 패널의 그래픽 컴포넌트를 그리는 메서드입니다.
+     *
+     * @param g 그래픽스 컨텍스트
+     */
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
     }
+
+    /**
+     * 게임 화면을 그리는 메서드입니다.
+     *
+     * @param g 그래픽스 컨텍스트
+     */
 
     public void draw(Graphics g) {
         if (running) {
@@ -257,17 +316,22 @@ class GamePanel extends JPanel implements ActionListener {
             g.fillRect(SCREEN_WIDTH - UNIT_SIZE, 0, UNIT_SIZE, SCREEN_HEIGHT);
             g.fillRect(0, SCREEN_HEIGHT - UNIT_SIZE, SCREEN_WIDTH, UNIT_SIZE);
 
-        }
-        else{
+        } else {
             gameOver(g);
         }
     }
 
+    /**
+     * 새로운 사과를 생성하는 메서드입니다.
+     */
     public void newApple() {
         appleX = random.nextInt((SCREEN_WIDTH / UNIT_SIZE) - 2) * UNIT_SIZE + UNIT_SIZE;
         appleY = random.nextInt((SCREEN_HEIGHT / UNIT_SIZE) - 2) * UNIT_SIZE + UNIT_SIZE;
     }
 
+    /**
+     * 뱀을 움직이는 메서드입니다.
+     */
     public void move() {
         for (int i = bodyParts; i > 0; i--) {
             x[i] = x[i - 1];
@@ -290,6 +354,9 @@ class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * 사과를 확인하고 먹는 메서드입니다.
+     */
     public void checkApple() {
         if ((x[0] == appleX) && (y[0] == appleY)) {
             bodyParts++;
@@ -304,6 +371,9 @@ class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * 충돌을 확인하는 메서드입니다.
+     */
     public void checkCollisions() {
         for (int i = bodyParts; i > 0; i--) {
             if ((x[0] == x[i]) && (y[0] == y[i])) {
@@ -320,7 +390,12 @@ class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-
+    /**
+     * ActionListener를 구현한 메서드입니다. 타이머에 의해 주기적으로 호출됩니다.
+     * 게임이 실행 중일 때 뱀을 움직이게하고 충돌을 확인한 후 화면을 다시 그립니다.
+     *
+     * @param e ActionEvent 이벤트 객체
+     */
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -333,7 +408,20 @@ class GamePanel extends JPanel implements ActionListener {
         repaint();
     }
 
+
+    /**
+     * KeyAdapter를 확장한 MyKeyAdapter 클래스입니다.
+     * 사용자의 키 입력을 처리하고 뱀의 방향을 바꿉니다.
+     */
+
     public class MyKeyAdapter extends KeyAdapter {
+
+
+        /**
+         * 사용자의 키 입력을 처리하고 뱀의 방향을 제어합니다.
+         *
+         * @param e KeyEvent 이벤트 객체
+         */
         @Override
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {

@@ -18,25 +18,35 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author juhun_park
+ * 게임 내 소셜 상호작용을 관리하는 UI 클래스입니다.
+ * 사용자가 캐릭터 정보를 공유하거나 다른 사용자의 정보를 가져오는 기능을 제공합니다.
+ */
 public class SocialUI {
 
     private static String BACKGROUND_PATH = "/Image/shopBack.png";
-
-
+    private final socialUICallback callback;
     EntityManagerFactory emf;
     EntityManager em;
-
     Character_DecoService characterDecoService = new Character_DecoService(emf);
     private JPanel panel;
     private BackGroundPanel backPanel;
     private Character character;
 
-
-    private final socialUICallback callback;
-    public SocialUI(JPanel panel,Character character,socialUICallback callback){
+    /**
+     * SocialUI의 생성자.
+     * UI 컴포넌트를 초기화하고 필요한 서비스를 설정합니다.
+     *
+     * @param panel     UI를 위한 메인 패널.
+     * @param character 표시 및 상호 작용을 위한 캐릭터 엔티티.
+     * @param callback  UI 이벤트를 처리하기 위한 콜백 인터페이스.
+     */
+    public SocialUI(JPanel panel, Character character, socialUICallback callback) {
 
         String homeDirectory = System.getProperty("user.home");
-        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        String targetPath = Paths.get(homeDirectory, "sqlite.db")
+                .toString();
         Map<String, String> properties = new HashMap<>();
         properties.put("javax.persistence.jdbc.url", "jdbc:sqlite:" + targetPath);
 
@@ -49,13 +59,22 @@ public class SocialUI {
         this.callback = callback;
     }
 
-    public void updateUI(){
+
+    /**
+     * UI 컴포넌트를 업데이트하고 새로고침합니다.
+     * 이 메서드는 패널을 초기화하고, 소셜 상호작용 관련 컴포넌트를 설정합니다.
+     */
+    public void updateUI() {
         initializeBackPanel();
 
 
         panel.revalidate();
         panel.repaint();
     }
+
+    /**
+     * 배경패널을 초기화 합니다.
+     */
     private void initializeBackPanel() {
         panel.removeAll();
         backPanel = new BackGroundPanel(BACKGROUND_PATH);
@@ -67,7 +86,10 @@ public class SocialUI {
         setInputKeyButton();
     }
 
-    private void backProgress(){
+    /**
+     * 뒤로가기 버튼을 설정합니다.
+     */
+    private void backProgress() {
         ShadowButton backButton = new ShadowButton("Back", "/Image/Button/ShopBackButton.png");
         Font customFont = CustomFont.loadCustomFont(30f);
         backButton.setFont(customFont);
@@ -88,17 +110,21 @@ public class SocialUI {
         backPanel.add(backButton, gbc);
 
     }
-    private void setScoreLabel(){
-        JLabel label1 = new JLabel("로드러너 : " + character.getMax_score_1()+"점");
-        JLabel label2 = new JLabel("스네이크 : " + character.getMax_score_2()+"점");
-        JLabel label3 = new JLabel("물고깅   : " + character.getMax_score_3()+"점");
-        JLabel label4 = new JLabel("팩맨     : " + character.getMax_score_4()+"점");
+
+    /**
+     * 게임별 최고점수를 디스플레이 합니다.
+     */
+    private void setScoreLabel() {
+        JLabel label1 = new JLabel("로드러너 : " + character.getMax_score_1() + "점");
+        JLabel label2 = new JLabel("스네이크 : " + character.getMax_score_2() + "점");
+        JLabel label3 = new JLabel("물고깅   : " + character.getMax_score_3() + "점");
+        JLabel label4 = new JLabel("팩맨     : " + character.getMax_score_4() + "점");
         label1.setFont(CustomFont.loadCustomFont(50f));
         label2.setFont(CustomFont.loadCustomFont(50f));
         label3.setFont(CustomFont.loadCustomFont(50f));
         label4.setFont(CustomFont.loadCustomFont(50f));
 
-        JPanel jPanel = new JPanel(new GridLayout(4,1));
+        JPanel jPanel = new JPanel(new GridLayout(4, 1));
         jPanel.add(label1);
         jPanel.add(label2);
         jPanel.add(label3);
@@ -114,21 +140,25 @@ public class SocialUI {
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.insets = new Insets(300, 200, 0, 0);
-        backPanel.add(jPanel,gbc);
+        backPanel.add(jPanel, gbc);
         JLabel title = new JLabel("최고점수");
         title.setFont(CustomFont.loadCustomFont(50f));
         gbc.insets = new Insets(200, 200, 0, 0);
-        backPanel.add(title,gbc);
+        backPanel.add(title, gbc);
 
     }
-    private void setGetKeyButton(){
-        ShadowButton button = new ShadowButton("내 토큰 내보내기","/Image/Button/backButton.png");
+
+    /**
+     * 내 캐릭터의 정보토큰을 가져옵니다.
+     */
+    private void setGetKeyButton() {
+        ShadowButton button = new ShadowButton("내 토큰 내보내기", "/Image/Button/backButton.png");
         button.setFont(CustomFont.loadCustomFont(18f));
-        button.setPreferredSize(new Dimension(250,80));
-        button.addActionListener( e -> {
+        button.setPreferredSize(new Dimension(250, 80));
+        button.addActionListener(e -> {
             ImageIcon temp = new ImageIcon(getClass().getResource("/Image/social.png"));
             Image image = temp.getImage();
-            Image resizedImage = image.getScaledInstance(50,50,Image.SCALE_SMOOTH);
+            Image resizedImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             ImageIcon imageIcon = new ImageIcon(resizedImage);
             String myString;
             SocialString socialString = new SocialString();
@@ -166,11 +196,13 @@ public class SocialUI {
         gbc.weighty = 1;
         gbc.insets = new Insets(600, 100, 0, 0);
 
-        backPanel.add(button,gbc);
+        backPanel.add(button, gbc);
     }
 
-
-    private void setInputKeyButton(){
+    /**
+     * 친구 캐릭터의 토큰을 입력받아 SocialDamaUI를 호출합니다.
+     */
+    private void setInputKeyButton() {
         ShadowButton button = new ShadowButton("친구 토큰 가져오기", "/Image/Button/backButton.png");
         button.setFont(CustomFont.loadCustomFont(18f));
         button.setPreferredSize(new Dimension(250, 80));
@@ -179,11 +211,12 @@ public class SocialUI {
             String inputToken = JOptionPane.showInputDialog(backPanel, "토큰을 입력하세요:", "토큰 입력", JOptionPane.PLAIN_MESSAGE);
 
             // 입력된 토큰이 null, "null", 또는 빈 문자열인지 체크
-            if (inputToken != null && !inputToken.trim().isEmpty() && !"null".equals(inputToken)) {
+            if (inputToken != null && !inputToken.trim()
+                    .isEmpty() && !"null".equals(inputToken)) {
                 try {
                     Character character = SocialString.createCharacterFromEncryptedString(inputToken);
-                    SocialDamaUI socialDamaUI = new SocialDamaUI(panel, character,()->{
-                        DamaUI damaUI = new DamaUI(panel,this.character.getName());
+                    SocialDamaUI socialDamaUI = new SocialDamaUI(panel, character, () -> {
+                        DamaUI damaUI = new DamaUI(panel, this.character.getName());
                         damaUI.updateUi();
                     });
                     socialDamaUI.updateUi();
@@ -212,8 +245,11 @@ public class SocialUI {
     }
 
 
-
-    public interface socialUICallback{
+    /**
+     * SocialUI 클래스에서의 콜백 메서드를 위한 인터페이스.
+     * 뒤로 가기 버튼 기능을 구현하기 위한 구조를 제공합니다.
+     */
+    public interface socialUICallback {
         void backButton();
     }
 }

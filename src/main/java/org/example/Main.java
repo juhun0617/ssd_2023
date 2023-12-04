@@ -26,23 +26,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * JFrame을 상속받는 Main클래스
+ *
+ * @author juhun_park
+ */
 
 public class Main extends JFrame {
-
-    private BackGroundPanel backGroundPanel;
-    private CharacterService characterService;
-    private Font customFont;
-
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
     private static final String BACKGROUND_PATH = "/Image/Main.jpeg";
-
-
+    private BackGroundPanel backGroundPanel;
+    private CharacterService characterService;
+    private Font customFont;
     private JPanel mainPanel;
 
     private BackgroundMusic bgMusic;
 
+    /**
+     * Main 클래스의 생성자
+     * 커스텀 폰트를 로드하고 프레임을 초기화,
+     * 리스너를 추가하고 여러 요소를 초기화, 설정한다
+     * 데이터베이스를 복사하는 코드도 포함한다.
+     */
     public Main() {
         customFont = CustomFont.loadCustomFont(24f);
         initializeFrame();
@@ -50,9 +57,10 @@ public class Main extends JFrame {
         attachMouseClickListener();
         startBackgroundMusic();
         String homeDirectory = System.getProperty("user.home");
-        String targetPath = Paths.get(homeDirectory, "sqlite.db").toString();
+        String targetPath = Paths.get(homeDirectory, "sqlite.db")
+                .toString();
         System.out.println(targetPath);
-        extractDatabase("/SQLiteDB.db",targetPath);
+        extractDatabase("/SQLiteDB.db", targetPath);
 
 
         Map<String, String> properties = new HashMap<>();
@@ -66,6 +74,12 @@ public class Main extends JFrame {
 
     }
 
+    /**
+     * jar파일(프로젝트 폴더) 내부에 있는 데이터베이스를 유저의 홈 디렉토리에 복사하는 메서드
+     *
+     * @param resourcePath : 내부 데이터베이스 경로
+     * @param targetPath   : 복사할 위치 지정
+     */
     public static void extractDatabase(String resourcePath, String targetPath) {
         File targetFile = new File(targetPath);
 
@@ -88,8 +102,14 @@ public class Main extends JFrame {
         }
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Main().setVisible(true));
+    }
 
-    private void backButtonProgress(){
+    /**
+     * 뒤로가기 버튼을 눌렀을 때 메인패널의 전부를 지우고 다시 업데이트 한다
+     */
+    private void backButtonProgress() {
         mainPanel.removeAll();
         initializeMainPanel();
         attachMouseClickListener();
@@ -97,6 +117,9 @@ public class Main extends JFrame {
 
     }
 
+    /**
+     * 배경음악을 시작하는 메서드
+     */
     private void startBackgroundMusic() {
         // Assuming BackgroundMusic is a runnable that plays music
         bgMusic = new BackgroundMusic();
@@ -104,13 +127,16 @@ public class Main extends JFrame {
         new Thread(String.valueOf(bgMusic)).start();
     }
 
-    private void stopBackgroundMusic(){
+    /**
+     * 배경음악을 종료하는 메서드
+     */
+    private void stopBackgroundMusic() {
         bgMusic.stopMusic();
     }
 
-
-
-
+    /**
+     * 메인 프레임을 초기화 하는 메서드
+     */
     private void initializeFrame() {
         setTitle("RETRO PET");
         setSize(WIDTH, HEIGHT);
@@ -119,13 +145,19 @@ public class Main extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    /**
+     * 메인 패널을 초기화하는 메서드
+     */
     private void initializeMainPanel() {
         mainPanel = new JPanel(new BorderLayout());
         backGroundPanel = new BackGroundPanel(BACKGROUND_PATH);
-        mainPanel.add(backGroundPanel,BorderLayout.CENTER);
+        mainPanel.add(backGroundPanel, BorderLayout.CENTER);
         setContentPane(mainPanel);
     }
 
+    /**
+     * 메인화면에서의 클릭을 감지하는 메서드
+     */
     private void attachMouseClickListener() {
         mainPanel.addMouseListener(new MouseAdapter() {
             @Override
@@ -136,6 +168,9 @@ public class Main extends JFrame {
         });
     }
 
+    /**
+     * 클릭을 하였을 때 화면을 흐리게 전환해주는 메서드
+     */
     private void fadeOutBackground() {
         Timer timer = new Timer(40, new ActionListener() {
             @Override
@@ -152,6 +187,9 @@ public class Main extends JFrame {
         timer.start();
     }
 
+    /**
+     * 새 게임, 저장된 게임 옵션을 디스플레이 해주는 메서드
+     */
     private void displayGameOptions() {
         JPanel optionsPanel = createOptionsPanel();
         backGroundPanel.add(optionsPanel, BorderLayout.CENTER);
@@ -159,23 +197,28 @@ public class Main extends JFrame {
         mainPanel.repaint();
     }
 
+    /**
+     * 게임 옵션 패널을 제작하는 메서드
+     *
+     * @return : 제작된 게임 옵션 패널
+     */
     private JPanel createOptionsPanel() {
         JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 365));
         optionsPanel.setOpaque(false);
 
 
-        ShadowButton newGameButton = new ShadowButton("새 게임","/Image/Button/skyBlueButton.png");
+        ShadowButton newGameButton = new ShadowButton("새 게임", "/Image/Button/skyBlueButton.png");
         newGameButton.setCORNER_SIZE(40);
         newGameButton.setSHADOW_OFFSET(0);
         newGameButton.addActionListener(e -> startNewGame());
         newGameButton.setFont(customFont);
-        newGameButton.setPreferredSize(new Dimension(200,70));
+        newGameButton.setPreferredSize(new Dimension(200, 70));
         ShadowButton loadGameButton = new ShadowButton("저장된 게임", "/Image/Button/skyBlueButton.png");
         loadGameButton.setCORNER_SIZE(40);
         loadGameButton.setSHADOW_OFFSET(0);
         loadGameButton.addActionListener(e -> loadSavedGame());
         loadGameButton.setFont(customFont);
-        loadGameButton.setPreferredSize(new Dimension(200,70));
+        loadGameButton.setPreferredSize(new Dimension(200, 70));
 
         optionsPanel.add(newGameButton);
         optionsPanel.add(loadGameButton);
@@ -183,8 +226,12 @@ public class Main extends JFrame {
         return optionsPanel;
     }
 
-
-
+    /**
+     * 다마고치 화면으로 전환을 해주는 메서드
+     * 현재 패널을 인자로 넘겨주어 패널을 재샤용
+     *
+     * @param name : 사용자가 선택한 캐릭터의 이름
+     */
     private void moveToDamaUI(String name) {
         SwingUtilities.invokeLater(() -> {
             stopBackgroundMusic();
@@ -193,8 +240,10 @@ public class Main extends JFrame {
         });
     }
 
-
-
+    /**
+     * 새 게임을 시작하는 메서드
+     * 게임옵션에서 새 게임을 선택하였을 때 호출되는 메서드
+     */
     private void startNewGame() {
         CharacterSelectionUI characterSelectionUI = new CharacterSelectionUI(mainPanel, new CharacterSelectionUI.CharacterCreationCallback() {
             @Override
@@ -212,15 +261,22 @@ public class Main extends JFrame {
         characterSelectionUI.updateUI();
     }
 
+    /**
+     * 저장된 게임을 시작하는 메서드
+     * 게임옵션에서 저장된 게임을 선택하였을 때 호출되는 메서드
+     */
     private void loadSavedGame() {
-        if(characterService.isTableEmpty("Character")){
-            JOptionPane.showMessageDialog(this,"세이브파일이 없습니다");
+        if (characterService.isTableEmpty("Character")) {
+            JOptionPane.showMessageDialog(this, "세이브파일이 없습니다");
         } else {
             selectSaveFile();
 
         }
     }
 
+    /**
+     * 저장된 게임을 눌렀을 때 세이브 파일을 선택하는 메서
+     */
     private void selectSaveFile() {
         // 데이터베이스 또는 서비스 계층으로부터 캐릭터 이름 목록을 가져옵니다.
         List<String> characterNames = characterService.getCharacterNames();
@@ -239,13 +295,5 @@ public class Main extends JFrame {
         if (selectedName != null && !selectedName.isEmpty()) {
             moveToDamaUI(selectedName);
         }
-    }
-
-
-
-
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Main().setVisible(true));
     }
 }

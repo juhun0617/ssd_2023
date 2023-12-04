@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * @author juhun_park
+ * 꾸밈요소 엔티티 클래스
+ */
 @Entity
 public class Deco {
     @Id
@@ -17,23 +21,27 @@ public class Deco {
     private int decoPrice;
     private String decoImagePath;
 
+    public Long getId() {
+        return id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
-    }
-    public String getDecoName(){
+    public String getDecoName() {
         return decoName;
     }
-    public String getDecoImagePath(){
+
+    public String getDecoImagePath() {
         return decoImagePath;
     }
-    public int getDecoPrice(){
+
+    public int getDecoPrice() {
         return decoPrice;
     }
-    public String getDecoClass(){
+
+    public String getDecoClass() {
         return decoClass;
     }
 }
